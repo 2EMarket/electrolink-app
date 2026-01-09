@@ -1,0 +1,3 @@
+export 'package:second_hand_electronics_marketplace/core/widgets/text_area_inputs_description_field.dart';
+export 'package:second_hand_electronics_marketplace/core/widgets/text_inputs_username_field.dart';
+export 'package:second_hand_electronics_marketplace/core/widgets/text_inputs_phone_field.dart';

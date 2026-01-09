@@ -1,6 +1,6 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
+import 'configs/theme/theme_exports.dart';
+import 'imports.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,12 +13,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(title: Text('Second Hand Electronics Marketplace')),
-        body: Center(
-          child: ElevatedButton(onPressed: () {}, child: Text('hi')),
-        ),
-      ),
+      home: Center(child: ElevatedButton(onPressed: () {}, child: Text('hi'))),
     );
   }
 }
