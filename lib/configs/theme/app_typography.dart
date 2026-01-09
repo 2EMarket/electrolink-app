@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 /// Design system typography for mobile
 /// Font family: Poppins
 class AppTypography {
@@ -72,6 +74,13 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 14,
+  );
+  static const TextStyle body15Regular = TextStyle(
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    height: 1.0,
+    color: AppColors.mainColor
   );
 
   static const TextStyle body14Medium = TextStyle(
