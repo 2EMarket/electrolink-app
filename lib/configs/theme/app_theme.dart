@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
-/// Main theme configuration for the app
+/// Main theme configuration for mobile app
 class AppTheme {
   AppTheme._();
 
@@ -33,31 +33,39 @@ class AppTheme {
         foregroundColor: AppColors.black,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: AppTypography.h5_20Medium.copyWith(
+        titleTextStyle: AppTypography.h2_20Medium.copyWith(
           color: AppColors.black,
         ),
       ),
 
       // Text Theme
       textTheme: TextTheme(
-        displayLarge: AppTypography.h1_64Bold.copyWith(color: AppColors.black),
-        displayMedium: AppTypography.h1_56Bold.copyWith(color: AppColors.black),
-        displaySmall: AppTypography.h1_48Bold.copyWith(color: AppColors.black),
-        headlineLarge: AppTypography.h2_48SemiBold.copyWith(
+        displayLarge: AppTypography.h2_20SemiBold.copyWith(
+          color: AppColors.black,
+        ),
+        displayMedium: AppTypography.h2_20Medium.copyWith(
+          color: AppColors.black,
+        ),
+        displaySmall: AppTypography.h2_20Regular.copyWith(
+          color: AppColors.black,
+        ),
+        headlineLarge: AppTypography.h2_20SemiBold.copyWith(
           color: AppColors.titles,
         ),
-        headlineMedium: AppTypography.h2_36SemiBold.copyWith(
+        headlineMedium: AppTypography.h2_20Medium.copyWith(
           color: AppColors.titles,
         ),
-        headlineSmall: AppTypography.h3_36Medium.copyWith(
+        headlineSmall: AppTypography.h3_18Medium.copyWith(
           color: AppColors.titles,
         ),
-        titleLarge: AppTypography.h4_28Medium.copyWith(color: AppColors.titles),
-        titleMedium: AppTypography.h5_20Medium.copyWith(
+        titleLarge: AppTypography.h3_18Medium.copyWith(color: AppColors.titles),
+        titleMedium: AppTypography.h2_20Medium.copyWith(
           color: AppColors.titles,
         ),
-        titleSmall: AppTypography.h5_16Medium.copyWith(color: AppColors.titles),
-        bodyLarge: AppTypography.body18Regular.copyWith(color: AppColors.text),
+        titleSmall: AppTypography.body16Medium.copyWith(
+          color: AppColors.titles,
+        ),
+        bodyLarge: AppTypography.h3_18Regular.copyWith(color: AppColors.text),
         bodyMedium: AppTypography.body16Regular.copyWith(color: AppColors.text),
         bodySmall: AppTypography.body14Regular.copyWith(color: AppColors.text),
         labelLarge: AppTypography.label12Regular.copyWith(
@@ -154,8 +162,8 @@ class AppTheme {
         backgroundColor: AppColors.white,
         selectedItemColor: AppColors.mainColor,
         unselectedItemColor: AppColors.icons,
-        selectedLabelStyle: AppTypography.mobileNavLabel10Medium,
-        unselectedLabelStyle: AppTypography.mobileNavLabel10Regular,
+        selectedLabelStyle: AppTypography.label10Medium,
+        unselectedLabelStyle: AppTypography.label10Regular,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),

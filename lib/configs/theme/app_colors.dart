@@ -48,11 +48,5 @@ class AppColors {
   static const Color neutral10 = Color(0x1A6B7280);
   static const Color neutral5 = Color(0x0D6B7280);
 
-  // ==================== Wireframe Colors ====================
-  static const Color wireframeButtonsIcons = Color(0xFF828282);
-  static const Color wireframeImagesBackground = Color(0xFFD9D9D9);
-  static const Color wireframeImages2 = Color(0xFFADADAD);
-  static const Color wireframeText = Color(0xFF525252);
-  static const Color wireframeTitles = Color(0xFF212121);
-  static const Color wireframeHint = Color(0xFF828282);
+
 }

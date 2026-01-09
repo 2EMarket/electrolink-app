@@ -1,6 +1,6 @@
- # Design Tokens for Flutter
+# Design Tokens for Flutter (Mobile)
 
-This directory contains design tokens converted from Figma design files, ready to use in your Flutter application.
+This directory contains design tokens converted from Figma design files, optimized for mobile Flutter applications.
 
 ## Files
 
@@ -10,12 +10,13 @@ Contains all color definitions organized into:
 - **Main Colors**: primary color with transparency variants (40%, 20%, 10%, 5%)
 - **Secondary Colors**: secondary color with transparency variants
 - **Status Colors**: warning, success, error, neutral with transparency variants
-- **Wireframe Colors**: colors for wireframe/prototype designs
 
 ### `app_typography.dart`
-Contains all text styles organized into:
-- **Web Fonts**: H1-H5 headings, body text, buttons, captions, labels
-- **Mobile Fonts**: Optimized typography for mobile devices
+Contains all text styles for mobile applications:
+- **Headings**: H2 (20px), H3 (18px) in various weights
+- **Body Text**: 16px and 14px in regular and medium weights
+- **Buttons**: Big (16px) and small (14px) button styles
+- **Labels**: 10px and 12px labels for navigation and small UI elements
 
 All text styles use the **Poppins** font family.
 
@@ -27,7 +28,7 @@ Contains predefined box shadow configurations:
 - `dropShadow`: General drop shadow
 
 ### `app_theme.dart`
-Main theme configuration that combines colors, typography, and shadows into a complete Flutter theme.
+Main theme configuration that combines colors, typography, and shadows into a complete Flutter theme optimized for mobile devices.
 
 ## Usage
 
@@ -99,7 +100,7 @@ import 'theme/app_typography.dart';
 
 Text(
   'Heading',
-  style: AppTypography.h1_48Bold,
+  style: AppTypography.h2_20SemiBold,
 )
 
 // Or with color override
@@ -150,25 +151,9 @@ TextField(
 lib/
 └── theme/
     ├── app_colors.dart      # Color palette
-    ├── app_typography.dart  # Text styles
+    ├── app_typography.dart  # Mobile text styles
     ├── app_shadows.dart     # Shadow definitions
-    └── app_theme.dart       # Complete theme configuration
-```
-
-## Responsive Design
-
-The design tokens include both web and mobile typography variants. You can conditionally apply them based on screen size:
-
-```dart
-import 'package:flutter/material.dart';
-import 'theme/app_typography.dart';
-
-Text(
-  'Responsive Heading',
-  style: MediaQuery.of(context).size.width > 600
-      ? AppTypography.h2_48SemiBold
-      : AppTypography.mobileH2_20SemiBold,
-)
+    └── app_theme.dart       # Complete mobile theme configuration
 ```
 
 ## Customization
