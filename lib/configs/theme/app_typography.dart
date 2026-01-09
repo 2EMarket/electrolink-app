@@ -8,7 +8,7 @@ class AppTypography {
   static const String _fontFamily = 'Poppins';
 
   // ==================== Web Fonts ====================
-  
+
   // Buttons
   static const TextStyle buttonSmall = TextStyle(
     fontFamily: _fontFamily,
@@ -180,7 +180,7 @@ class AppTypography {
   );
 
   // ==================== Mobile Fonts ====================
-  
+
   // Mobile Buttons
   static const TextStyle mobileButtonSmall = TextStyle(
     fontFamily: _fontFamily,
