@@ -8,20 +8,18 @@ class AppTypography {
   AppTypography._();
 
   static const String _fontFamily = 'Poppins';
-  
+
   // ==================== Buttons ====================
   static const TextStyle buttonSmall = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 14,
-    height: 1.0,
   );
 
   static const TextStyle buttonBig = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 16,
-    height: 1.0,
   );
 
   // ==================== Headings ====================
@@ -30,21 +28,18 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w600,
     fontSize: 20,
-    height: 1.0,
   );
 
   static const TextStyle h2_20Regular = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 20,
-    height: 1.0,
   );
 
   static const TextStyle h2_20Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 20,
-    height: 1.0,
   );
 
   // H3 - 18px
@@ -52,14 +47,12 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 18,
-    height: 1.0,
   );
 
   static const TextStyle h3_18Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 18,
-    height: 1.0,
   );
 
   // ==================== Body Text ====================
@@ -68,14 +61,12 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 16,
-    height: 1.0,
   );
 
   static const TextStyle body16Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 16,
-    height: 1.0,
   );
 
   // Body - 14px
@@ -83,7 +74,6 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    height: 1.0,
   );
   static const TextStyle body15Regular = TextStyle(
     fontFamily: _fontFamily,
@@ -97,7 +87,6 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 14,
-    height: 1.0,
   );
 
   // ==================== Labels ====================
@@ -106,14 +95,12 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 10,
-    height: 1.0,
   );
 
   static const TextStyle label10Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 10,
-    height: 1.0,
   );
 
   // Labels - 12px
@@ -121,13 +108,11 @@ class AppTypography {
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w400,
     fontSize: 12,
-    height: 1.0,
   );
 
   static const TextStyle label12Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
     fontSize: 12,
-    height: 1.0,
   );
 }
