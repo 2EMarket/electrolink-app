@@ -1,11 +1,11 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'configs/theme/theme_exports.dart';
-import 'imports.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
+import 'package:second_hand_electronics_marketplace/test_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Center(child: ElevatedButton(onPressed: () {}, child: Text('hi'))),
+      home: const HelpCenterScreen(),
     );
   }
 }

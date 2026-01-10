@@ -145,8 +145,8 @@ class AppTheme {
       // Outlined Button Theme
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.mainColor,
-          side: BorderSide(color: AppColors.mainColor),
+          foregroundColor: AppColors.neutral,
+          side: BorderSide(color: AppColors.neutral),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSizes.paddingL,
             vertical: AppSizes.paddingM,
@@ -154,10 +154,23 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizes.borderRadius),
           ),
-          textStyle: AppTypography.buttonBig,
+          textStyle: AppTypography.buttonBig.copyWith(color: AppColors.neutral),
         ),
       ),
+      tabBarTheme: TabBarThemeData(
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        labelColor: AppColors.white,
+        unselectedLabelColor: AppColors.hint,
 
+        labelStyle: AppTypography.body14Regular,
+        unselectedLabelStyle: AppTypography.body14Regular,
+
+        indicator: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        ),
+      ),
       // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.white,
