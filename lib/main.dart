@@ -5,5 +5,5 @@ import 'imports.dart';
 
 void main() {
   runApp(DevicePreview(enabled: true,
-      builder: (context) => const AmalsApp()));
+      builder: (context) => const MyApp()));
 }
