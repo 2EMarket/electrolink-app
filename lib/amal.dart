@@ -13,7 +13,7 @@ class AmalsApp extends StatelessWidget {
     final _descriptionController = TextEditingController();
     final _nameController = TextEditingController();
     final _phoneController = TextEditingController();
-//new
+//new change on my branch
     return MaterialApp(
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
