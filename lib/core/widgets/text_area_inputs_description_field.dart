@@ -34,7 +34,6 @@ class _TextAreaInputsDescriptionFieldState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 50),
           Text('Description', style: AppTypography.body14Regular),
           const SizedBox(height: 8),
           Stack(
