@@ -1,8 +1,9 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../configs/theme/theme_exports.dart';
 
-class TextInputsPhoneField extends StatelessWidget {
+class TextInputsPhoneField extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
 
@@ -14,6 +15,25 @@ class TextInputsPhoneField extends StatelessWidget {
     this.maxChars = 9,
     this.validator,
   });
+
+  @override
+  State<TextInputsPhoneField> createState() => _TextInputsPhoneFieldState();
+}
+
+class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
+  Country _selectedCountry = Country.parse('PS'); // فلسطين افتراضي
+  void _openCountryPicker() {
+    showCountryPicker(
+      context: context,
+      showPhoneCode: true,
+      showSearch: true,
+      onSelect: (Country country) {
+        setState(() {
+          _selectedCountry = country;
+        });
+      },
+    );
+  }
 
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
@@ -41,9 +61,9 @@ class TextInputsPhoneField extends StatelessWidget {
             width: double.infinity,
             child: TextFormField(
               keyboardType: TextInputType.number,
-              controller: controller,
-              maxLength: maxChars,
-              validator: validator,
+              controller: widget.controller,
+              maxLength: widget.maxChars,
+              validator: widget.validator,
               /*
                    validator: (value) {
                   if ( value == null || value.trim().isEmpty) {
@@ -56,17 +76,25 @@ class TextInputsPhoneField extends StatelessWidget {
                 },
                     */
               decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 12, right: 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(' 🇵🇸'),
-                      const SizedBox(width: 6),
-                      const Text('+970', style: AppTypography.body15Regular),
-                    ],
+                prefixIcon: GestureDetector(
+                  onTap: _openCountryPicker,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(_selectedCountry.flagEmoji),
+                        const SizedBox(width: 6),
+                        Text(
+                          '+${_selectedCountry.phoneCode}',
+                          style: AppTypography.body15Regular,
+                        ),
+                        const Icon(Icons.keyboard_arrow_down, size: 18),
+                      ],
+                    ),
                   ),
                 ),
+
                 hintText: 'Enter your phone number',
                 contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
                 filled: true,

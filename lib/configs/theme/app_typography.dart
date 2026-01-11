@@ -62,7 +62,12 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontSize: 16,
   );
-
+  static const TextStyle body16RegularGery = TextStyle(
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    color: AppColors.placeholders
+  );
   static const TextStyle body16Medium = TextStyle(
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,

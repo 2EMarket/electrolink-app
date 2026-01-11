@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/notification_card.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/notifications_list.dart';
 import 'configs/theme/theme_exports.dart';
+import 'core/widgets/app_notification.dart';
+import 'core/widgets/notification_overlay.dart';
+import 'core/widgets/otp_input_field.dart';
+import 'core/widgets/search&filter.dart';
 import 'core/widgets/widgets_exports.dart';
 import 'imports.dart';
 
@@ -13,13 +19,62 @@ class AmalsApp extends StatelessWidget {
     final _descriptionController = TextEditingController();
     final _nameController = TextEditingController();
     final _phoneController = TextEditingController();
-//new change on my branch
+    //new change on my branch
+    final service = NotificationService();
+
+    final notification =    AppNotification(
+      id: '2',
+      title: 'email Verified',
+      message: 'Your email has been verified',
+      type: NotificationType.emailVerified,
+    );
+
+    final notification2 =    AppNotification(
+      id: '1',
+      title: 'New Message',
+      message: 'You received a new message',
+      type: NotificationType.newMessage,
+    );
     return MaterialApp(
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+      home:  Builder(
+        builder: (context) {
+          return  Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 100),
+                  IconButton(
+                    icon: const Icon(Icons.notifications_none),
+                    onPressed: () {
+                      service.addNotification(notification);
+                      service.addNotification(notification2);
+
+                      NotificationOverlay.show(context, notification2);
+                    },
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.notifications_none),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NotificationsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ), /*
+        Scaffold(
         appBar: AppBar(title: Text('Second Hand Electronics Marketplace')),
         body: Form(
           key: _formKey,
@@ -28,7 +83,7 @@ class AmalsApp extends StatelessWidget {
               TextInputsPhoneField(
                 controller: _phoneController,
                 validator: (value) {
-                  if ( value == null || value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'The number is wrong';
                   }
                   if (!RegExp(r'^\d+$').hasMatch(value)) {
@@ -68,8 +123,7 @@ class AmalsApp extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
+        ),)*/
 
       // body: Center(
       //   child: ElevatedButton(onPressed: () {}, child: Text('hi')),
