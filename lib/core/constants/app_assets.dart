@@ -18,9 +18,9 @@ class AppAssets {
   static const String filterSvg = '$_svgPath/Filter.svg';
   static const String chatSvg = '$_svgPath/Chat.svg';
 
-
   static const String welcomeSvg = '$_svgPath/welcome.svg';
-  static const String underReviewAndResubmittedSvg = '$_svgPath/underreview&resubmitted.svg';
+  static const String underReviewAndResubmittedSvg =
+      '$_svgPath/underreview&resubmitted.svg';
   static const String successAndApprovedSvg = '$_svgPath/success&approved.svg';
   static const String rejectedSvg = '$_svgPath/rejected.svg';
   static const String newMsgAndReplySvg = '$_svgPath/newmsg&reply.svg';
@@ -29,7 +29,6 @@ class AppAssets {
   static const String identityVerifiedSvg = '$_svgPath/identityverified.svg';
   static const String emailVerifiedSvg = '$_svgPath/emailverified.svg';
   static const String deletedSvg = '$_svgPath/deleted.svg';
-
 
   static const String selectedSvg = '$_svgPath/Selected.svg';
   static const String notSelectedSvg = '$_svgPath/notSelected.svg';
@@ -48,5 +47,11 @@ class AppAssets {
   static const String categoryColoredSvg = '$_svgPath/category_colord.svg';
   static const String categoryUnColoredSvg = '$_svgPath/category_uncolord.svg';
 
-
+  //Icons
+  static const String locationIcon = '$_svgPath/location.svg';
+  static const String unfavIcon = '$_svgPath/fav_outline.svg';
+  static const String favIcon = '$_svgPath/fav_filled.svg';
+  static const String cameraIcon = '$_svgPath/camera.svg';
+  static const String galleryIcon = '$_svgPath/gallery_filled.svg';
+  static const String deletedIcon = '$_svgPath/delete.svg';
 }

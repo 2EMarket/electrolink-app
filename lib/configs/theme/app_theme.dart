@@ -27,7 +27,7 @@ class AppTheme {
 
       // Scaffold
       scaffoldBackgroundColor: AppColors.white,
-
+      dividerColor: AppColors.border,
       // AppBar
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.white,
