@@ -17,7 +17,7 @@ class AmalsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final _descriptionController = TextEditingController();
-    final _nameController = TextEditingController();
+    final usernameController = TextEditingController();
     final _phoneController = TextEditingController();
     //new change on my branch
     final service = NotificationService();
@@ -40,7 +40,9 @@ class AmalsApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home:  Builder(
+      home:
+
+      /*Builder(
         builder: (context) {
           return  Scaffold(
             body: Center(
@@ -73,15 +75,19 @@ class AmalsApp extends StatelessWidget {
             ),
           );
         },
-      ), /*
+      ), */
         Scaffold(
         appBar: AppBar(title: Text('Second Hand Electronics Marketplace')),
         body: Form(
           key: _formKey,
           child: Column(
             children: [
+              OtpInputField(),
               TextInputsPhoneField(
-                controller: _phoneController,
+            controller: _phoneController,
+            label: 'Phone number',
+            hint: 'Enter your phone number',
+            isRequired: true,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'The number is wrong';
@@ -94,9 +100,18 @@ class AmalsApp extends StatelessWidget {
                   }
                   return null;
                 },
-              ),
+            onCountryChanged: (country) {
+              print('Country code: +${country.phoneCode}');
+            },
+            onChanged: (value) {
+              print('Phone without code: $value');
+            },
+          ),
               TextAreaInputsDescriptionField(
                 controller: _descriptionController,
+                label: 'Description',
+                hint: 'Enter your description',
+                isRequired: true,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Description is required';
@@ -105,14 +120,18 @@ class AmalsApp extends StatelessWidget {
                 },
               ),
               TextInputsUsernameField(
-                controller: _nameController,
+                controller: usernameController,
+                label: 'Username',
+                hint: 'Enter your name',
+                isRequired: true,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please Enter Your Name';
+                    return 'Please enter your username';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 80,),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -123,7 +142,7 @@ class AmalsApp extends StatelessWidget {
               ),
             ],
           ),
-        ),)*/
+        ),)
 
       // body: Center(
       //   child: ElevatedButton(onPressed: () {}, child: Text('hi')),
