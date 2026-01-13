@@ -9,9 +9,11 @@ class BadgeWidget extends StatelessWidget {
     this.bgColor = AppColors.neutralWithoutTransparent,
     this.textColor = AppColors.neutral,
   });
+
   final String text;
   final Color bgColor;
   final Color textColor;
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -41,11 +41,10 @@ class _TextAreaInputsDescriptionFieldState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppSizes.paddingM),
+      padding: EdgeInsets.all(AppSizes.paddingMRes(context)),
       child: Container(
-        height: AppSizes.descriptionContainerFixedHeight,
-        width: AppSizes.userNameContainerFixedWidth,
-
+        height: 187 * AppSizes.scaleHeight(context),
+        width: 358 * AppSizes.scaleWidth(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,17 +52,17 @@ class _TextAreaInputsDescriptionFieldState
               children: [
                 Text(widget.label, style: AppTypography.body14Regular),
                 if (widget.isRequired) ...[
-                  const SizedBox(width: AppSizes.paddingXXS),
+                  SizedBox(width: AppSizes.paddingXXSRes(context)),
                   Text('*', style: TextStyle(color: AppColors.error)),
                 ],
               ],
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            SizedBox(height: AppSizes.paddingXSRes(context)),
             Stack(
               alignment: Alignment.bottomRight,
               children: [
                 SizedBox(
-                  height: AppSizes.descriptionFieldFixedHeight,
+                  height: 135 * AppSizes.scaleHeight(context),
                   child: TextFormField(
                     controller: widget.controller,
                     maxLines: widget.maxLines,
@@ -81,7 +80,9 @@ class _TextAreaInputsDescriptionFieldState
                     },*/
                     decoration: InputDecoration(
                       hintText: widget.hint,
-                      contentPadding: const EdgeInsets.all(AppSizes.paddingM),
+                      contentPadding: EdgeInsets.all(
+                        AppSizes.paddingMRes(context),
+                      ),
                       filled: true,
                       fillColor: AppColors.white,
                       counterText: '',
@@ -95,12 +96,12 @@ class _TextAreaInputsDescriptionFieldState
                   ),
                 ),
                 Positioned(
-                  left: AppSizes.userNameContainerFixedWidth - 70,
-                  bottom: 2.1 * AppSizes.paddingS,
+                  left: 385 * AppSizes.scaleWidth(context) - 110,
+                  bottom: 2.1 * AppSizes.paddingSRes(context),
                   right: AppSizes.paddingM,
                   child: Container(
-                    height: AppSizes.descriptionCounterHintFixedHeight,
-                    width: AppSizes.descriptionCounterHintFixedWidth,
+                    height: 15 * AppSizes.scaleHeight(context),
+                    width: 326 * AppSizes.scaleWidth(context),
                     child: Column(
                       children: [
                         Text(

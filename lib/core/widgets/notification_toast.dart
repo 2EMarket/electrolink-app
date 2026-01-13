@@ -102,6 +102,7 @@ class NotificationToast extends StatelessWidget {
 class _ToastAnimationWrapper extends StatefulWidget {
   final Widget child;
   final VoidCallback onDismiss;
+
   const _ToastAnimationWrapper({required this.child, required this.onDismiss});
 
   @override

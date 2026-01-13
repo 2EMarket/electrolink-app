@@ -9,10 +9,11 @@ class NotificationOverlay {
     late OverlayEntry entry;
 
     entry = OverlayEntry(
-      builder: (_) => _NotificationPreview(
-        notification: notification,
-        onClose: () => entry.remove(),
-      ),
+      builder:
+          (_) => _NotificationPreview(
+            notification: notification,
+            onClose: () => entry.remove(),
+          ),
     );
 
     overlay.insert(entry);
@@ -22,6 +23,7 @@ class NotificationOverlay {
     });
   }
 }
+
 class _NotificationPreview extends StatelessWidget {
   final AppNotification notification;
   final VoidCallback onClose;

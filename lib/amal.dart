@@ -22,14 +22,14 @@ class AmalsApp extends StatelessWidget {
     //new change on my branch
     final service = NotificationService();
 
-    final notification =    AppNotification(
+    final notification = AppNotification(
       id: '2',
       title: 'email Verified',
       message: 'Your email has been verified',
       type: NotificationType.emailVerified,
     );
 
-    final notification2 =    AppNotification(
+    final notification2 = AppNotification(
       id: '1',
       title: 'New Message',
       message: 'You received a new message',
@@ -41,7 +41,6 @@ class AmalsApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       home:
-
       /*Builder(
         builder: (context) {
           return  Scaffold(
@@ -76,73 +75,75 @@ class AmalsApp extends StatelessWidget {
           );
         },
       ), */
-        Scaffold(
+      Scaffold(
         appBar: AppBar(title: Text('Second Hand Electronics Marketplace')),
         body: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              OtpInputField(),
-              TextInputsPhoneField(
-            controller: _phoneController,
-            label: 'Phone number',
-            hint: 'Enter your phone number',
-            isRequired: true,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'The number is wrong';
-                  }
-                  if (!RegExp(r'^\d+$').hasMatch(value)) {
-                    return 'Only numbers are allowed';
-                  }
-                  if (value.length < 9) {
-                    return 'The number is wrong';
-                  }
-                  return null;
-                },
-            onCountryChanged: (country) {
-              print('Country code: +${country.phoneCode}');
-            },
-            onChanged: (value) {
-              print('Phone without code: $value');
-            },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                OtpInputField(),
+                TextInputsPhoneField(
+                  controller: _phoneController,
+                  label: 'Phone number',
+                  hint: 'Enter your phone number',
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'The number is wrong';
+                    }
+                    if (!RegExp(r'^\d+$').hasMatch(value)) {
+                      return 'Only numbers are allowed';
+                    }
+                    if (value.length < 9) {
+                      return 'The number is wrong';
+                    }
+                    return null;
+                  },
+                  onCountryChanged: (country) {
+                    print('Country code: +${country.phoneCode}');
+                  },
+                  onChanged: (value) {
+                    print('Phone without code: $value');
+                  },
+                ),
+                TextAreaInputsDescriptionField(
+                  controller: _descriptionController,
+                  label: 'Description',
+                  hint: 'Enter your description',
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Description is required';
+                    }
+                    return null;
+                  },
+                ),
+                TextInputsUsernameField(
+                  controller: usernameController,
+                  label: 'Username',
+                  hint: 'Enter your name',
+                  isRequired: true,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter your username';
+                    }
+                    return null;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // submit logic
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
           ),
-              TextAreaInputsDescriptionField(
-                controller: _descriptionController,
-                label: 'Description',
-                hint: 'Enter your description',
-                isRequired: true,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Description is required';
-                  }
-                  return null;
-                },
-              ),
-              TextInputsUsernameField(
-                controller: usernameController,
-                label: 'Username',
-                hint: 'Enter your name',
-                isRequired: true,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 80,),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // submit logic
-                  }
-                },
-                child: const Text('Submit'),
-              ),
-            ],
-          ),
-        ),)
+        ),
+      ),
 
       // body: Center(
       //   child: ElevatedButton(onPressed: () {}, child: Text('hi')),

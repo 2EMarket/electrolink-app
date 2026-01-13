@@ -34,10 +34,15 @@ class TextInputsUsernameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: AppSizes.paddingM,left: AppSizes.paddingM, top: AppSizes.paddingM, bottom: AppSizes.paddingM ),
+      padding: const EdgeInsets.only(
+        right: AppSizes.paddingM,
+        left: AppSizes.paddingM,
+        top: AppSizes.paddingM,
+        bottom: AppSizes.paddingM,
+      ),
       child: Container(
-        height: AppSizes.userNameContainerFixedHeight,
-        width: AppSizes.userNameContainerFixedWidth,
+        height: 115.0 * AppSizes.scaleHeight(context),
+        width: 358 * AppSizes.scaleWidth(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,12 +50,12 @@ class TextInputsUsernameField extends StatelessWidget {
               children: [
                 Text(label, style: AppTypography.body14Regular),
                 if (isRequired) ...[
-                  const SizedBox(width: AppSizes.paddingXXS),
+                  SizedBox(width: AppSizes.paddingXXSRes(context)),
                   Text('*', style: TextStyle(color: AppColors.error)),
                 ],
               ],
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            SizedBox(height: AppSizes.paddingXSRes(context)),
             SizedBox(
               child: TextFormField(
                 controller: controller,

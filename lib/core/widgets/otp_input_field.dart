@@ -67,8 +67,8 @@ class _OtpInputFieldState extends State<OtpInputField> {
         return Padding(
           padding: const EdgeInsets.all(10.0),
           child: SizedBox(
-            width: AppSizes.userNameFieldFixedHeight,
-            height: AppSizes.userNameFieldFixedHeight,
+            width: 56 * AppSizes.scaleWidth(context),
+            height: 56 * AppSizes.scaleHeight(context),
             child: TextField(
               focusNode: focusNodes[index],
 
