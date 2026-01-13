@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/theme/theme_exports.dart';
+import '../constants/constants_exports.dart';
 
 class OtpInputField extends StatefulWidget {
   @override
@@ -64,10 +65,10 @@ class _OtpInputFieldState extends State<OtpInputField> {
         }
 
         return Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(10.0),
           child: SizedBox(
-            width: 56,
-            height: 56,
+            width: AppSizes.userNameFieldFixedHeight,
+            height: AppSizes.userNameFieldFixedHeight,
             child: TextField(
               focusNode: focusNodes[index],
 

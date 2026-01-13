@@ -1,7 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
-import 'package:second_hand_electronics_marketplace/test_screen.dart';
+//import 'package:second_hand_electronics_marketplace/test_screen.dart';
 
 class ElectroLinkApp extends StatelessWidget {
   const ElectroLinkApp({super.key});
@@ -13,7 +13,7 @@ class ElectroLinkApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const MainLayoutScreen(), //Use Your screen
+     // home: const HomeScreen(), //Use Your screen
     );
   }
 }
