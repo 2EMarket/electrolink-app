@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import '../../configs/theme/theme_exports.dart';
+import '../constants/constants_exports.dart';
 
 class TextInputsUsernameField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
-
+  final String label;
+  final String hint;
+  final bool isRequired;
   final int maxChars;
+  final TextInputType keyboardType;
+  final void Function(String)? onChanged;
 
   const TextInputsUsernameField({
     super.key,
     required this.controller,
+    required this.label,
+    required this.hint,
+    this.isRequired = false,
     this.maxChars = 50,
+    this.keyboardType = TextInputType.text,
     this.validator,
+    this.onChanged,
   });
 
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppSizes.borderRadius),
       borderSide: BorderSide(width: 1, color: color),
     );
   }
@@ -24,48 +34,55 @@ class TextInputsUsernameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text('Username', style: AppTypography.body14Regular),
-              SizedBox(width: 5),
-              Text('*', style: TextStyle(color: AppColors.error)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: TextFormField(
-              controller: controller,
-              maxLength: maxChars,
-              validator: validator,
-              /*
-               validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'Please Enter Your Name';
-            }
-            return null;
-          },
-                */
-              decoration: InputDecoration(
-                hintText: 'Enter your Name',
-                contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                filled: true,
-                fillColor: Colors.white,
-                counterText: '',
-                // Borders
-                border: _border(Colors.grey),
-                enabledBorder: _border(Colors.grey),
-                focusedBorder: _border(Colors.blue),
-                errorBorder: _border(Colors.red),
-                focusedErrorBorder: _border(Colors.red),
+      padding: const EdgeInsets.only(right: AppSizes.paddingM,left: AppSizes.paddingM, top: AppSizes.paddingM, bottom: AppSizes.paddingM ),
+      child: Container(
+        height: AppSizes.userNameContainerFixedHeight,
+        width: AppSizes.userNameContainerFixedWidth,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(label, style: AppTypography.body14Regular),
+                if (isRequired) ...[
+                  const SizedBox(width: AppSizes.paddingXXS),
+                  Text('*', style: TextStyle(color: AppColors.error)),
+                ],
+              ],
+            ),
+            const SizedBox(height: AppSizes.paddingXS),
+            SizedBox(
+              child: TextFormField(
+                controller: controller,
+                maxLength: maxChars,
+                validator: validator,
+                keyboardType: keyboardType,
+                onChanged: onChanged,
+
+                /*
+                 validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Please Enter Your Name';
+              }
+              return null;
+            },
+                  */
+                decoration: InputDecoration(
+                  hintText: hint,
+                  contentPadding: const EdgeInsets.all(AppSizes.paddingM),
+                  filled: true,
+                  fillColor: AppColors.white,
+                  counterText: '',
+                  border: _border(AppColors.border),
+                  enabledBorder: _border(AppColors.border),
+                  focusedBorder: _border(AppColors.mainColor),
+                  errorBorder: _border(AppColors.error),
+                  focusedErrorBorder: _border(AppColors.error),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
