@@ -31,11 +31,10 @@ class AppTheme {
       // AppBar
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.white,
-        foregroundColor: AppColors.black,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: AppTypography.h2_20Medium.copyWith(
-          color: AppColors.black,
+          color: AppColors.titles,
         ),
       ),
       dialogTheme: DialogThemeData(
@@ -48,13 +47,13 @@ class AppTheme {
       // Text Theme
       textTheme: TextTheme(
         displayLarge: AppTypography.h2_20SemiBold.copyWith(
-          color: AppColors.black,
+          color: AppColors.titles,
         ),
         displayMedium: AppTypography.h2_20Medium.copyWith(
-          color: AppColors.black,
+          color: AppColors.titles,
         ),
         displaySmall: AppTypography.h2_20Regular.copyWith(
-          color: AppColors.black,
+          color: AppColors.titles,
         ),
         headlineLarge: AppTypography.h2_20SemiBold.copyWith(
           color: AppColors.titles,

@@ -17,4 +17,10 @@ class AppStrings {
   // Product
   // static const String products = 'Products';
   // static const String addProduct = 'Add Product';
+
+  //main sections
+  static const String home = 'Home';
+  static const String categories = 'Categories';
+  static const String chat = 'Chat';
+  static const String profile = 'Profile';
 }
