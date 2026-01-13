@@ -13,7 +13,7 @@ class ElectroLinkApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(), //Use Your screen
+      home: const MainLayoutScreen(), //Use Your screen
     );
   }
 }
