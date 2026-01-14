@@ -40,6 +40,7 @@ class _TextAreaInputsDescriptionFieldState
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Padding(
       padding: EdgeInsets.all(AppSizes.paddingM),
       child: Container(
@@ -53,7 +54,7 @@ class _TextAreaInputsDescriptionFieldState
                 Text(widget.label, style: AppTypography.body14Regular),
                 if (widget.isRequired) ...[
                   SizedBox(width: AppSizes.paddingXXS),
-                  Text('*', style: TextStyle(color: AppColors.error)),
+                  Text('*', style: TextStyle(color: colors.error)),
                 ],
               ],
             ),
@@ -82,14 +83,14 @@ class _TextAreaInputsDescriptionFieldState
                       hintText: widget.hint,
                       contentPadding: EdgeInsets.all(AppSizes.paddingM),
                       filled: true,
-                      fillColor: AppColors.white,
+                      fillColor: colors.surface,
                       counterText: '',
                       // Borders
-                      border: _border(AppColors.border),
-                      enabledBorder: _border(AppColors.border),
-                      focusedBorder: _border(AppColors.mainColor),
-                      errorBorder: _border(AppColors.error),
-                      focusedErrorBorder: _border(AppColors.error),
+                      border: _border(colors.border),
+                      enabledBorder: _border(colors.border),
+                      focusedBorder: _border(colors.mainColor),
+                      errorBorder: _border(colors.error),
+                      focusedErrorBorder: _border(colors.error),
                     ),
                   ),
                 ),

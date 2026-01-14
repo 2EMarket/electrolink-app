@@ -52,16 +52,17 @@ class _OtpInputFieldState extends State<OtpInputField> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(length, (index) {
         Color borderColor;
         if (isCorrect[index] == null) {
-          borderColor = AppColors.text; // فارغ
+          borderColor = colors.text; // فارغ
         } else if (isCorrect[index] == true) {
-          borderColor = AppColors.mainColor; // صحيح
+          borderColor = colors.mainColor; // صحيح
         } else {
-          borderColor = AppColors.error; // غلط
+          borderColor = colors.error; // غلط
         }
 
         return Padding(

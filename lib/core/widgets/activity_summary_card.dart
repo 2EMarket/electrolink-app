@@ -17,9 +17,11 @@ class ActivitySummaryCard extends StatelessWidget {
     required this.subtitle,
     this.backgroundColor,
     this.borderColor,
-    this.borderWidth = AppSizes.borderWidthCard, // 2.0 from AppSizes
-    this.radius = AppSizes.borderRadiusCard, // 10.0 from AppSizes
-    this.padding = const EdgeInsets.all(AppSizes.paddingM), // 16.0 from AppSizes
+    this.borderWidth = 2, // 2.0 from AppSizes
+    this.radius = 10, // 10.0 from AppSizes
+    this.padding = const EdgeInsets.all(
+      AppSizes.paddingM,
+    ), // 16.0 from AppSizes
     this.titleStyle,
     this.subtitleStyle,
     this.titleColor,
@@ -88,12 +90,12 @@ class ActivitySummaryCard extends StatelessWidget {
     final Color bdr = borderColor ?? colors.border;
 
     // Use AppTypography with theme colors
-    final TextStyle effectiveTitleStyle = titleStyle ??
-        AppTypography.body16Medium.copyWith(
-          color: titleColor ?? colors.titles,
-        );
+    final TextStyle effectiveTitleStyle =
+        titleStyle ??
+        AppTypography.body16Medium.copyWith(color: titleColor ?? colors.titles);
 
-    final TextStyle effectiveSubtitleStyle = subtitleStyle ??
+    final TextStyle effectiveSubtitleStyle =
+        subtitleStyle ??
         AppTypography.label12Regular.copyWith(
           color: subtitleColor ?? colors.text,
         );
@@ -105,16 +107,17 @@ class ActivitySummaryCard extends StatelessWidget {
         color: bg,
         borderRadius: br,
         border: Border.all(color: bdr, width: borderWidth),
-        boxShadow: elevation > 0
-            ? [
-                BoxShadow(
-                  color: (shadowColor ?? Theme.of(context).shadowColor)
-                      .withOpacity(0.12),
-                  blurRadius: 12 * elevation,
-                  offset: Offset(0, 3 * elevation),
-                )
-              ]
-            : null,
+        boxShadow:
+            elevation > 0
+                ? [
+                  BoxShadow(
+                    color: (shadowColor ?? Theme.of(context).shadowColor)
+                        .withOpacity(0.12),
+                    blurRadius: 12 * elevation,
+                    offset: Offset(0, 3 * elevation),
+                  ),
+                ]
+                : null,
       ),
       padding: padding,
       child: Column(
@@ -131,17 +134,10 @@ class ActivitySummaryCard extends StatelessWidget {
     if (onTap != null) {
       card = Material(
         color: Colors.transparent,
-        child: InkWell(
-          borderRadius: br,
-          onTap: onTap,
-          child: card,
-        ),
+        child: InkWell(borderRadius: br, onTap: onTap, child: card),
       );
     }
 
-    return Semantics(
-      label: semanticsLabel ?? '$title, $subtitle',
-      child: card,
-    );
+    return Semantics(label: semanticsLabel ?? '$title, $subtitle', child: card);
   }
 }

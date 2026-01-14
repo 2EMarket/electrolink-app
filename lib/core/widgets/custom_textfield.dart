@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -59,6 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -66,16 +66,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
           children: [
             Text(
               widget.label,
-              style: AppTypography.body14Regular.copyWith(
-                color: AppColors.titles,
-              ),
+              style: AppTypography.body14Regular.copyWith(color: colors.titles),
             ),
             if (widget.isRequired) ...[
               const SizedBox(width: 4),
               Text(
                 "*",
                 style: AppTypography.body14Regular.copyWith(
-                  color: AppColors.error,
+                  color: colors.error,
                 ),
               ),
             ],
@@ -95,9 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   _currentLength = val.length;
                 });
               },
-              style: AppTypography.body16Regular.copyWith(
-                color: AppColors.text,
-              ),
+              style: AppTypography.body16Regular.copyWith(color: colors.text),
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 helperText: widget.helperText,
@@ -118,7 +114,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   child: Text(
                     "($_currentLength/${widget.maxLength})",
                     style: AppTypography.label10Regular.copyWith(
-                      color: AppColors.hint,
+                      color: colors.hint,
                     ),
                   ),
                 ),

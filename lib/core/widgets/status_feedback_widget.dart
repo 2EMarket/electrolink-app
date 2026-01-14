@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class StatusFeedbackWidget extends StatelessWidget {
@@ -22,6 +21,7 @@ class StatusFeedbackWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Column(
       children: [
         SvgPicture.asset(iconPath, width: width, height: height),
@@ -31,7 +31,7 @@ class StatusFeedbackWidget extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: AppTypography.h3_18Medium.copyWith(color: AppColors.titles),
+          style: AppTypography.h3_18Medium.copyWith(color: colors.titles),
         ),
 
         const SizedBox(height: AppSizes.paddingXS),
@@ -39,7 +39,7 @@ class StatusFeedbackWidget extends StatelessWidget {
         Text(
           description,
           textAlign: TextAlign.center,
-          style: AppTypography.body16Regular.copyWith(color: AppColors.hint),
+          style: AppTypography.body16Regular.copyWith(color: colors.hint),
         ),
       ],
     );

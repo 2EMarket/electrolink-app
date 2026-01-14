@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class FAQWidget extends StatelessWidget {
@@ -13,12 +11,13 @@ class FAQWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       margin: const EdgeInsets.only(bottom: AppSizes.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-        boxShadow: AppShadows.card,
+        boxShadow: context.shadows.card,
       ),
       child: ExpansionTile(
         childrenPadding: const EdgeInsets.only(
@@ -30,17 +29,17 @@ class FAQWidget extends StatelessWidget {
         shape: const Border(),
         title: Text(
           title,
-          style: AppTypography.body16Medium.copyWith(color: AppColors.titles),
+          style: AppTypography.body16Medium.copyWith(color: colors.titles),
         ),
 
-        iconColor: AppColors.hint,
-        collapsedIconColor: AppColors.hint,
+        iconColor: colors.hint,
+        collapsedIconColor: colors.hint,
         children: [
           const Divider(thickness: 1, height: 1),
           const SizedBox(height: AppSizes.paddingS),
           Text(
             description,
-            style: AppTypography.body14Regular.copyWith(color: AppColors.hint),
+            style: AppTypography.body14Regular.copyWith(color: colors.hint),
           ),
         ],
       ),

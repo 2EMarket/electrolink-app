@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class AddPhotoWidget extends StatelessWidget {
@@ -18,12 +17,13 @@ class AddPhotoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
-          border: Border.all(color: AppColors.border),
+          color: colors.surface,
+          border: Border.all(color: colors.border),
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         ),
         padding: const EdgeInsets.all(14),
@@ -32,8 +32,8 @@ class AddPhotoWidget extends StatelessWidget {
             Container(
               width: 36.0,
               height: 36.0,
-              decoration: const BoxDecoration(
-                color: AppColors.mainColor10,
+              decoration: BoxDecoration(
+                color: colors.mainColor10,
                 shape: BoxShape.circle,
               ),
 
@@ -46,7 +46,7 @@ class AddPhotoWidget extends StatelessWidget {
               child: Text(
                 title,
                 style: AppTypography.body16Regular.copyWith(
-                  color: AppColors.text,
+                  color: colors.text,
                 ),
               ),
             ),

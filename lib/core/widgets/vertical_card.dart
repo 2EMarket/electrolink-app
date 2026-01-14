@@ -4,7 +4,7 @@ import 'package:second_hand_electronics_marketplace/core/constants/constants_exp
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_content_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_image_widget.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/category_badge.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
@@ -30,9 +30,9 @@ class VerticalCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: AppSizes.paddingS),
         width: width,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: context.colors.surface,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          boxShadow: AppShadows.card,
+          boxShadow: context.shadows.card,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),

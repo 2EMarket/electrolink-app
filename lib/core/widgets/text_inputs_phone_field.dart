@@ -61,6 +61,7 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Padding(
       padding: const EdgeInsets.only(
         right: AppSizes.paddingM,
@@ -79,7 +80,7 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
                 Text(widget.label, style: AppTypography.body14Regular),
                 if (widget.isRequired) ...[
                   const SizedBox(width: AppSizes.paddingXXS),
-                  Text('*', style: TextStyle(color: AppColors.error)),
+                  Text('*', style: TextStyle(color: colors.error)),
                 ],
               ],
             ),
@@ -112,10 +113,10 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
                         children: [
                           Text(_selectedCountry.flagEmoji),
                           const SizedBox(width: 6),
-                          Text(
-                            '+${_selectedCountry.phoneCode}',
-                            style: AppTypography.body15Regular,
-                          ),
+                          // Text(
+                          //   '+${_selectedCountry.phoneCode}',
+                          //   style: AppTypography.body15Regular,
+                          // ),
                         ],
                       ),
                     ),
@@ -124,13 +125,13 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
                   hintText: widget.hint,
                   contentPadding: const EdgeInsets.all(AppSizes.paddingM),
                   filled: true,
-                  fillColor: AppColors.white,
+                  fillColor: colors.surface,
                   counterText: '',
-                  border: _border(AppColors.border),
-                  enabledBorder: _border(AppColors.border),
-                  focusedBorder: _border(AppColors.mainColor),
-                  errorBorder: _border(AppColors.error),
-                  focusedErrorBorder: _border(AppColors.error),
+                  border: _border(colors.border),
+                  enabledBorder: _border(colors.border),
+                  focusedBorder: _border(colors.mainColor),
+                  errorBorder: _border(colors.error),
+                  focusedErrorBorder: _border(colors.error),
                 ),
               ),
             ),

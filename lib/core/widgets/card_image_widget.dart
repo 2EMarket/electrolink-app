@@ -13,10 +13,10 @@ class CardImageWidget extends StatelessWidget {
       fit: BoxFit.cover,
       errorBuilder:
           (ctx, err, stack) => Container(
-            color: AppColors.neutral10,
-            child: const Icon(
+            color: context.colors.neutral10,
+            child: Icon(
               Icons.image_not_supported,
-              color: AppColors.neutral,
+              color: context.colors.neutral,
             ),
           ),
     );

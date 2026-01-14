@@ -14,18 +14,19 @@ class TopInRegistrationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           title,
-          style: AppTypography.h3_18Medium.copyWith(color: AppColors.titles),
+          style: AppTypography.h3_18Medium.copyWith(color: colors.titles),
         ),
         const SizedBox(height: AppSizes.paddingXS),
         Text(
           subtitle,
-          style: AppTypography.body14Regular.copyWith(color: AppColors.hint),
+          style: AppTypography.body14Regular.copyWith(color: colors.hint),
           textAlign: TextAlign.center,
         ),
       ],
