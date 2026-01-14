@@ -53,7 +53,7 @@ class NotificationCard extends StatelessWidget {
                   : const Color(0xFFEFF3FF), // غير مقروء
         ),
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.paddingMRes(context)),
+          padding: EdgeInsets.all(AppSizes.paddingM),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
