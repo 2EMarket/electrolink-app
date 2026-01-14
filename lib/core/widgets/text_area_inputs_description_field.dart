@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import '../../configs/theme/theme_exports.dart';
+import '../constants/constants_exports.dart';
 
 class TextAreaInputsDescriptionField extends StatefulWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final bool isRequired;
+  final int maxChars;
+  final int maxLines;
+  final String? Function(String?)? validator;
+  final void Function(String value)? onChanged;
+
   const TextAreaInputsDescriptionField({
     super.key,
-    this.validator,
     required this.controller,
+    required this.label,
+    required this.hint,
+    this.isRequired = false,
+    this.maxChars = 500,
+    this.maxLines = 6,
+    this.validator,
+    this.onChanged,
   });
-
-  final String? Function(String?)? validator;
-  final TextEditingController controller;
 
   @override
   State<TextAreaInputsDescriptionField> createState() =>
@@ -18,11 +31,9 @@ class TextAreaInputsDescriptionField extends StatefulWidget {
 
 class _TextAreaInputsDescriptionFieldState
     extends State<TextAreaInputsDescriptionField> {
-  static const maxChars = 500;
-
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppSizes.borderRadius),
       borderSide: BorderSide(width: 1, color: color),
     );
   }
@@ -30,61 +41,81 @@ class _TextAreaInputsDescriptionFieldState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Description', style: AppTypography.body14Regular),
-          const SizedBox(height: 8),
-          Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 140,
-                child: TextFormField(
-                  controller: widget.controller,
-
-                  onChanged: (_) => setState(() {}),
-                  maxLines: 6,
-                  maxLength: maxChars,
-                  validator: widget.validator,
-                  /*  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Description is required';
-                    }
-                    return null;
-                  },*/
-                  decoration: InputDecoration(
-                    hintText: 'Enter your description',
-                    contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                    filled: true,
-                    fillColor: Colors.white,
-                    counterText: '',
-                    // Borders
-                    border: _border(Colors.grey),
-                    enabledBorder: _border(Colors.grey),
-                    focusedBorder: _border(Colors.blue),
-                    errorBorder: _border(Colors.red),
-                    focusedErrorBorder: _border(Colors.red),
+      padding: EdgeInsets.all(AppSizes.paddingMRes(context)),
+      child: Container(
+        height: 187 * AppSizes.scaleHeight(context),
+        width: 358 * AppSizes.scaleWidth(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(widget.label, style: AppTypography.body14Regular),
+                if (widget.isRequired) ...[
+                  SizedBox(width: AppSizes.paddingXXSRes(context)),
+                  Text('*', style: TextStyle(color: AppColors.error)),
+                ],
+              ],
+            ),
+            SizedBox(height: AppSizes.paddingXSRes(context)),
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                SizedBox(
+                  height: 135 * AppSizes.scaleHeight(context),
+                  child: TextFormField(
+                    controller: widget.controller,
+                    maxLines: widget.maxLines,
+                    maxLength: widget.maxChars,
+                    validator: widget.validator,
+                    onChanged: (value) {
+                      setState(() {});
+                      widget.onChanged?.call(value);
+                    },
+                    /*  validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Description is required';
+                      }
+                      return null;
+                    },*/
+                    decoration: InputDecoration(
+                      hintText: widget.hint,
+                      contentPadding: EdgeInsets.all(
+                        AppSizes.paddingMRes(context),
+                      ),
+                      filled: true,
+                      fillColor: AppColors.white,
+                      counterText: '',
+                      // Borders
+                      border: _border(AppColors.border),
+                      enabledBorder: _border(AppColors.border),
+                      focusedBorder: _border(AppColors.mainColor),
+                      errorBorder: _border(AppColors.error),
+                      focusedErrorBorder: _border(AppColors.error),
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 12,
-                right: 14,
-                child: Column(
-                  children: [
-                    Text(
-                      '(${widget.controller.text.length} / $maxChars)',
-                      style: AppTypography.label10Regular,
+                Positioned(
+                  left: 385 * AppSizes.scaleWidth(context) - 110,
+                  bottom: 2.1 * AppSizes.paddingSRes(context),
+                  right: AppSizes.paddingM,
+                  child: Container(
+                    height: 15 * AppSizes.scaleHeight(context),
+                    width: 326 * AppSizes.scaleWidth(context),
+                    child: Column(
+                      children: [
+                        Text(
+                          '(${widget.controller.text.length} / ${widget.maxChars})',
+                          style: AppTypography.label10Regular,
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 12),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

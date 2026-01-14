@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import '../constants/constants_exports.dart';
 import 'app_notification.dart';
 
-
 class NotificationService extends ChangeNotifier {
   static final NotificationService _instance = NotificationService._internal();
 
@@ -54,7 +53,7 @@ class NotificationCard extends StatelessWidget {
                   : const Color(0xFFEFF3FF), // غير مقروء
         ),
         child: Padding(
-          padding: const EdgeInsets.all(AppSizes.paddingM),
+          padding: EdgeInsets.all(AppSizes.paddingMRes(context)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

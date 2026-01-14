@@ -7,7 +7,9 @@ import 'package:second_hand_electronics_marketplace/features/listing/data/listin
 
 class CardContentWidget extends StatelessWidget {
   const CardContentWidget({super.key, required this.listing});
+
   final ListingModel listing;
+
   @override
   Widget build(BuildContext context) {
     return Column(

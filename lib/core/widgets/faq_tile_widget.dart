@@ -10,6 +10,7 @@ class FAQWidget extends StatelessWidget {
 
   const FAQWidget({Key? key, required this.title, required this.description})
     : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
