@@ -4,43 +4,75 @@ import 'package:flutter/material.dart';
 class AppShadows {
   AppShadows._();
 
-  /// Cards shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1)
-  static const List<BoxShadow> card = [
-    BoxShadow(
-      color: Color(0x1A000000), // 10% opacity
-      offset: Offset(0, 1),
-      blurRadius: 4,
-      spreadRadius: 0,
-    ),
-  ];
+  // ==================== Light Theme Shadows ====================
+  static final AppShadowScheme light = AppShadowScheme(
+    // الظل الأسود العادي (كما كان في الكود القديم)
+    card: [
+      const BoxShadow(
+        color: Color(0x1A000000), // 10% opacity black
+        offset: Offset(0, 1),
+        blurRadius: 4,
+        spreadRadius: 0,
+      ),
+    ],
+    // ظل البوتوم شيت الأسود
+    bottomSheet: [
+      const BoxShadow(
+        color: Color(0x26000000), // 15% opacity black
+        offset: Offset(0, 0),
+        blurRadius: 2,
+        spreadRadius: 0,
+      ),
+    ],
+    // ظل الدروب شادو الأسود
+    dropShadow: [
+      const BoxShadow(
+        color: Color(0x33000000), // 20% opacity black
+        offset: Offset(0, 1),
+        blurRadius: 8,
+        spreadRadius: 0,
+      ),
+    ],
+  );
 
-  /// Cards 2 shadow: 0px 1px 4px 0px rgba(255, 255, 255, 0.3)
-  static const List<BoxShadow> card2 = [
-    BoxShadow(
-      color: Color(0x4DFFFFFF), // 30% opacity
-      offset: Offset(0, 1),
-      blurRadius: 4,
-      spreadRadius: 0,
-    ),
-  ];
+  // ==================== Dark Theme Shadows ====================
+  static final AppShadowScheme dark = AppShadowScheme(
+    // ✅ هنا استخدمنا card2 (الظل الأبيض) ليكون هو ظل الكارد في الوضع الليلي
+    card: [
+      // const BoxShadow(
+      //   color: Color(0x4DFFFFFF), // 30% opacity WHITE (كان card2 سابقاً)
+      //   offset: Offset(0, 1),
+      //   blurRadius: 4,
+      //   spreadRadius: 0,
+      // ),
+    ],
+    // في الوضع الليلي، عادة لا نستخدم ظلال للبوتوم شيت لأن الخلفية سوداء
+    // لكن يمكنك استخدام ظل أبيض خفيف جداً لو أردت، هنا سأجعله فارغاً للأناقة
+    bottomSheet: [],
 
-  /// Bottom sheet shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.15)
-  static const List<BoxShadow> bottomSheet = [
-    BoxShadow(
-      color: Color(0x26000000), // 15% opacity
-      offset: Offset(0, 0),
-      blurRadius: 2,
-      spreadRadius: 0,
-    ),
-  ];
+    // كذلك الدروب شادو، غالباً لا يظهر في الليلي
+    dropShadow: [],
+  );
+}
 
-  /// UX Drop Shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2)
-  static const List<BoxShadow> dropShadow = [
-    BoxShadow(
-      color: Color(0x33000000), // 20% opacity
-      offset: Offset(0, 1),
-      blurRadius: 8,
-      spreadRadius: 0,
-    ),
-  ];
+/// كلاس يحمل تعريفات أنواع الظلال
+class AppShadowScheme {
+  final List<BoxShadow> card;
+  final List<BoxShadow> bottomSheet;
+  final List<BoxShadow> dropShadow;
+
+  AppShadowScheme({
+    required this.card,
+    required this.bottomSheet,
+    required this.dropShadow,
+  });
+}
+
+/// Extension لاستدعاء الظلال بسهولة عبر الـ context
+extension AppShadowsExtension on BuildContext {
+  /// Get the current shadow scheme based on theme brightness
+  AppShadowScheme get shadows {
+    final brightness = Theme.of(this).brightness;
+    return brightness == Brightness.light ? AppShadows.light : AppShadows.dark;
+  }
 }

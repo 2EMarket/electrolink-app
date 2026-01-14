@@ -39,20 +39,19 @@ class NotificationToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     Color statusColor =
         type == ToastType.error
-            ? AppColors.error
-            : (type == ToastType.warning
-                ? AppColors.warning
-                : AppColors.success);
+            ? colors.error
+            : (type == ToastType.warning ? colors.warning : colors.success);
 
     return IntrinsicHeight(
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: colors.surface,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: AppShadows.card,
+          boxShadow: context.shadows.card,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -77,14 +76,14 @@ class NotificationToast extends StatelessWidget {
                       Text(
                         title,
                         style: AppTypography.body14Medium.copyWith(
-                          color: AppColors.titles,
+                          color: colors.titles,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         msg,
                         style: AppTypography.label12Regular.copyWith(
-                          color: AppColors.hint,
+                          color: colors.hint,
                         ),
                       ),
                     ],

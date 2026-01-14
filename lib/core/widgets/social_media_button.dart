@@ -14,8 +14,8 @@ class SocialMediaButton extends StatelessWidget {
 
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.white,
-        boxShadow: AppShadows.card,
+        color: context.colors.surface,
+        boxShadow: context.shadows.card,
       ),
     );
   }

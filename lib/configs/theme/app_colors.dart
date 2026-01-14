@@ -95,40 +95,40 @@ class AppColors {
   static AppColorScheme dark = AppColorScheme(
     background: Color(0xFF121212),
     surface: Color(0xFF1E1E1E),
-    titles: Color(0xFFE5E5E5),           // Light for dark bg
-    text: Color(0xFFB3B3B3),             // Light for dark bg
-    hint: Color(0xFF808080),             // Light for dark bg
-    placeholders: Color(0xFF666666),      // Light for dark bg
-    border: Color(0xFF3D3D3D),           // Dark border
-    icons: Color(0xFFB3B3B3),            // Light icons
-    greyFillButton: Color(0xFF2A2A2A),   // Dark fill
+    titles: Color(0xFFE5E5E5), // Light for dark bg
+    text: Color(0xFFB3B3B3), // Light for dark bg
+    hint: Color(0xFF808080), // Light for dark bg
+    placeholders: Color(0xFF666666), // Light for dark bg
+    border: Color(0xFF3D3D3D), // Dark border
+    icons: Color(0xFFB3B3B3), // Light icons
+    greyFillButton: Color(0xFF2A2A2A), // Dark fill
     // Main colors with variants
-    mainColor: Color(0xFF3B82F6),        // Brighter for dark bg
+    mainColor: Color(0xFF3B82F6), // Brighter for dark bg
     mainColor40: Color(0x663B82F6),
     mainColor20: Color(0x333B82F6),
     mainColor10: Color(0x1A3B82F6),
     mainColor5: Color(0x0D3B82F6),
     // Secondary colors with variants
-    secondaryColor: secondaryColor,       // Keep same
+    secondaryColor: secondaryColor, // Keep same
     secondaryColor40: secondaryColor40,
     secondaryColor20: secondaryColor20,
     secondaryColor10: secondaryColor10,
     secondaryColor5: secondaryColor5,
     // Status colors with variants
-    error: Color(0xFFF87171),            // Lighter error
+    error: Color(0xFFF87171), // Lighter error
     error20: Color(0x33F87171),
     error10: Color(0x1AF87171),
-    warning: Color(0xFFFCD34D),          // Lighter warning
+    warning: Color(0xFFFCD34D), // Lighter warning
     warning20: Color(0x33FCD34D),
     warning10: Color(0x1AFCD34D),
-    success: Color(0xFF4ADE80),          // Lighter success
+    success: Color(0xFF4ADE80), // Lighter success
     success20: Color(0x334ADE80),
     success10: Color(0x1A4ADE80),
-    neutral: Color(0xFF9CA3AF),          // Lighter neutral
+    neutral: Color(0xFF9CA3AF), // Lighter neutral
     neutral20: Color(0x339CA3AF),
     neutral10: Color(0x1A9CA3AF),
     neutral5: Color(0x0D9CA3AF),
-    neutralWithoutTransparent: Color(0xFFE5E7EB),
+    neutralWithoutTransparent: Color(0xFF2A2A2A),
   );
 }
 
@@ -143,21 +143,21 @@ class AppColorScheme {
   final Color border;
   final Color icons;
   final Color greyFillButton;
-  
+
   // Main colors with all variants
   final Color mainColor;
   final Color mainColor40;
   final Color mainColor20;
   final Color mainColor10;
   final Color mainColor5;
-  
+
   // Secondary colors with all variants
   final Color secondaryColor;
   final Color secondaryColor40;
   final Color secondaryColor20;
   final Color secondaryColor10;
   final Color secondaryColor5;
-  
+
   // Status colors with variants
   final Color error;
   final Color error20;

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
-import '../../configs/theme/app_colors.dart';
+import '../../configs/theme/theme_exports.dart';
 import '../constants/app_assets.dart';
 
 class FilterSearch extends StatefulWidget {
@@ -28,6 +28,7 @@ class _FilterSearchState extends State<FilterSearch> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final filteredItems =
         allItems
             .where(
@@ -64,7 +65,7 @@ class _FilterSearchState extends State<FilterSearch> {
                         ),
                       ),
                       hintText: 'Search...',
-                      hintStyle: AppTypography.body16RegularGery,
+                      // hintStyle: AppTypography.body16RegularGery, //use the theme
                       contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
@@ -74,7 +75,7 @@ class _FilterSearchState extends State<FilterSearch> {
                           color:
                               _controller.text.isNotEmpty
                                   ? (filteredItems.isNotEmpty
-                                      ? AppColors.mainColor
+                                      ? colors.mainColor
                                       : Colors.red)
                                   : Colors.grey.shade300,
                         ),
@@ -87,7 +88,7 @@ class _FilterSearchState extends State<FilterSearch> {
                 height: 56,
                 width: 56,
                 decoration: BoxDecoration(
-                  color: AppColors.mainColor,
+                  color: colors.mainColor,
 
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(AppSizes.borderRadius),

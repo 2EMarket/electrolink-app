@@ -22,13 +22,14 @@ class CustomBottomNavBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSizes.paddingS),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        boxShadow: AppShadows.bottomSheet,
+        color: context.colors.surface,
+        boxShadow: context.shadows.bottomSheet,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildNavItem(
+            context: context,
             index: 0,
             activeIconPath: AppAssets.homeFilledIcon,
             inactiveIconPath: AppAssets.homeOutlineIcon,
@@ -37,6 +38,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
 
           _buildNavItem(
+            context: context,
             index: 1,
             activeIconPath: AppAssets.categoryColoredIcon,
             inactiveIconPath: AppAssets.categoryUnColoredIcon,
@@ -44,10 +46,11 @@ class CustomBottomNavBar extends StatelessWidget {
             isSelected: currentIndex == 1,
           ),
           SizedBox(width: 10),
-          _buildCenterButton(),
+          _buildCenterButton(context: context),
           SizedBox(width: 10),
 
           _buildNavItem(
+            context: context,
             index: 2,
             activeIconPath: AppAssets.chatFilledIcon,
             inactiveIconPath: AppAssets.chatOutlineIcon,
@@ -56,6 +59,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
 
           _buildNavItem(
+            context: context,
             index: 3,
             activeIconPath: AppAssets.profileFilledIcon,
             inactiveIconPath: AppAssets.profileOutlineIcon,
@@ -68,6 +72,7 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 
   Widget _buildNavItem({
+    required BuildContext context,
     required int index,
     required String activeIconPath,
     required String inactiveIconPath,
@@ -91,7 +96,7 @@ class CustomBottomNavBar extends StatelessWidget {
               Text(
                 label,
                 style: AppTypography.label12Medium.copyWith(
-                  color: AppColors.mainColor,
+                  color: context.colors.mainColor,
                 ),
               ),
             ],
@@ -101,13 +106,13 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildCenterButton() {
+  Widget _buildCenterButton({required BuildContext context}) {
     return GestureDetector(
       onTap: onAddTap,
       child: Container(
         padding: const EdgeInsets.all(AppSizes.paddingM),
-        decoration: const BoxDecoration(
-          color: AppColors.mainColor,
+        decoration: BoxDecoration(
+          color: context.colors.mainColor,
           shape: BoxShape.circle,
         ),
         child: SvgPicture.asset(AppAssets.fabPlusIcon),

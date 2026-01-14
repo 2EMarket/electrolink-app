@@ -12,6 +12,7 @@ class CardContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +21,7 @@ class CardContentWidget extends StatelessWidget {
           listing.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: AppTypography.body14Regular.copyWith(color: AppColors.titles),
+          style: AppTypography.body14Regular.copyWith(color: colors.titles),
         ),
 
         const SizedBox(height: AppSizes.paddingXS),
@@ -28,7 +29,7 @@ class CardContentWidget extends StatelessWidget {
         Text(
           listing.price,
           style: AppTypography.body16Medium.copyWith(
-            color: AppColors.mainColor,
+            color: colors.mainColor,
           ),
         ),
 
@@ -44,7 +45,7 @@ class CardContentWidget extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTypography.label12Regular.copyWith(
-                  color: AppColors.text,
+                  color: colors.text,
                 ),
               ),
             ),

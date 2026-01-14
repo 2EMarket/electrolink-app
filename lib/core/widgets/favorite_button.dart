@@ -52,8 +52,8 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         height: widget.size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.white,
-          boxShadow: AppShadows.card2,
+          color: context.colors.surface,
+          boxShadow: context.shadows.card,
         ),
         alignment: Alignment.center,
         child: SvgPicture.asset(
@@ -61,7 +61,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
           width: widget.size - widget.size * 0.35,
           height: widget.size - widget.size * 0.35,
           colorFilter: ColorFilter.mode(
-            _isFavorite ? AppColors.error : AppColors.icons,
+            _isFavorite ? context.colors.error : context.colors.icons,
             BlendMode.srcIn,
           ),
         ),

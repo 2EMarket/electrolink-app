@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class CustomTabController extends StatelessWidget {
@@ -18,6 +18,7 @@ class CustomTabController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return DefaultTabController(
       length: length,
       child: Column(
@@ -29,7 +30,7 @@ class CustomTabController extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: colors.border),
               ),
               child: TabBar(tabs: tabs),
             ),

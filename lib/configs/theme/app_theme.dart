@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
@@ -7,16 +8,12 @@ class AppTheme {
   AppTheme._();
 
   /// Light theme configuration
-  static ThemeData get lightTheme => _buildTheme(
-        brightness: Brightness.light,
-        colors: AppColors.light,
-      );
+  static ThemeData get lightTheme =>
+      _buildTheme(brightness: Brightness.light, colors: AppColors.light);
 
-  /// Dark theme configuration  
-  static ThemeData get darkTheme => _buildTheme(
-        brightness: Brightness.dark,
-        colors: AppColors.dark,
-      );
+  /// Dark theme configuration
+  static ThemeData get darkTheme =>
+      _buildTheme(brightness: Brightness.dark, colors: AppColors.dark);
 
   /// Build theme with given brightness and color scheme
   static ThemeData _buildTheme({
@@ -24,6 +21,14 @@ class AppTheme {
     required AppColorScheme colors,
   }) {
     final bool isDark = brightness == Brightness.dark;
+
+    //
+    OutlineInputBorder buildBorder(Color color) {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        borderSide: BorderSide(color: color, width: 1),
+      );
+    }
 
     return ThemeData(
       useMaterial3: true,
@@ -55,7 +60,7 @@ class AppTheme {
         scrim: Colors.black.withValues(alpha: 0.6),
         inverseSurface: isDark ? AppColors.white : AppColors.black,
         onInverseSurface: isDark ? AppColors.black : AppColors.white,
-        inversePrimary: isDark ? AppColors.mainColor : Color(0xFF3B82F6),
+        inversePrimary: isDark ? AppColors.mainColor : const Color(0xFF3B82F6),
       ),
 
       // Scaffold
@@ -78,45 +83,23 @@ class AppTheme {
         displayLarge: AppTypography.h2_20SemiBold.copyWith(
           color: colors.titles,
         ),
-        displayMedium: AppTypography.h2_20Medium.copyWith(
-          color: colors.titles,
-        ),
-        displaySmall: AppTypography.h2_20Regular.copyWith(
-          color: colors.titles,
-        ),
+        displayMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+        displaySmall: AppTypography.h2_20Regular.copyWith(color: colors.titles),
         headlineLarge: AppTypography.h2_20SemiBold.copyWith(
           color: colors.titles,
         ),
         headlineMedium: AppTypography.h2_20Medium.copyWith(
           color: colors.titles,
         ),
-        headlineSmall: AppTypography.h3_18Medium.copyWith(
-          color: colors.titles,
-        ),
-        titleLarge: AppTypography.h3_18Medium.copyWith(
-          color: colors.titles,
-        ),
-        titleMedium: AppTypography.h2_20Medium.copyWith(
-          color: colors.titles,
-        ),
-        titleSmall: AppTypography.body16Medium.copyWith(
-          color: colors.titles,
-        ),
-        bodyLarge: AppTypography.h3_18Regular.copyWith(
-          color: colors.text,
-        ),
-        bodyMedium: AppTypography.body16Regular.copyWith(
-          color: colors.text,
-        ),
-        bodySmall: AppTypography.body14Regular.copyWith(
-          color: colors.text,
-        ),
-        labelLarge: AppTypography.label12Regular.copyWith(
-          color: colors.hint,
-        ),
-        labelMedium: AppTypography.label10Regular.copyWith(
-          color: colors.hint,
-        ),
+        headlineSmall: AppTypography.h3_18Medium.copyWith(color: colors.titles),
+        titleLarge: AppTypography.h3_18Medium.copyWith(color: colors.titles),
+        titleMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+        titleSmall: AppTypography.body16Medium.copyWith(color: colors.titles),
+        bodyLarge: AppTypography.h3_18Regular.copyWith(color: colors.text),
+        bodyMedium: AppTypography.body16Regular.copyWith(color: colors.text),
+        bodySmall: AppTypography.body14Regular.copyWith(color: colors.text),
+        labelLarge: AppTypography.label12Regular.copyWith(color: colors.hint),
+        labelMedium: AppTypography.label10Regular.copyWith(color: colors.hint),
       ),
 
       // Input Decoration Theme
@@ -126,29 +109,16 @@ class AppTheme {
         hintStyle: AppTypography.body16Regular.copyWith(
           color: colors.placeholders,
         ),
-        labelStyle: AppTypography.body14Regular.copyWith(
-          color: colors.text,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.mainColor, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.error),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
+        labelStyle: AppTypography.body14Regular.copyWith(color: colors.text),
+        contentPadding: const EdgeInsets.all(AppSizes.paddingM),
+        helperStyle: AppTypography.label12Regular.copyWith(color: colors.icons),
+        border: buildBorder(colors.border),
+        enabledBorder: buildBorder(colors.border),
+        focusedBorder: buildBorder(
+          colors.mainColor,
+        ).copyWith(borderSide: BorderSide(color: colors.mainColor, width: 2)),
+        errorBorder: buildBorder(colors.error),
+        focusedErrorBorder: buildBorder(colors.error),
       ),
 
       // Elevated Button Theme
@@ -157,8 +127,14 @@ class AppTheme {
           backgroundColor: colors.mainColor,
           foregroundColor: AppColors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.paddingL,
+            vertical: AppSizes.paddingM,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+          ),
           textStyle: AppTypography.buttonBig,
         ),
       ),
@@ -167,7 +143,11 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: colors.mainColor,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.paddingM,
+            vertical: AppSizes.paddingS,
+          ),
           textStyle: AppTypography.buttonBig,
         ),
       ),
@@ -175,10 +155,16 @@ class AppTheme {
       // Outlined Button Theme
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: colors.mainColor,
-          side: BorderSide(color: colors.mainColor),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          foregroundColor: colors.neutral,
+          side: BorderSide(color: colors.neutral),
+
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.paddingL,
+            vertical: AppSizes.paddingM,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+          ),
           textStyle: AppTypography.buttonBig,
         ),
       ),
@@ -187,9 +173,12 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: colors.surface,
         elevation: 0,
-        shadowColor: isDark ? Colors.black : Colors.black.withValues(alpha: 0.1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(8),
+        shadowColor:
+            isDark ? Colors.black : Colors.black.withValues(alpha: 0.1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        ),
+        margin: const EdgeInsets.all(AppSizes.paddingXS),
       ),
 
       // Icon Theme
@@ -217,21 +206,26 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: colors.greyFillButton,
         selectedColor: colors.mainColor40,
-        labelStyle: AppTypography.body14Medium.copyWith(
-          color: colors.titles,
-        ),
+        labelStyle: AppTypography.body14Medium.copyWith(color: colors.titles),
         secondaryLabelStyle: AppTypography.body14Regular.copyWith(
           color: colors.text,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.paddingS,
+          vertical: AppSizes.paddingXS,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        ),
       ),
 
       // Dialog Theme
       dialogTheme: DialogThemeData(
         backgroundColor: colors.surface,
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        ),
         titleTextStyle: AppTypography.h2_20SemiBold.copyWith(
           color: colors.titles,
         ),
@@ -246,7 +240,9 @@ class AppTheme {
         contentTextStyle: AppTypography.body14Regular.copyWith(
           color: AppColors.white,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        ),
         behavior: SnackBarBehavior.floating,
       ),
     );
