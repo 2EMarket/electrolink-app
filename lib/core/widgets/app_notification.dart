@@ -1,4 +1,3 @@
-
 import '../constants/constants_exports.dart';
 
 class AppNotification {

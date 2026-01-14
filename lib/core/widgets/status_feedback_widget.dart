@@ -13,6 +13,7 @@ class StatusFeedbackWidget extends StatelessWidget {
     this.width = 80,
     this.height = 80,
   });
+
   final String iconPath;
   final String title;
   final String description;

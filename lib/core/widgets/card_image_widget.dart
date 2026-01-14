@@ -3,7 +3,9 @@ import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dar
 
 class CardImageWidget extends StatelessWidget {
   const CardImageWidget({super.key, required this.imageUrl});
+
   final String imageUrl;
+
   @override
   Widget build(BuildContext context) {
     return Image.network(

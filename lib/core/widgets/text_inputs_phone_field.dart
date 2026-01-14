@@ -1,7 +1,6 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-
 import '../../configs/theme/theme_exports.dart';
+import '../../imports.dart';
 import '../constants/constants_exports.dart';
 
 class TextInputsPhoneField extends StatefulWidget {
@@ -63,10 +62,15 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: AppSizes.paddingM,left: AppSizes.paddingM, top: AppSizes.paddingM, bottom: AppSizes.paddingM ),
+      padding: const EdgeInsets.only(
+        right: AppSizes.paddingM,
+        left: AppSizes.paddingM,
+        top: AppSizes.paddingM,
+        bottom: AppSizes.paddingM,
+      ),
       child: Container(
-        height: AppSizes.userNameContainerFixedHeight,
-        width: AppSizes.userNameContainerFixedWidth,
+        height: 115.0 * AppSizes.scaleHeight(context),
+        width: 358 * AppSizes.scaleWidth(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -79,7 +83,7 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
                 ],
               ],
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            SizedBox(height: AppSizes.paddingXSRes(context)),
             SizedBox(
               child: TextFormField(
                 keyboardType: TextInputType.number,
