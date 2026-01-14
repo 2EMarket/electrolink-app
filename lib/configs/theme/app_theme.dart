@@ -9,6 +9,13 @@ class AppTheme {
 
   /// Light theme configuration
   static ThemeData get lightTheme {
+    OutlineInputBorder buildBorder(Color color) {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        borderSide: BorderSide(color: color, width: 1),
+      );
+    }
+
     return ThemeData(
       useMaterial3: true,
       fontFamily: 'Poppins',
@@ -90,26 +97,15 @@ class AppTheme {
           color: AppColors.placeholders,
         ),
         labelStyle: AppTypography.body14Regular.copyWith(color: AppColors.text),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          borderSide: BorderSide(color: AppColors.border),
+        contentPadding: const EdgeInsets.all(AppSizes.paddingM),
+        helperStyle: AppTypography.label12Regular.copyWith(
+          color: AppColors.icons,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          borderSide: BorderSide(color: AppColors.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          borderSide: BorderSide(color: AppColors.mainColor, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          borderSide: BorderSide(color: AppColors.error),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.paddingM,
-          vertical: AppSizes.paddingM,
-        ),
+        border: buildBorder(AppColors.border),
+        enabledBorder: buildBorder(AppColors.border),
+        focusedBorder: buildBorder(AppColors.mainColor),
+        errorBorder: buildBorder(AppColors.error),
+        focusedErrorBorder: buildBorder(AppColors.error),
       ),
 
       // Elevated Button Theme
