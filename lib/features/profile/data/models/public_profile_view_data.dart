@@ -7,7 +7,7 @@ class PublicProfileViewData {
   final String memberSince;
   final String lastSeen;
   final String responseTime;
-
+  final bool isOnline;
   const PublicProfileViewData({
     required this.name,
     required this.avatar,
@@ -15,6 +15,8 @@ class PublicProfileViewData {
     required this.memberSince,
     required this.lastSeen,
     required this.responseTime,
+    required this.isOnline,
+
   });
 
   factory PublicProfileViewData.fromUser(UserModel user) {
@@ -25,6 +27,8 @@ class PublicProfileViewData {
       memberSince: _formatDate(user.createdAt),
       lastSeen: _formatLastSeen(user.lastSeen),
       responseTime: _formatResponseTime(user.responseTimeMinutes),
+      isOnline: user.isOnline, // جديد
+
     );
   }
 }
