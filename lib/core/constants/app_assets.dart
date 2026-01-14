@@ -4,6 +4,8 @@ class AppAssets {
   static const String _svgPath = 'assets/svgs';
 
   // Example image assets
+  static const String profilePic = '$_basePath/profile pic.png';
+
   // static const String appLogo = '$_basePath/logo.png';
   // static const String placeholder = '$_basePath/placeholder.png';
 
