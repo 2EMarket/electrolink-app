@@ -1,15 +1,17 @@
-# Design Tokens for Flutter (Mobile)
+# Design Tokens for Flutter (Mobile) - Light & Dark Theme Support
 
-This directory contains design tokens converted from Figma design files, optimized for mobile Flutter applications.
+This directory contains design tokens converted from Figma design files, with full support for both light and dark themes.
 
 ## Files
 
 ### `app_colors.dart`
 Contains all color definitions organized into:
-- **Basic Colors**: white, black, placeholders, borders, icons, text, titles, hints
+- **Basic Colors**: white, black, placeholders, borders, icons, text, titles, hints (your original design colors)
 - **Main Colors**: primary color with transparency variants (40%, 20%, 10%, 5%)
 - **Secondary Colors**: secondary color with transparency variants
 - **Status Colors**: warning, success, error, neutral with transparency variants
+- **Light Theme**: Uses your exact Figma design colors
+- **Dark Theme**: Inverted colors optimized for dark mode
 
 ### `app_typography.dart`
 Contains all text styles for mobile applications:
@@ -28,11 +30,120 @@ Contains predefined box shadow configurations:
 - `dropShadow`: General drop shadow
 
 ### `app_theme.dart`
-Main theme configuration that combines colors, typography, and shadows into a complete Flutter theme optimized for mobile devices.
+Main theme configuration that provides:
+- `AppTheme.lightTheme` - Your original design (uses exact Figma colors)
+- `AppTheme.darkTheme` - Dark mode variant
 
-## Usage
+## ✅ How to Use Theme Correctly
 
-### 1. Add Poppins Font to Your Project
+### 1. In Your App - Enable Both Themes
+
+```dart
+MaterialApp(
+  theme: AppTheme.lightTheme,      // Your original design
+  darkTheme: AppTheme.darkTheme,   // Dark mode version
+  themeMode: ThemeMode.system,     // Or .light, .dark
+  home: MyHomePage(),
+)
+```
+
+### 2. In Components - Use Theme, Not Static Colors
+
+```dart
+// ✅ CORRECT - Works for both light and dark
+Text(
+  'Title',
+  style: Theme.of(context).textTheme.titleLarge,
+)
+
+// ✅ CORRECT - Access app colors
+final colors = context.colors;
+Container(
+  color: colors.surface,
+  child: Text('Content'),
+)
+
+// ❌ WRONG - Hardcoded, won't work in dark mode
+Text(
+  'Title',
+  style: TextStyle(color: AppColors.titles),
+)
+```
+
+### 3. Widgets That Auto-Theme
+
+No extra work needed for these:
+- `ElevatedButton`, `OutlinedButton`, `TextButton`
+- `TextField`, `TextFormField`
+- `Card`, `ListTile`
+- `AppBar`, `BottomNavigationBar`
+- `Icon`, `Divider`
+
+### 4. Custom Widgets
+
+```dart
+Widget build(BuildContext context) {
+  final colors = context.colors;  // Gets current theme colors
+  final theme = Theme.of(context);
+  
+  return Container(
+    decoration: BoxDecoration(
+      color: colors.surface,
+      border: Border.all(color: colors.border),
+    ),
+    child: Text(
+      'Content',
+      style: theme.textTheme.bodyMedium,
+    ),
+  );
+}
+```
+
+### 5. Status Colors
+
+```dart
+final colors = context.colors;
+
+// All automatically adjust for dark mode
+Container(color: colors.success)  // Success indicator
+Container(color: colors.error)    // Error state
+Container(color: colors.warning)  // Warning
+```
+
+## 🎨 Color Mapping
+
+### Light Theme (Your Original Design)
+- `textPrimary` → `titles` (#212121)
+- `textSecondary` → `text` (#3D3D3D)
+- `textTertiary` → `hint` (#828282)
+- `placeholder` → `placeholders` (#C7C7C7)
+- `border` → `border` (#E4E4E4)
+- `icon` → `icons` (#828282)
+- `surfaceVariant` → `greyFillButton` (#F9FAFB)
+
+### Dark Theme (Auto-Generated)
+- `textPrimary` → Inverted to #E5E5E5
+- `textSecondary` → Inverted to #B3B3B3
+- `textTertiary` → Inverted to #808080
+- `background` → #121212
+- `surface` → #1E1E1E
+
+## 📋 Quick Reference
+
+| Need | Use This |
+|------|----------|
+| Title text | `theme.textTheme.titleLarge` |
+| Body text | `theme.textTheme.bodyMedium` |
+| Label text | `theme.textTheme.labelLarge` |
+| Background | `colors.background` |
+| Surface | `colors.surface` |
+| Border | `colors.border` |
+| Icon color | `colors.icon` |
+| Primary | `colors.primary` |
+| Success | `colors.success` |
+| Error | `colors.error` |
+
+## 1. Add Poppins Font to Your Project
 
 Add the Poppins font to your `pubspec.yaml`:
 
