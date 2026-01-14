@@ -68,4 +68,7 @@ class AppAssets {
   static const String profileOutlineIcon = '$_svgPath/profile_outline.svg';
   static const String chatFilledIcon = '$_svgPath/chat_filled.svg';
   static const String chatOutlineIcon = '$_svgPath/chat_outline.svg';
+  static const String calendarIcon = '$_svgPath/Calendar.svg';
+  static const String timeCircleIcon = '$_svgPath/Time Circle.svg';
+
 }
