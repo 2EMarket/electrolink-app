@@ -41,10 +41,10 @@ class _TextAreaInputsDescriptionFieldState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(AppSizes.paddingMRes(context)),
+      padding: EdgeInsets.all(AppSizes.paddingM),
       child: Container(
-        height: 187 * AppSizes.scaleHeight(context),
-        width: 358 * AppSizes.scaleWidth(context),
+        height: 187,
+        width: 358,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,17 +52,17 @@ class _TextAreaInputsDescriptionFieldState
               children: [
                 Text(widget.label, style: AppTypography.body14Regular),
                 if (widget.isRequired) ...[
-                  SizedBox(width: AppSizes.paddingXXSRes(context)),
+                  SizedBox(width: AppSizes.paddingXXS),
                   Text('*', style: TextStyle(color: AppColors.error)),
                 ],
               ],
             ),
-            SizedBox(height: AppSizes.paddingXSRes(context)),
+            SizedBox(height: AppSizes.paddingXS),
             Stack(
               alignment: Alignment.bottomRight,
               children: [
                 SizedBox(
-                  height: 135 * AppSizes.scaleHeight(context),
+                  height: 135,
                   child: TextFormField(
                     controller: widget.controller,
                     maxLines: widget.maxLines,
@@ -80,9 +80,7 @@ class _TextAreaInputsDescriptionFieldState
                     },*/
                     decoration: InputDecoration(
                       hintText: widget.hint,
-                      contentPadding: EdgeInsets.all(
-                        AppSizes.paddingMRes(context),
-                      ),
+                      contentPadding: EdgeInsets.all(AppSizes.paddingM),
                       filled: true,
                       fillColor: AppColors.white,
                       counterText: '',
@@ -96,12 +94,12 @@ class _TextAreaInputsDescriptionFieldState
                   ),
                 ),
                 Positioned(
-                  left: 385 * AppSizes.scaleWidth(context) - 110,
-                  bottom: 2.1 * AppSizes.paddingSRes(context),
+                  left: 385 - 110,
+                  bottom: 2.1 * AppSizes.paddingS,
                   right: AppSizes.paddingM,
                   child: Container(
-                    height: 15 * AppSizes.scaleHeight(context),
-                    width: 326 * AppSizes.scaleWidth(context),
+                    height: 15,
+                    width: 326,
                     child: Column(
                       children: [
                         Text(

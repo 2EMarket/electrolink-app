@@ -69,8 +69,8 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
         bottom: AppSizes.paddingM,
       ),
       child: Container(
-        height: 115.0 * AppSizes.scaleHeight(context),
-        width: 358 * AppSizes.scaleWidth(context),
+        height: 115.0,
+        width: 358,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,7 +83,7 @@ class _TextInputsPhoneFieldState extends State<TextInputsPhoneField> {
                 ],
               ],
             ),
-            SizedBox(height: AppSizes.paddingXSRes(context)),
+            SizedBox(height: AppSizes.paddingXS),
             SizedBox(
               child: TextFormField(
                 keyboardType: TextInputType.number,
