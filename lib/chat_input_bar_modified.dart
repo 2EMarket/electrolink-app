@@ -22,7 +22,7 @@ class ChatInputBar extends StatefulWidget {
     this.onEmoji,
     this.onStartRecording,
     this.onStopRecording,
-    this.isRecording = false,
+    this.isRecording = false, required void Function(String filePath) onSendAudio,
   });
 
   @override

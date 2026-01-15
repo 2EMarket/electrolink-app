@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:second_hand_electronics_marketplace/core/screens/chat_screen.dart';
 import 'package:second_hand_electronics_marketplace/core/widget/Component_Chat%20list%20item/chat_list_item.dart';
 import 'package:second_hand_electronics_marketplace/core/widget/Component_Chat%20list%20item/custom_list_tile.dart';
-import 'package:second_hand_electronics_marketplace/core/widget/Component_Voice/recording_bubble.dart';
+import 'package:second_hand_electronics_marketplace/recording_bubble.dart';
 import 'package:second_hand_electronics_marketplace/core/widget/Component_chat%20bubbles/image_message_bubble.dart';
 import 'package:second_hand_electronics_marketplace/core/widget/Component_chat%20bubbles/reply_message_bubble.dart';
 import 'package:second_hand_electronics_marketplace/core/widget/Component_chat%20bubbles/text_message_bubble.dart';
@@ -41,7 +42,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Empty App with DevicePreview',
       theme: AppTheme.lightTheme,
-      home: Scaffold(
+      home: 
+      // ChatScreen(),
+Scaffold(
+          resizeToAvoidBottomInset: true, // الافتراضي
+
         body: 
         Expanded(
           child: SingleChildScrollView(
@@ -57,8 +62,9 @@ class _MyAppState extends State<MyApp> {
             // ),
 
             const SizedBox(height: 80),
-       ChatInputBarFigma(),
-       RecordingBubble(seconds: 0, onDelete: () {}, onConfirm: () {}),
+            
+      //  ChatInputBarFigma(),
+      //  RecordingBubble(seconds: 0, onDelete: () {}, onConfirm: () {}),
             // AttachmentButtons(onAttach: () {  }, onCamera: () {  },),
 //    ChatInputBar(
 //   onSend: (message) {
@@ -177,19 +183,20 @@ class _MyAppState extends State<MyApp> {
 
 // في build method:
 ChatInputBar(
-  isRecording: _isRecording,
-  onStartRecording: () {
-    setState(() {
-      _isRecording = true;
-    });
-    // ابدأ تسجيل الصوت هنا
-  },
-  onStopRecording: () {
-    setState(() {
-      _isRecording = false;
-    });
-    // أوقف تسجيل الصوت هنا
-  },
+  
+  showSuggestions: true,
+    onSend: (text) {
+      debugPrint("Send text: $text");
+    },
+    onAttach: () {
+      debugPrint("Attach file");
+    },
+    onCamera: () {
+      debugPrint("Open camera");
+    },
+    onEmoji: () {
+      debugPrint("Open emoji picker");
+    },
   // باقي الباراميترات...
 )
           ],
