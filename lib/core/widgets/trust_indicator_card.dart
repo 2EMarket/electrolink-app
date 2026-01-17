@@ -20,7 +20,8 @@ class TrustIndicatorCard extends StatelessWidget {
 
     // Sizing & spacing
     this.padding = const EdgeInsets.all(12),
-    this.radius = 10, // Figma spec (from ActivitySummaryCard and general card usage)
+    this.radius =
+        10, // Figma spec (from ActivitySummaryCard and general card usage)
     this.iconCircleSize = 40,
     this.iconSize = 20,
     this.gap = 10,
@@ -82,27 +83,33 @@ class TrustIndicatorCard extends StatelessWidget {
     // 1. Resolve Colors
     final Color bg = backgroundColor ?? colors.surface;
     final Color bdr = borderColor ?? colors.border;
-    
+
     // Icon Logic
     // Main color with 10% opacity (approx. 0.1) for circle background
-    final Color effectiveIconBg = iconCircleColor ?? colors.mainColor.withOpacity(0.1);
+    final Color effectiveIconBg =
+        iconCircleColor ?? colors.mainColor.withOpacity(0.1);
     final Color effectiveIconColor = iconColor ?? colors.mainColor;
 
     // Text Logic
     // "text used is reg 16... verified is text, not verified is hint"
     final Color defaultLabelColor = verified ? colors.text : colors.hint;
-    
-    final TextStyle effectiveLabelStyle = labelStyle ??
+
+    final TextStyle effectiveLabelStyle =
+        labelStyle ??
         AppTypography.body16Regular.copyWith(
           color: labelColor ?? defaultLabelColor,
-          height: 1.2, 
+          height: 1.2,
         );
 
     // Badge Logic
     // Success Green for verified, Grey (icons color) for unverified
-    final Color effectiveBadgeColor = verified
-        ? (badgeVerifiedColor ?? const Color(0xFF22C55E)) // Fallback if theme doesn't have explicit success
-        : (badgeUnverifiedColor ?? colors.icons);
+    final Color effectiveBadgeColor =
+        verified
+            ? (badgeVerifiedColor ??
+                const Color(
+                  0xFF22C55E,
+                )) // Fallback if theme doesn't have explicit success
+            : (badgeUnverifiedColor ?? colors.icons);
 
     // Unverified Opacity Logic
     // "when it not verified what should happen is that they will seem opacity less for the whole card"
@@ -112,52 +119,57 @@ class TrustIndicatorCard extends StatelessWidget {
       size: badgeSize,
       color: effectiveBadgeColor,
       iconColor: badgeIconColor,
-      icon: verified ? Icons.check : Icons.check, // Both use check, just different color/opacity
+      icon:
+          verified
+              ? Icons.check
+              : Icons.check, // Both use check, just different color/opacity
     );
 
     // Badge Widget Size Calculation
     // _StatusBadge has 2px padding on all sides -> total width/height = size + 4
     final double badgeWidgetSize = badgeSize + 4.0;
-    
+
     // Position Logic:
     // "bottom left quarter... inside the card and the other quarter outside"
     final double badgeOffset = -(badgeWidgetSize / 2);
 
     // 2. Build Content based on Layout
     Widget content;
-    
+
     if (layout == TrustIndicatorLayout.vertical) {
       // VERTICAL: Badge is floating outside (Stack)
-       Widget cardVisuals = _VerticalLayout(
-            width: 139, 
-            height: 100, 
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            radius: radius,
-            bg: bg,
-            border: bdr,
-            borderWidth: borderWidth,
-            iconBg: effectiveIconBg,
-            icon: icon,
-            iconColor: effectiveIconColor,
-            iconCircleSize: iconCircleSize,
-            iconSize: iconSize,
-            label: label,
-            labelStyle: effectiveLabelStyle,
-            gap: gap,
-          );
-      
+      Widget cardVisuals = _VerticalLayout(
+        width: 139,
+        height: 100,
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        radius: radius,
+        bg: bg,
+        border: bdr,
+        borderWidth: borderWidth,
+        iconBg: effectiveIconBg,
+        icon: icon,
+        iconColor: effectiveIconColor,
+        iconCircleSize: iconCircleSize,
+        iconSize: iconSize,
+        label: label,
+        labelStyle: effectiveLabelStyle,
+        gap: gap,
+      );
+
       // Apply Opacity to visuals if unverified
-      if (!verified) cardVisuals = Opacity(opacity: cardOpacity, child: cardVisuals);
+      if (!verified)
+        cardVisuals = Opacity(opacity: cardOpacity, child: cardVisuals);
 
       // Wrap Interaction
       if (onTap != null) {
         cardVisuals = Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(radius),
-              onTap: onTap,
-              child: cardVisuals,
-            ));
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(radius),
+            onTap: onTap,
+            child: cardVisuals,
+          ),
+        );
       }
 
       // Return Stack for Floating Badge
@@ -166,50 +178,47 @@ class TrustIndicatorCard extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           cardVisuals,
-          Positioned(
-            top: badgeOffset, 
-            right: badgeOffset, 
-            child: badgeWidget,
-          ),
+          Positioned(top: badgeOffset, right: badgeOffset, child: badgeWidget),
         ],
       );
-
     } else {
       // HORIZONTAL: Badge is INLINE (Row)
       // We pass the badge widget into the layout
       Widget cardVisuals = _HorizontalLayout(
-            width: 227, 
-            height: 64, 
-            padding: padding,
-            radius: radius,
-            bg: bg,
-            border: bdr,
-            borderWidth: borderWidth,
-            iconBg: effectiveIconBg,
-            icon: icon,
-            iconColor: effectiveIconColor,
-            iconCircleSize: iconCircleSize,
-            iconSize: iconSize,
-            label: label,
-            labelStyle: effectiveLabelStyle,
-            gap: gap,
-            badge: badgeWidget, // Pass badge inside
-          );
-      
-      // Apply Opacity
-      if (!verified) cardVisuals = Opacity(opacity: cardOpacity, child: cardVisuals);
+        width: 227,
+        height: 64,
+        padding: padding,
+        radius: radius,
+        bg: bg,
+        border: bdr,
+        borderWidth: borderWidth,
+        iconBg: effectiveIconBg,
+        icon: icon,
+        iconColor: effectiveIconColor,
+        iconCircleSize: iconCircleSize,
+        iconSize: iconSize,
+        label: label,
+        labelStyle: effectiveLabelStyle,
+        gap: gap,
+        badge: badgeWidget, // Pass badge inside
+      );
 
-       // Wrap Interaction
+      // Apply Opacity
+      if (!verified)
+        cardVisuals = Opacity(opacity: cardOpacity, child: cardVisuals);
+
+      // Wrap Interaction
       if (onTap != null) {
         cardVisuals = Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(radius),
-              onTap: onTap,
-              child: cardVisuals,
-            ));
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(radius),
+            onTap: onTap,
+            child: cardVisuals,
+          ),
+        );
       }
-      
+
       content = cardVisuals;
     }
 
@@ -283,10 +292,10 @@ class _VerticalLayout extends StatelessWidget {
             iconSize: iconSize,
             iconColor: iconColor,
           ),
-           SizedBox(height: gap), 
+          SizedBox(height: gap),
           Text(
-            label, 
-            style: labelStyle, 
+            label,
+            style: labelStyle,
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -299,7 +308,7 @@ class _VerticalLayout extends StatelessWidget {
 
 class _HorizontalLayout extends StatelessWidget {
   const _HorizontalLayout({
-     required this.width,
+    required this.width,
     required this.height,
     required this.padding,
     required this.radius,
@@ -357,7 +366,8 @@ class _HorizontalLayout extends StatelessWidget {
             iconColor: iconColor,
           ),
           SizedBox(width: gap),
-          Expanded( // Use Expanded to push badge to the end or share space
+          Expanded(
+            // Use Expanded to push badge to the end or share space
             child: Text(
               label,
               style: labelStyle,
@@ -419,8 +429,8 @@ class _StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(2), // White border width
       decoration: const BoxDecoration(
-        color: Colors.white, 
-        shape: BoxShape.circle
+        color: Colors.white,
+        shape: BoxShape.circle,
       ),
       child: Container(
         width: size,

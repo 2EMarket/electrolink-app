@@ -94,15 +94,14 @@ class StepsProgressBar extends StatelessWidget {
     final BorderRadius radius =
         borderRadius ?? BorderRadius.circular(height / 2);
 
-    final String labelText = (labelBuilder != null)
-        ? labelBuilder!(safeCurrent, safeTotal)
-        : '$safeCurrent / $safeTotal';
+    final String labelText =
+        (labelBuilder != null)
+            ? labelBuilder!(safeCurrent, safeTotal)
+            : '$safeCurrent / $safeTotal';
 
     // Use AppTypography with theme colors
-    final TextStyle effectiveLabelStyle = labelStyle ??
-        AppTypography.body14Medium.copyWith(
-          color: colors.text,
-        );
+    final TextStyle effectiveLabelStyle =
+        labelStyle ?? AppTypography.body14Medium.copyWith(color: colors.text);
 
     return Semantics(
       label: semanticsLabel ?? 'Progress $safeCurrent of $safeTotal',

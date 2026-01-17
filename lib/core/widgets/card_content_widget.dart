@@ -28,9 +28,7 @@ class CardContentWidget extends StatelessWidget {
 
         Text(
           listing.price,
-          style: AppTypography.body16Medium.copyWith(
-            color: colors.mainColor,
-          ),
+          style: AppTypography.body16Medium.copyWith(color: colors.mainColor),
         ),
 
         const SizedBox(height: AppSizes.paddingXS),

@@ -30,7 +30,7 @@ class SettingsSwitchTile extends StatelessWidget {
     this.enabled = true,
     this.padding = const EdgeInsets.symmetric(
       horizontal: AppSizes.paddingM,
-      vertical: 14, 
+      vertical: 14,
     ),
     this.titleStyle,
     this.descriptionStyle,
@@ -39,7 +39,7 @@ class SettingsSwitchTile extends StatelessWidget {
     this.activeColor,
     this.inactiveThumbColor,
     this.inactiveTrackColor,
-    this.titleDescriptionGap = 6, 
+    this.titleDescriptionGap = 6,
     this.switchScale = 1.0,
     this.onTapToggles = true,
     this.borderRadius = const BorderRadius.all(Radius.circular(0)),
@@ -94,18 +94,24 @@ class SettingsSwitchTile extends StatelessWidget {
     // Use theme-aware colors
     final colors = context.colors;
 
-    final effectiveTitleStyle = titleStyle ??
+    final effectiveTitleStyle =
+        titleStyle ??
         AppTypography.body16Regular.copyWith(
-          color: (enabled
-              ? (titleColor ?? colors.text) // Title defaults to 'text' color
-              : (titleColor ?? colors.text).withOpacity(0.45)),
+          color:
+              (enabled
+                  ? (titleColor ??
+                      colors.text) // Title defaults to 'text' color
+                  : (titleColor ?? colors.text).withOpacity(0.45)),
         );
 
-    final effectiveDescStyle = descriptionStyle ??
+    final effectiveDescStyle =
+        descriptionStyle ??
         AppTypography.body14Regular.copyWith(
-          color: (enabled
-              ? (descriptionColor ?? colors.hint) // Subtitle defaults to 'hint' color
-              : (descriptionColor ?? colors.hint).withOpacity(0.45)),
+          color:
+              (enabled
+                  ? (descriptionColor ??
+                      colors.hint) // Subtitle defaults to 'hint' color
+                  : (descriptionColor ?? colors.hint).withOpacity(0.45)),
           height: 1.25,
         );
 
@@ -116,7 +122,7 @@ class SettingsSwitchTile extends StatelessWidget {
         onChanged: enabled ? onChanged : null,
         // Thumb (Ball) is always white
         thumbColor: WidgetStateProperty.resolveWith((states) {
-             return Colors.white; 
+          return Colors.white;
         }),
         // Track color logic
         trackColor: WidgetStateProperty.resolveWith((states) {
@@ -133,14 +139,17 @@ class SettingsSwitchTile extends StatelessWidget {
     );
 
     Widget content = Container(
-      constraints: const BoxConstraints(minHeight: 74), // Match XML layout_height="74dp"
-      padding: padding, // 
+      constraints: const BoxConstraints(
+        minHeight: 74,
+      ), // Match XML layout_height="74dp"
+      padding: padding, //
       decoration: BoxDecoration(
         color: backgroundColor ?? colors.surface, // Default to Surface (White)
-         borderRadius: borderRadius,
+        borderRadius: borderRadius,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center, // Vertically center the content
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // Vertically center the content
         children: [
           // Texts
           Expanded(
@@ -151,8 +160,8 @@ class SettingsSwitchTile extends StatelessWidget {
               children: [
                 Text(title, style: effectiveTitleStyle),
                 if (description.isNotEmpty) ...[
-                   SizedBox(height: titleDescriptionGap),
-                   Text(description, style: effectiveDescStyle),
+                  SizedBox(height: titleDescriptionGap),
+                  Text(description, style: effectiveDescStyle),
                 ],
               ],
             ),
