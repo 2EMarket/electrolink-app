@@ -10,7 +10,7 @@ import 'package:second_hand_electronics_marketplace/features/profile/presentatio
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.publicProfile}',
+    initialLocation: '/${AppRoutes.onboarding}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
