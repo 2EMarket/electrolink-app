@@ -3,17 +3,8 @@ class AppAssets {
   static const String _basePath = 'assets/images';
   static const String _svgPath = 'assets/svgs';
 
-  // Example image assets
-  static const String profilePic = '$_basePath/profile pic.png';
-  static const String noListing = '$_basePath/nolisting.png';
-
-  // static const String appLogo = '$_basePath/logo.png';
-  // static const String placeholder = '$_basePath/placeholder.png';
-
-  // Example svg assets
-  // static const String backIcon = '$_vectorPath/back.svg';
-  // static const String searchIcon = '$_vectorPath/search.svg';
-
+  static const String onboarding1 = '$_basePath/onboarding1.jpg';
+  static const String onboarding2 = '$_basePath/onboarding2.jpg';
   static const String popupBlock = '$_svgPath/popup_block.svg';
   static const String popupDone = '$_svgPath/popup_done.svg';
   static const String popupWarning = '$_svgPath/popup_warning.svg';
@@ -52,6 +43,8 @@ class AppAssets {
 
   //Icons
   static const String locationIcon = '$_svgPath/location.svg';
+  static const String locationFilledIcon = '$_svgPath/location_filled.svg';
+
   static const String unfavIcon = '$_svgPath/fav_outline.svg';
   static const String favIcon = '$_svgPath/fav_filled.svg';
   static const String cameraIcon = '$_svgPath/camera.svg';
@@ -75,5 +68,29 @@ class AppAssets {
   static const String verifiedPhoneSvg = '$_svgPath/smart-phone-01.svg';
   static const String verifiedMessageSvg = '$_svgPath/Message.svg';
   static const String verifiedIdentityCardSvg = '$_svgPath/identity-card.svg';
+  static const String mapDetectorSvg = '$_svgPath/map_detector.svg';
 
+  // Example image assets
+  static const String profilePic = '$_basePath/profile pic.png';
+  static const String noListing = '$_basePath/nolisting.png';
+
+  //Icons
+  static const String cancelIcon = '$_svgPath/cancel.svg';
+  static const String notificationIcon = '$_svgPath/notification.svg';
+
+  //category icons
+  static const String cameraCatIcon = '$_svgPath/camera_category.svg';
+  static const String wifiCatIcon = '$_svgPath/wifi_category.svg';
+  static const String tvCatIcon = '$_svgPath/tv_category.svg';
+  static const String tabletCatIcon = '$_svgPath/tablet_category.svg';
+
+  static const String smartWatchCatIcon = '$_svgPath/smart_watch_categroy.svg';
+
+  static const String smartPhoneCatIcon = '$_svgPath/smart_phone_category.svg';
+  static const String routerCatIcon = '$_svgPath/router_category.svg';
+  static const String plugCatIcon = '$_svgPath/plug_category.svg';
+  static const String laptopCatIcon = '$_svgPath/laptop_category.svg';
+  static const String headphoneCatIcon = '$_svgPath/headphone_category.svg';
+  static const String gameCatIcon = '$_svgPath/game_category.svg';
+  static const String aiChipCatIcon = '$_svgPath/ai_chip_category.svg';
 }
