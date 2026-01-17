@@ -38,6 +38,9 @@ class AppStrings {
   static const String noCountry = 'No country found';
   static const String confirm = "Confirm";
   static const String location = "Location";
+  static const String favorite = 'Favorite';
+  //login
+  static const String login = 'Login';
 
   //choose country
   static const String chooseYourCountry = 'Choose your country';
@@ -55,4 +58,9 @@ class AppStrings {
 
   //general
   static const String seeAll = 'See All';
+
+  //Home
+  static const String recent = 'Recent';
+  static const String nearby = 'Nearby';
+  static const String sort = 'Sort';
 }

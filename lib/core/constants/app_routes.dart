@@ -8,8 +8,10 @@ class AppRoutes {
   // Home
   static const home = 'home';
   static const mainLayout = 'main-layout';
-
+  static const listings = 'listings';
+  static const favorite = 'favorite';
   // Other pages
   static const location = 'location';
   static const countrySelection = 'country-selection';
+  static const verification = 'verification';
 }

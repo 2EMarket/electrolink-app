@@ -133,18 +133,22 @@ class AppTheme {
 
   static ChipThemeData _buildChipTheme(AppColorScheme colors) {
     return ChipThemeData(
-      backgroundColor: colors.greyFillButton,
+      backgroundColor: colors.neutralWithoutTransparent,
       selectedColor: colors.mainColor40,
-      labelStyle: AppTypography.body14Medium.copyWith(color: colors.titles),
+      labelStyle: AppTypography.label12Regular.copyWith(color: colors.neutral),
       secondaryLabelStyle: AppTypography.body14Regular.copyWith(
         color: colors.text,
       ),
+      labelPadding: EdgeInsets.zero,
+      side: BorderSide.none,
+
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.paddingS,
-        vertical: AppSizes.paddingXS,
+        vertical: AppSizes.paddingXXS,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+        side: BorderSide.none,
+        borderRadius: BorderRadius.circular(AppSizes.paddingXS),
       ),
     );
   }
