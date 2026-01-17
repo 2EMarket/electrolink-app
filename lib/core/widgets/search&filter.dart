@@ -65,7 +65,9 @@ class _FilterSearchState extends State<FilterSearch> {
                         ),
                       ),
                       hintText: 'Search...',
-                      // hintStyle: AppTypography.body16RegularGery, //use the theme
+                      hintStyle: AppTypography.body16Regular.copyWith(
+                        color: context.colors.placeholders,
+                      ), //use the theme
                       contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(

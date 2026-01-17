@@ -11,8 +11,8 @@ class BadgeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bgColor = context.colors.neutralWithoutTransparent;
-    textColor = context.colors.neutral;
+    bgColor = bgColor ?? context.colors.neutralWithoutTransparent;
+    textColor = textColor ?? context.colors.neutral;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.paddingS,

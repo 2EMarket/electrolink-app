@@ -45,9 +45,7 @@ class AddPhotoWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: AppTypography.body16Regular.copyWith(
-                  color: colors.text,
-                ),
+                style: AppTypography.body16Regular.copyWith(color: colors.text),
               ),
             ),
           ],

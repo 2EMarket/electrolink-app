@@ -3,26 +3,21 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dar
 import 'app_colors.dart';
 import 'app_typography.dart';
 
-/// Main theme configuration for mobile app
 class AppTheme {
   AppTheme._();
 
-  /// Light theme configuration
   static ThemeData get lightTheme =>
       _buildTheme(brightness: Brightness.light, colors: AppColors.light);
 
-  /// Dark theme configuration
   static ThemeData get darkTheme =>
       _buildTheme(brightness: Brightness.dark, colors: AppColors.dark);
 
-  /// Build theme with given brightness and color scheme
   static ThemeData _buildTheme({
     required Brightness brightness,
     required AppColorScheme colors,
   }) {
     final bool isDark = brightness == Brightness.dark;
 
-    //
     OutlineInputBorder buildBorder(Color color) {
       return OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSizes.borderRadius),
@@ -34,8 +29,16 @@ class AppTheme {
       useMaterial3: true,
       fontFamily: 'Poppins',
       brightness: brightness,
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (BuildContext context) {
+          return Icon(
+            Icons.arrow_back_ios_rounded,
+            size: 20,
+            color: colors.icons,
+          );
+        },
+      ),
 
-      // Color Scheme
       colorScheme: ColorScheme(
         brightness: brightness,
         primary: colors.mainColor,
@@ -63,188 +66,216 @@ class AppTheme {
         inversePrimary: isDark ? AppColors.mainColor : const Color(0xFF3B82F6),
       ),
 
-      // Scaffold
       scaffoldBackgroundColor: colors.background,
-
-      // AppBar
-      appBarTheme: AppBarTheme(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.titles,
-        elevation: 0,
-        centerTitle: true,
-        titleTextStyle: AppTypography.h2_20Medium.copyWith(
-          color: colors.titles,
-        ),
-        iconTheme: IconThemeData(color: colors.icons),
-      ),
-
-      // Text Theme
-      textTheme: TextTheme(
-        displayLarge: AppTypography.h2_20SemiBold.copyWith(
-          color: colors.titles,
-        ),
-        displayMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
-        displaySmall: AppTypography.h2_20Regular.copyWith(color: colors.titles),
-        headlineLarge: AppTypography.h2_20SemiBold.copyWith(
-          color: colors.titles,
-        ),
-        headlineMedium: AppTypography.h2_20Medium.copyWith(
-          color: colors.titles,
-        ),
-        headlineSmall: AppTypography.h3_18Medium.copyWith(color: colors.titles),
-        titleLarge: AppTypography.h3_18Medium.copyWith(color: colors.titles),
-        titleMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
-        titleSmall: AppTypography.body16Medium.copyWith(color: colors.titles),
-        bodyLarge: AppTypography.h3_18Regular.copyWith(color: colors.text),
-        bodyMedium: AppTypography.body16Regular.copyWith(color: colors.text),
-        bodySmall: AppTypography.body14Regular.copyWith(color: colors.text),
-        labelLarge: AppTypography.label12Regular.copyWith(color: colors.hint),
-        labelMedium: AppTypography.label10Regular.copyWith(color: colors.hint),
-      ),
-
-      // Input Decoration Theme
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: colors.surface,
-        hintStyle: AppTypography.body16Regular.copyWith(
-          color: colors.placeholders,
-        ),
-        labelStyle: AppTypography.body14Regular.copyWith(color: colors.text),
-        contentPadding: const EdgeInsets.all(AppSizes.paddingM),
-        helperStyle: AppTypography.label12Regular.copyWith(color: colors.icons),
-        border: buildBorder(colors.border),
-        enabledBorder: buildBorder(colors.border),
-        focusedBorder: buildBorder(
-          colors.mainColor,
-        ).copyWith(borderSide: BorderSide(color: colors.mainColor, width: 2)),
-        errorBorder: buildBorder(colors.error),
-        focusedErrorBorder: buildBorder(colors.error),
-      ),
-
-      // Elevated Button Theme
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colors.mainColor,
-          foregroundColor: AppColors.white,
-          elevation: 0,
-
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSizes.paddingL,
-            vertical: AppSizes.paddingM,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          ),
-          textStyle: AppTypography.buttonBig,
-        ),
-      ),
-
-      // Text Button Theme
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: colors.mainColor,
-
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSizes.paddingM,
-            vertical: AppSizes.paddingS,
-          ),
-          textStyle: AppTypography.buttonBig,
-        ),
-      ),
-
-      // Outlined Button Theme
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: colors.neutral,
-          side: BorderSide(color: colors.neutral),
-
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSizes.paddingL,
-            vertical: AppSizes.paddingM,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          ),
-          textStyle: AppTypography.buttonBig,
-        ),
-      ),
-
-      // Card Theme
-      cardTheme: CardThemeData(
-        color: colors.surface,
-        elevation: 0,
-        shadowColor:
-            isDark ? Colors.black : Colors.black.withValues(alpha: 0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-        ),
-        margin: const EdgeInsets.all(AppSizes.paddingXS),
-      ),
-
-      // Icon Theme
+      appBarTheme: _buildAppbarTheme(colors),
+      textTheme: _buildTextTheme(colors),
+      inputDecorationTheme: _buildInputDecTheme(colors, buildBorder),
+      elevatedButtonTheme: _buildElevatedButtonTheme(colors),
+      textButtonTheme: _buildTextButtonTheme(colors),
+      outlinedButtonTheme: _buildOutlinedButtonTheme(colors),
+      cardTheme: _buildCardTheme(colors, isDark),
       iconTheme: IconThemeData(color: colors.icons, size: 24),
-
-      // Divider Theme
       dividerTheme: DividerThemeData(
         color: colors.border,
         thickness: 1,
         space: 1,
       ),
+      bottomNavigationBarTheme: _buildBottomNavbarTheme(colors),
+      chipTheme: _buildChipTheme(colors),
+      dialogTheme: _buildDialogTheme(colors),
+      bottomSheetTheme: _buildBottomSheetTheme(colors),
+      snackBarTheme: _buildSnackbarTheme(isDark, colors),
+    );
+  }
 
-      // Bottom Navigation Bar Theme
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: colors.surface,
-        selectedItemColor: colors.mainColor,
-        unselectedItemColor: colors.icons,
-        selectedLabelStyle: AppTypography.label10Medium,
-        unselectedLabelStyle: AppTypography.label10Regular,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
+  static SnackBarThemeData _buildSnackbarTheme(
+    bool isDark,
+    AppColorScheme colors,
+  ) {
+    return SnackBarThemeData(
+      backgroundColor: isDark ? colors.greyFillButton : AppColors.black,
+      contentTextStyle: AppTypography.body14Regular.copyWith(
+        color: AppColors.white,
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+      ),
+      behavior: SnackBarBehavior.floating,
+    );
+  }
 
-      // Chip Theme
-      chipTheme: ChipThemeData(
-        backgroundColor: colors.greyFillButton,
-        selectedColor: colors.mainColor40,
-        labelStyle: AppTypography.body14Medium.copyWith(color: colors.titles),
-        secondaryLabelStyle: AppTypography.body14Regular.copyWith(
-          color: colors.text,
-        ),
+  static BottomSheetThemeData _buildBottomSheetTheme(AppColorScheme colors) {
+    return BottomSheetThemeData(
+      backgroundColor: colors.surface,
+      modalBackgroundColor: colors.surface,
+      elevation: 0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+    );
+  }
+
+  static DialogThemeData _buildDialogTheme(AppColorScheme colors) {
+    return DialogThemeData(
+      backgroundColor: colors.surface,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+      ),
+      titleTextStyle: AppTypography.h2_20SemiBold.copyWith(
+        color: colors.titles,
+      ),
+      contentTextStyle: AppTypography.body16Regular.copyWith(
+        color: colors.text,
+      ),
+    );
+  }
+
+  static ChipThemeData _buildChipTheme(AppColorScheme colors) {
+    return ChipThemeData(
+      backgroundColor: colors.greyFillButton,
+      selectedColor: colors.mainColor40,
+      labelStyle: AppTypography.body14Medium.copyWith(color: colors.titles),
+      secondaryLabelStyle: AppTypography.body14Regular.copyWith(
+        color: colors.text,
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.paddingS,
+        vertical: AppSizes.paddingXS,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+      ),
+    );
+  }
+
+  static BottomNavigationBarThemeData _buildBottomNavbarTheme(
+    AppColorScheme colors,
+  ) {
+    return BottomNavigationBarThemeData(
+      backgroundColor: colors.surface,
+      selectedItemColor: colors.mainColor,
+      unselectedItemColor: colors.icons,
+      selectedLabelStyle: AppTypography.label10Medium,
+      unselectedLabelStyle: AppTypography.label10Regular,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    );
+  }
+
+  static CardThemeData _buildCardTheme(AppColorScheme colors, bool isDark) {
+    return CardThemeData(
+      color: colors.surface,
+      elevation: 0,
+      shadowColor: isDark ? Colors.black : Colors.black.withValues(alpha: 0.1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+      ),
+      margin: const EdgeInsets.all(AppSizes.paddingXS),
+    );
+  }
+
+  static OutlinedButtonThemeData _buildOutlinedButtonTheme(
+    AppColorScheme colors,
+  ) {
+    return OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: colors.neutral,
+        side: BorderSide(color: colors.neutral),
+
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.paddingS,
-          vertical: AppSizes.paddingXS,
+          horizontal: AppSizes.paddingL,
+          vertical: AppSizes.paddingM,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         ),
+        textStyle: AppTypography.buttonBig,
       ),
+    );
+  }
 
-      // Dialog Theme
-      dialogTheme: DialogThemeData(
-        backgroundColor: colors.surface,
+  static TextButtonThemeData _buildTextButtonTheme(AppColorScheme colors) {
+    return TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: colors.hint,
+
+        padding: const EdgeInsets.all(0),
+        textStyle: AppTypography.buttonSmall,
+      ),
+    );
+  }
+
+  static ElevatedButtonThemeData _buildElevatedButtonTheme(
+    AppColorScheme colors,
+  ) {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colors.mainColor,
+        foregroundColor: AppColors.white,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-        ),
-        titleTextStyle: AppTypography.h2_20SemiBold.copyWith(
-          color: colors.titles,
-        ),
-        contentTextStyle: AppTypography.body16Regular.copyWith(
-          color: colors.text,
-        ),
-      ),
 
-      // Snackbar Theme
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: isDark ? colors.greyFillButton : AppColors.black,
-        contentTextStyle: AppTypography.body14Regular.copyWith(
-          color: AppColors.white,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.paddingL,
+          vertical: AppSizes.paddingM,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         ),
-        behavior: SnackBarBehavior.floating,
+        textStyle: AppTypography.buttonBig,
       ),
+    );
+  }
+
+  static InputDecorationTheme _buildInputDecTheme(
+    AppColorScheme colors,
+    OutlineInputBorder Function(Color color) buildBorder,
+  ) {
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: colors.surface,
+      hintStyle: AppTypography.body16Regular.copyWith(
+        color: colors.placeholders,
+      ),
+      labelStyle: AppTypography.body14Regular.copyWith(color: colors.text),
+      contentPadding: const EdgeInsets.all(AppSizes.paddingM),
+      helperStyle: AppTypography.label12Regular.copyWith(color: colors.icons),
+      border: buildBorder(colors.border),
+      enabledBorder: buildBorder(colors.border),
+      focusedBorder: buildBorder(colors.mainColor),
+      errorBorder: buildBorder(colors.error),
+      focusedErrorBorder: buildBorder(colors.error),
+    );
+  }
+
+  static TextTheme _buildTextTheme(AppColorScheme colors) {
+    return TextTheme(
+      displayLarge: AppTypography.h2_20SemiBold.copyWith(color: colors.titles),
+      displayMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+      displaySmall: AppTypography.h2_20Regular.copyWith(color: colors.titles),
+      headlineLarge: AppTypography.h2_20SemiBold.copyWith(color: colors.titles),
+      headlineMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+      headlineSmall: AppTypography.h3_18Medium.copyWith(color: colors.titles),
+      titleLarge: AppTypography.h3_18Medium.copyWith(color: colors.titles),
+      titleMedium: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+      titleSmall: AppTypography.body16Medium.copyWith(color: colors.titles),
+      bodyLarge: AppTypography.h3_18Regular.copyWith(color: colors.text),
+      bodyMedium: AppTypography.body16Regular.copyWith(color: colors.text),
+      bodySmall: AppTypography.body14Regular.copyWith(color: colors.text),
+      labelLarge: AppTypography.label12Regular.copyWith(color: colors.hint),
+      labelMedium: AppTypography.label10Regular.copyWith(color: colors.hint),
+    );
+  }
+
+  static AppBarTheme _buildAppbarTheme(AppColorScheme colors) {
+    return AppBarTheme(
+      backgroundColor: colors.surface,
+      foregroundColor: colors.titles,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: AppTypography.h2_20Medium.copyWith(color: colors.titles),
+      toolbarHeight: 80,
+      iconTheme: IconThemeData(color: colors.icons),
     );
   }
 }

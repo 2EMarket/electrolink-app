@@ -8,19 +8,51 @@ class AppStrings {
   static const String cancel = 'Cancel';
   static const String ok = 'OK';
   static const String noData = 'No data available';
+  static const String languageEn = 'English';
 
-  // Auth
-  // static const String login = 'Login';
-  // static const String signup = 'Sign Up';
-  // static const String logout = 'Logout';
+  // Onboarding Buttons
+  static const String next = 'Next';
+  static const String getStarted = 'Get Started';
 
-  // Product
-  // static const String products = 'Products';
-  // static const String addProduct = 'Add Product';
+  // Onboarding Content
+  static const String onboarding1Title =
+      'List your device\nReach the right buyer';
+  static const String onboarding1Desc =
+      'Buy and sell electronics easily.\nA simple marketplace that connects sellers and buyers in one place.';
 
+  static const String onboarding2Title = 'Browse smart\nConnect fast';
+  static const String onboarding2Desc =
+      'Find listings easily by category and location,and chat directly without extra steps orcomplexity.';
+
+  // Auth & Others (Placeholders for later)
+  static const String welcomeBack = 'Welcome back';
+  static const String loginToContinue = 'please login to continue.';
   //main sections
   static const String home = 'Home';
   static const String categories = 'Categories';
   static const String chat = 'Chat';
   static const String profile = 'Profile';
+
+  //app bar titles
+  static const String country = ' Country';
+  static const String noCountry = 'No country found';
+  static const String confirm = "Confirm";
+  static const String location = "Location";
+
+  //choose country
+  static const String chooseYourCountry = 'Choose your country';
+
+  //Search
+  static const String searchHint = 'Search ...';
+
+  //location
+  static const String locationPermissionTitle =
+      "Allow app to access this device’s location?";
+
+  static const String allowWhileUsingApp = "Allow while using the app";
+  static const String allowThisTime = "Allow this time";
+  static const String deny = "Deny";
+
+  //general
+  static const String seeAll = 'See All';
 }
