@@ -49,7 +49,7 @@ class TrustIndicatorCard extends StatelessWidget {
   final IconData icon;
   final bool verified;
   final TrustIndicatorLayout layout;
-
+ 
   final EdgeInsets padding;
   final double radius;
   final double iconCircleSize;
