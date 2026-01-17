@@ -18,7 +18,10 @@ class SimpleSelectionList extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.titlePadding = const EdgeInsets.only(bottom: 16),
     this.optionSpacing = 12,
-    this.optionPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    this.optionPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 12,
+    ),
     this.radius = 12,
     this.borderWidth = 1,
     this.backgroundColor,
@@ -75,20 +78,19 @@ class SimpleSelectionList extends StatelessWidget {
     final Color unselTextColor = unselectedTextColor ?? colors.hint;
     final Color bgColor = backgroundColor ?? colors.surface;
 
-    final TextStyle effectiveTitleStyle = titleStyle ??
+    final TextStyle effectiveTitleStyle =
+        titleStyle ??
         AppTypography.h3_18Medium.copyWith(
           color: colors.titles,
           fontWeight: FontWeight.w600,
         );
 
-    final TextStyle baseOptionStyle = optionTextStyle ??
-        AppTypography.body16Regular.copyWith(
-          fontWeight: FontWeight.w400,
-        );
+    final TextStyle baseOptionStyle =
+        optionTextStyle ??
+        AppTypography.body16Regular.copyWith(fontWeight: FontWeight.w400);
 
-    final Color shadowColor = isDark 
-        ? Colors.black.withOpacity(0.4) 
-        : Colors.black.withOpacity(0.25);
+    final Color shadowColor =
+        isDark ? Colors.black.withOpacity(0.4) : Colors.black.withOpacity(0.25);
 
     return Padding(
       padding: padding,
@@ -108,23 +110,27 @@ class SimpleSelectionList extends StatelessWidget {
             final Color textColor = selected ? selTextColor : unselTextColor;
 
             final TextStyle textStyle = baseOptionStyle.copyWith(
-              color: opt.enabled
-                  ? textColor
-                  : textColor.withOpacity(disabledOpacity),
+              color:
+                  opt.enabled
+                      ? textColor
+                      : textColor.withOpacity(disabledOpacity),
             );
 
-            final List<BoxShadow>? shadows = (selected && showSelectedShadow)
-                ? [
-                    BoxShadow(
-                      color: shadowColor,
-                      offset: const Offset(0, 4),
-                      blurRadius: 4,
-                    ),
-                  ]
-                : null;
+            final List<BoxShadow>? shadows =
+                (selected && showSelectedShadow)
+                    ? [
+                      BoxShadow(
+                        color: shadowColor,
+                        offset: const Offset(0, 4),
+                        blurRadius: 4,
+                      ),
+                    ]
+                    : null;
 
             return Padding(
-              padding: EdgeInsets.only(bottom: i == options.length - 1 ? 0 : optionSpacing),
+              padding: EdgeInsets.only(
+                bottom: i == options.length - 1 ? 0 : optionSpacing,
+              ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -136,7 +142,10 @@ class SimpleSelectionList extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: bgColor,
                       borderRadius: BorderRadius.circular(radius),
-                      border: Border.all(color: borderColor, width: borderWidth),
+                      border: Border.all(
+                        color: borderColor,
+                        width: borderWidth,
+                      ),
                       boxShadow: shadows,
                     ),
                     child: Row(
@@ -187,8 +196,10 @@ class _RadioIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color ring = selected ? selectedColor : unselectedColor;
 
-    final Color effectiveRing = disabled ? ring.withOpacity(disabledOpacity) : ring;
-    final Color effectiveDot = disabled ? selectedColor.withOpacity(disabledOpacity) : selectedColor;
+    final Color effectiveRing =
+        disabled ? ring.withOpacity(disabledOpacity) : ring;
+    final Color effectiveDot =
+        disabled ? selectedColor.withOpacity(disabledOpacity) : selectedColor;
 
     final double innerDotSize = size * 0.45;
 
@@ -209,7 +220,7 @@ class _RadioIndicator extends StatelessWidget {
               width: innerDotSize,
               height: innerDotSize,
               decoration: BoxDecoration(
-                shape: BoxShape.circle, 
+                shape: BoxShape.circle,
                 color: effectiveDot,
               ),
             ),

@@ -1,82 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 
-/// A single category item displaying an icon inside a circular container
-/// with a label underneath.
-/// 
-/// Part of the Categories section on the home screen.
 class CategoryItem extends StatelessWidget {
+  final String title;
+  final String iconPath;
+  final bool isSelected;
+  final VoidCallback onTap;
+
   const CategoryItem({
     super.key,
     required this.title,
-    required this.iconData,
-    this.onTap,
-    this.iconSize = 24.0,
-    this.circleSize = 56.0,
-    this.gap = 12.0,
+    required this.iconPath,
+    this.isSelected = false,
+    required this.onTap,
   });
-
-  /// The category label displayed below the icon
-  final String title;
-
-  /// The icon to display inside the circle
-  final IconData iconData;
-
-  /// Callback when the item is tapped
-  final VoidCallback? onTap;
-
-  /// Size of the icon (default: 24px as per design spec)
-  final double iconSize;
-
-  /// Size of the circular container (default: 56px as per design spec)
-  final double circleSize;
-
-  /// Gap between circle and text (default: 12px as per Figma spec)
-  final double gap;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-
+    final backgroundColor =
+        isSelected ? context.colors.mainColor : context.colors.neutral5;
+    final iconColor =
+        isSelected ? context.colors.surface : context.colors.icons;
     return GestureDetector(
       onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // The Circular Icon Container
-          // CSS: Width 56px, Height 56px, Background rgba(107, 114, 128, 0.05)
-          Container(
-            width: circleSize,
-            height: circleSize,
-            decoration: BoxDecoration(
-              // Using neutral5 which is 5% opacity neutral color (similar to rgba(107, 114, 128, 0.05))
-              color: colors.neutral5,
-              borderRadius: BorderRadius.circular(circleSize), // Fully circular
-            ),
-            child: Center(
-              child: Icon(
-                iconData,
-                size: iconSize,
-                // Using icons color from theme (UI/Basic/Icons color in Figma)
-                color: colors.icons,
+      child: SizedBox(
+        width: 60,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedContainer(
+              padding: EdgeInsets.all(AppSizes.paddingM),
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: SvgPicture.asset(
+                iconPath,
+                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
               ),
             ),
-          ),
-
-          SizedBox(height: gap), // CSS: Gap 8px
-
-          // The Label
-          // CSS: Poppins, 12px, Color #3D3D3D
-          Text(
-            title,
-            style: AppTypography.label12Regular.copyWith(
-              color: colors.text, // #3D3D3D in light theme
+            const SizedBox(height: AppSizes.paddingXS),
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  isSelected
+                      ? AppTypography.body14Medium.copyWith(
+                        color: context.colors.text,
+                      )
+                      : AppTypography.label12Regular.copyWith(
+                        color: context.colors.text,
+                      ),
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

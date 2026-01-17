@@ -37,13 +37,15 @@ class InfoTipsCard extends StatelessWidget {
     final Color bgColor = backgroundColor ?? colors.mainColor10;
     final Color bulletClr = bulletColor ?? colors.titles;
 
-    final TextStyle effectiveTitleStyle = titleStyle ??
+    final TextStyle effectiveTitleStyle =
+        titleStyle ??
         AppTypography.body14Medium.copyWith(
           color: colors.titles,
           fontWeight: FontWeight.w500,
         );
 
-    final TextStyle effectiveTipStyle = tipStyle ??
+    final TextStyle effectiveTipStyle =
+        tipStyle ??
         AppTypography.label12Regular.copyWith(
           color: colors.text,
           fontWeight: FontWeight.w400,
@@ -61,29 +63,35 @@ class InfoTipsCard extends StatelessWidget {
         children: [
           Text(title, style: effectiveTitleStyle),
           SizedBox(height: gap),
-          ...tips.map((tip) => Padding(
-            padding: EdgeInsets.only(bottom: tips.last == tip ? 0 : bulletGap),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: (effectiveTipStyle.fontSize ?? 12) / 2 - bulletSize / 2),
-                  child: Container(
-                    width: bulletSize,
-                    height: bulletSize,
-                    decoration: BoxDecoration(
-                      color: bulletClr,
-                      shape: BoxShape.circle,
+          ...tips.map(
+            (tip) => Padding(
+              padding: EdgeInsets.only(
+                bottom: tips.last == tip ? 0 : bulletGap,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top:
+                          (effectiveTipStyle.fontSize ?? 12) / 2 -
+                          bulletSize / 2,
+                    ),
+                    child: Container(
+                      width: bulletSize,
+                      height: bulletSize,
+                      decoration: BoxDecoration(
+                        color: bulletClr,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(tip, style: effectiveTipStyle),
-                ),
-              ],
+                  const SizedBox(width: 12),
+                  Expanded(child: Text(tip, style: effectiveTipStyle)),
+                ],
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );

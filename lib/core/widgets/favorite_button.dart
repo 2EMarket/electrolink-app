@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/circle_button.dart';
 
 class FavoriteButton extends StatefulWidget {
   final bool isFavorite;
@@ -45,27 +45,11 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return CircleButton(
       onTap: _toggleFavorite,
-      child: Container(
-        width: widget.size,
-        height: widget.size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: context.colors.surface,
-          boxShadow: context.shadows.card,
-        ),
-        alignment: Alignment.center,
-        child: SvgPicture.asset(
-          _isFavorite ? AppAssets.favIcon : AppAssets.unfavIcon,
-          width: widget.size - widget.size * 0.35,
-          height: widget.size - widget.size * 0.35,
-          colorFilter: ColorFilter.mode(
-            _isFavorite ? context.colors.error : context.colors.icons,
-            BlendMode.srcIn,
-          ),
-        ),
-      ),
+      size: widget.size,
+      iconPath: _isFavorite ? AppAssets.favIcon : AppAssets.unfavIcon,
+      iconColor: _isFavorite ? context.colors.error : context.colors.icons,
     );
   }
 }
