@@ -13,4 +13,5 @@ class AppRoutes {
   // Other pages
   static const location = 'location';
   static const countrySelection = 'country-selection';
+  static const verification = 'verification';
 }

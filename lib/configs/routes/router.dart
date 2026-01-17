@@ -9,6 +9,7 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
@@ -66,11 +67,11 @@ class AppRouter {
         name: AppRoutes.location,
         builder: (context, state) => LocationScreen(),
       ),
-      // GoRoute(
-      //   path: '/${AppRoutes.home}',
-      //   name: AppRoutes.home,
-      //   builder: (context, state) => HomeScreen(),
-      // ),
+      GoRoute(
+        path: '/${AppRoutes.verification}',
+        name: AppRoutes.verification,
+        builder: (context, state) => VerificationScreen(),
+      ),
       GoRoute(
         path: '/${AppRoutes.mainLayout}',
         name: AppRoutes.mainLayout,
