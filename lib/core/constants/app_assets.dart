@@ -5,6 +5,7 @@ class AppAssets {
 
   // Example image assets
   static const String profilePic = '$_basePath/profile pic.png';
+  static const String noListing = '$_basePath/nolisting.png';
 
   // static const String appLogo = '$_basePath/logo.png';
   // static const String placeholder = '$_basePath/placeholder.png';
@@ -70,5 +71,9 @@ class AppAssets {
   static const String chatOutlineIcon = '$_svgPath/chat_outline.svg';
   static const String calendarIcon = '$_svgPath/Calendar.svg';
   static const String timeCircleIcon = '$_svgPath/Time Circle.svg';
+  static const String verifiedSvg = '$_svgPath/verifiedSvg.svg';
+  static const String verifiedPhoneSvg = '$_svgPath/smart-phone-01.svg';
+  static const String verifiedMessageSvg = '$_svgPath/Message.svg';
+  static const String verifiedIdentityCardSvg = '$_svgPath/identity-card.svg';
 
 }

@@ -12,10 +12,12 @@ class AppSizes {
   static const double paddingXL = 32.0;
   static const double padding2XL = 40.0;
   static const double paddingXXL = 48.0;
+  static const double paddingXS10 = 10.0;
 
   // ==================== Border Radius ====================
   static const double borderRadius = 12.0;
   static const double bottomSheetRadiusTop = 20.0;
+  static const double borderRadius10 = 10.0;
 
   static const double safeAreaBottom = 24.0;
 
