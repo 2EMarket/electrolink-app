@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/category_item.dart';
@@ -40,7 +42,11 @@ class HomeTab extends StatelessWidget {
         children: [
           HomeHeader(),
           const SizedBox(height: AppSizes.paddingL),
-          _buildSectionHeader(context, title: "Categories", onSeeAll: () {}),
+          _buildSectionHeader(
+            context,
+            title: AppStrings.categories,
+            onSeeAll: () {},
+          ),
           const SizedBox(height: AppSizes.paddingS),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -62,11 +68,25 @@ class HomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSizes.paddingL),
-          _buildSectionHeader(context, title: "Recent", onSeeAll: () {}),
+          _buildSectionHeader(
+            context,
+            title: AppStrings.recent,
+            onSeeAll: () {
+              context.pushNamed(
+                AppRoutes.listings, // الاسم
+                extra: {
+                  'title': 'Recent Listings', // العنوان
+                  'listings': dummyListings, // الليست
+                },
+              );
+            },
+          ),
           const SizedBox(height: AppSizes.paddingS),
           SizedBox(
             height: listHeight,
             child: ListView.separated(
+              clipBehavior: Clip.none,
+
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.paddingM,
@@ -83,7 +103,11 @@ class HomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSizes.paddingM),
-          _buildSectionHeader(context, title: "Nearby", onSeeAll: () {}),
+          _buildSectionHeader(
+            context,
+            title: AppStrings.nearby,
+            onSeeAll: () {},
+          ),
           const SizedBox(height: AppSizes.paddingS),
           SizedBox(
             height: listHeight,

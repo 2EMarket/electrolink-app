@@ -7,12 +7,15 @@ class FavoriteButton extends StatefulWidget {
   final bool isFavorite;
   final VoidCallback? onTap;
   final double size;
+  final bool
+  isActive; //if you dont need to change the button state, this set to false
 
   const FavoriteButton({
     super.key,
     required this.isFavorite,
     this.onTap,
     required this.size,
+    this.isActive = true,
   });
 
   @override
@@ -37,9 +40,11 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   }
 
   void _toggleFavorite() {
-    setState(() {
-      _isFavorite = !_isFavorite;
-    });
+    if (widget.isActive) {
+      setState(() {
+        _isFavorite = !_isFavorite;
+      });
+    }
     if (widget.onTap != null) widget.onTap!();
   }
 

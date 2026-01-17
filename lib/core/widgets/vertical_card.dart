@@ -27,7 +27,8 @@ class VerticalCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: AppSizes.paddingS),
+        clipBehavior: Clip.none,
+        // margin: const EdgeInsets.only(bottom: AppSizes.paddingS),
         width: width,
         decoration: BoxDecoration(
           color: context.colors.surface,
@@ -51,7 +52,16 @@ class VerticalCard extends StatelessWidget {
                     left: AppSizes.paddingXS,
                     child: BadgeWidget(text: listing.category),
                   ),
-
+                  if (listing.isSold)
+                    Positioned(
+                      top: AppSizes.paddingXS,
+                      left: AppSizes.paddingXS,
+                      child: BadgeWidget(
+                        text: 'Sold',
+                        bgColor: context.colors.secondaryColor,
+                        textColor: context.colors.surface,
+                      ),
+                    ),
                   Positioned(
                     top: AppSizes.paddingXS,
                     right: AppSizes.paddingXS,
