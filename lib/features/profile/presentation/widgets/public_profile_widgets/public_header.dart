@@ -77,7 +77,7 @@ class ProfileHeader extends StatelessWidget {
               Text(profile.name, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: AppSizes.paddingXS),
               PublicProfileInfoRow(
-                icon: AppAssets.locationIcon,
+                icon: AppAssets.locationOutlinedIcon,
                 text: profile.location,
                 textStyle: textStyle,
               ),

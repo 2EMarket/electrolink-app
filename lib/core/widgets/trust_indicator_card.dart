@@ -106,6 +106,10 @@ class TrustIndicatorCard extends StatelessWidget {
             right: -5,
             child: SvgPicture.asset(
               AppAssets.verifiedSvg,
+              colorFilter: ColorFilter.mode(
+                context.colors.success,
+                BlendMode.srcIn,
+              ),
               width: badgeSize,
               height: badgeSize,
             ),

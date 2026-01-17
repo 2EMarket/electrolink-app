@@ -12,4 +12,8 @@ class AppRoutes {
   // Other pages
   static const location = 'location';
   static const countrySelection = 'country-selection';
+
+  //profile pages
+  static const publicProfile = 'public_profile';
+
 }

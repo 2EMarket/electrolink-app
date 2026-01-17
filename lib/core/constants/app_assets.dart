@@ -44,6 +44,7 @@ class AppAssets {
   //Icons
   static const String locationIcon = '$_svgPath/location.svg';
   static const String locationFilledIcon = '$_svgPath/location_filled.svg';
+  static const String locationOutlinedIcon = '$_svgPath/location_outlined.svg';
 
   static const String unfavIcon = '$_svgPath/fav_outline.svg';
   static const String favIcon = '$_svgPath/fav_filled.svg';
@@ -64,7 +65,7 @@ class AppAssets {
   static const String chatOutlineIcon = '$_svgPath/chat_outline.svg';
   static const String calendarIcon = '$_svgPath/Calendar.svg';
   static const String timeCircleIcon = '$_svgPath/Time Circle.svg';
-  static const String verifiedSvg = '$_svgPath/verifiedSvg.svg';
+  static const String verifiedSvg = '$_svgPath/verifiedsvg.svg';
   static const String verifiedPhoneSvg = '$_svgPath/smart-phone-01.svg';
   static const String verifiedMessageSvg = '$_svgPath/Message.svg';
   static const String verifiedIdentityCardSvg = '$_svgPath/identity-card.svg';

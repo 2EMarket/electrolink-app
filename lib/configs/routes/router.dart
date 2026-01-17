@@ -6,10 +6,11 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.onboarding}',
+    initialLocation: '/${AppRoutes.publicProfile}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -85,6 +86,14 @@ class AppRouter {
       //   name: AppRoutes.signUp,
       //   builder: (context, state) => SignUpPage(),
       // ),
+
+
+      //profile routes
+      GoRoute(
+        path: '/${AppRoutes.publicProfile}',
+        name: AppRoutes.publicProfile,
+        builder: (context, state) =>  PublicProfile(),
+      ),
     ],
 
     // Error page
@@ -94,5 +103,8 @@ class AppRouter {
         ),
   );
 
+  // Onboarding route
+
   static GoRouter get router => _router;
+
 }
