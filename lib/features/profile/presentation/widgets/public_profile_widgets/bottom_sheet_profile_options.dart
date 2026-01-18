@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../configs/theme/app_colors.dart';
-import '../constants/app_sizes.dart';
+import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 
 // you can use this vertical More Icon function to show the bottom sheet

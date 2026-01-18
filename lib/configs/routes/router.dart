@@ -8,10 +8,11 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
 
 import '../../features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
+import '../../features/profile/presentation/pages/public_profile/report_user_screen/send_report_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.onboarding}',
+    initialLocation: '/${AppRoutes.reportUser}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -79,6 +80,11 @@ class AppRouter {
         path: '/${AppRoutes.publicProfile}',
         name: AppRoutes.publicProfile,
         builder: (context, state) =>  PublicProfile(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.reportUser}',
+        name: AppRoutes.reportUser,
+        builder: (context, state) =>  SendReportScreen(),
       ),
       // // Auth routes
       // GoRoute(

@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../constants/app_assets.dart';
-import '../constants/app_sizes.dart';
+import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 class EmptyListingsSection extends StatelessWidget {
   const EmptyListingsSection();
