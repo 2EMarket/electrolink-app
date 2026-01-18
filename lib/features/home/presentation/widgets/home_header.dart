@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/configs/routes/router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/circle_button.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/filter_button.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
+import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/search_with_filter.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_states.dart';
 
@@ -76,7 +80,14 @@ class HomeHeader extends StatelessWidget {
               ),
               Row(
                 children: [
-                  FavoriteButton(isFavorite: false, size: 40),
+                  FavoriteButton(
+                    isFavorite: false,
+                    size: 40,
+                    onTap: () {
+                      context.pushNamed(AppRoutes.favorite);
+                    },
+                    isActive: false,
+                  ),
                   const SizedBox(width: AppSizes.paddingXS),
                   Stack(
                     children: [
@@ -106,22 +117,7 @@ class HomeHeader extends StatelessWidget {
           ),
 
           const SizedBox(height: AppSizes.paddingM),
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: SearchWidget(
-                    controller: TextEditingController(),
-                    onChanged: (result) {},
-                  ),
-                ),
-
-                const SizedBox(width: AppSizes.paddingXS),
-                AspectRatio(aspectRatio: 1.0, child: FilterButton()),
-              ],
-            ),
-          ),
+          SearchWithFilterWidget(),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
 
 class OnboardingData {
   final String title;

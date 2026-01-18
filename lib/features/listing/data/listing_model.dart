@@ -8,6 +8,7 @@ class ListingModel extends Equatable {
   final String imageUrl;
   final String category;
   final bool isFavorite;
+  final bool isSold;
 
   const ListingModel({
     required this.id,
@@ -16,6 +17,7 @@ class ListingModel extends Equatable {
     required this.location,
     required this.imageUrl,
     required this.category,
+    this.isSold = false,
     this.isFavorite = false,
   });
 
@@ -27,6 +29,7 @@ class ListingModel extends Equatable {
     String? imageUrl,
     String? category,
     bool? isFavorite,
+    bool? isSold,
   }) {
     return ListingModel(
       id: id ?? this.id,
@@ -36,6 +39,7 @@ class ListingModel extends Equatable {
       imageUrl: imageUrl ?? this.imageUrl,
       category: category ?? this.category,
       isFavorite: isFavorite ?? this.isFavorite,
+      isSold: isSold ?? this.isSold,
     );
   }
 
@@ -48,6 +52,7 @@ class ListingModel extends Equatable {
     imageUrl,
     category,
     isFavorite,
+    isSold,
   ];
 }
 
@@ -61,6 +66,7 @@ final List<ListingModel> dummyListings = [
         'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-14-pro-max-1.jpg', // رابط صورة تجريبي
     category: 'Phones',
     isFavorite: true,
+    isSold: true,
   ),
   const ListingModel(
     id: '2',

@@ -22,7 +22,6 @@ class HorizontalCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 140,
-        margin: const EdgeInsets.only(bottom: AppSizes.paddingS),
         decoration: BoxDecoration(
           color: context.colors.surface,
           borderRadius: BorderRadius.circular(AppSizes.borderRadius),
@@ -36,10 +35,28 @@ class HorizontalCard extends StatelessWidget {
                 width: imageWidth,
                 height: double.infinity,
                 child: Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
                     Positioned.fill(
                       child: CardImageWidget(imageUrl: listing.imageUrl),
                     ),
+                    if (listing.isSold)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          color: context.colors.secondaryColor.withOpacity(0.7),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Sold",
+                            style: AppTypography.label12Regular.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     Positioned(
                       top: AppSizes.paddingXS,
                       left: AppSizes.paddingXS,

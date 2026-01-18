@@ -33,13 +33,12 @@ class AppAssets {
   static const String facebookHelpIconSvg = '$_svgPath/facebook-02.svg';
   static const String instagramHelpIconRoundedSvg = '$_svgPath/helpicon.svg';
   static const String globelHelpIconSvg = '$_svgPath/globe-02.svg';
-  static const String documentColoredSvg = '$_svgPath/document_colord.svg';
-  static const String documentUnColoredSvg = '$_svgPath/document_uncolord.svg';
   static const String customerServiceSvg = '$_svgPath/customer-service.svg';
   static const String checkOnSvg = '$_svgPath/check_on.svg';
   static const String checkOffSvg = '$_svgPath/check_off.svg';
 
   static const String noInternetSvg = '$_svgPath/no_internet.svg';
+  static const String favoriteSvg = '$_svgPath/heart.svg';
 
   //Icons
   static const String locationIcon = '$_svgPath/location.svg';
@@ -78,6 +77,9 @@ class AppAssets {
   //Icons
   static const String cancelIcon = '$_svgPath/cancel.svg';
   static const String notificationIcon = '$_svgPath/notification.svg';
+  static const String documentColoredIcon = '$_svgPath/document_colord.svg';
+  static const String documentUnColoredIcon = '$_svgPath/document_uncolord.svg';
+  static const String swapIcon = '$_svgPath/swap.svg';
 
   //category icons
   static const String cameraCatIcon = '$_svgPath/camera_category.svg';
