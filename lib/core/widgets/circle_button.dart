@@ -9,11 +9,16 @@ class CircleButton extends StatelessWidget {
     required this.size,
     required this.iconPath,
     this.iconColor,
+    this.boxShadow,
+    this.alignment
   });
   final VoidCallback? onTap;
   final double size;
   final String iconPath;
   final Color? iconColor;
+  final bool? boxShadow;
+  final bool? alignment;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,9 +29,9 @@ class CircleButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: context.colors.surface,
-          boxShadow: context.shadows.card,
+          boxShadow: boxShadow == true ? context.shadows.card : null,
         ),
-        alignment: Alignment.center,
+          alignment: alignment == true ? Alignment.center : null,
         child: SvgPicture.asset(
           iconPath,
           width: size - size * 0.40,

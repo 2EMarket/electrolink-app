@@ -36,13 +36,15 @@ class AppAssets {
   static const String customerServiceSvg = '$_svgPath/customer-service.svg';
   static const String checkOnSvg = '$_svgPath/check_on.svg';
   static const String checkOffSvg = '$_svgPath/check_off.svg';
-  static const String mapDetectorSvg = '$_svgPath/map_detector.svg';
+
   static const String noInternetSvg = '$_svgPath/no_internet.svg';
   static const String favoriteSvg = '$_svgPath/heart.svg';
 
   //Icons
-  static const String locationIcon = '$_svgPath/location_outlined.svg';
+  static const String locationIcon = '$_svgPath/location.svg';
   static const String locationFilledIcon = '$_svgPath/location_filled.svg';
+  static const String locationOutlinedIcon = '$_svgPath/location_outlined.svg';
+
   static const String unfavIcon = '$_svgPath/fav_outline.svg';
   static const String favIcon = '$_svgPath/fav_filled.svg';
   static const String cameraIcon = '$_svgPath/camera.svg';
@@ -60,6 +62,19 @@ class AppAssets {
   static const String profileOutlineIcon = '$_svgPath/profile_outline.svg';
   static const String chatFilledIcon = '$_svgPath/chat_filled.svg';
   static const String chatOutlineIcon = '$_svgPath/chat_outline.svg';
+  static const String calendarIcon = '$_svgPath/Calendar.svg';
+  static const String timeCircleIcon = '$_svgPath/Time Circle.svg';
+  static const String verifiedSvg = '$_svgPath/verifiedsvg.svg';
+  static const String verifiedPhoneSvg = '$_svgPath/smart-phone-01.svg';
+  static const String verifiedMessageSvg = '$_svgPath/Message.svg';
+  static const String verifiedIdentityCardSvg = '$_svgPath/identity-card.svg';
+  static const String mapDetectorSvg = '$_svgPath/map_detector.svg';
+
+  // Example image assets
+  static const String profilePic = '$_basePath/profile pic.png';
+  static const String noListing = '$_basePath/nolisting.png';
+
+  //Icons
   static const String cancelIcon = '$_svgPath/cancel.svg';
   static const String notificationIcon = '$_svgPath/notification.svg';
   static const String documentColoredIcon = '$_svgPath/document_colord.svg';

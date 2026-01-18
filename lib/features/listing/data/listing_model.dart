@@ -9,6 +9,7 @@ class ListingModel extends Equatable {
   final String category;
   final bool isFavorite;
   final bool isSold;
+  final String ownerId;
 
   const ListingModel({
     required this.id,
@@ -19,6 +20,7 @@ class ListingModel extends Equatable {
     required this.category,
     this.isSold = false,
     this.isFavorite = false,
+     this.ownerId = '1',
   });
 
   ListingModel copyWith({
@@ -67,6 +69,7 @@ final List<ListingModel> dummyListings = [
     category: 'Phones',
     isFavorite: true,
     isSold: true,
+    ownerId: '1'
   ),
   const ListingModel(
     id: '2',
@@ -77,6 +80,7 @@ final List<ListingModel> dummyListings = [
         'https://fdn2.gsmarena.com/vv/pics/apple/apple-macbook-pro-14-2021-01.jpg',
     category: 'Laptops',
     isFavorite: false,
+      ownerId: '1'
   ),
   const ListingModel(
     id: '3',
@@ -87,6 +91,7 @@ final List<ListingModel> dummyListings = [
         'https://m.media-amazon.com/images/I/51SKmu2G9FL._AC_UF1000,1000_QL80_.jpg',
     category: 'Audio',
     isFavorite: false,
+      ownerId: '1'
   ),
   const ListingModel(
     id: '4',
@@ -97,5 +102,6 @@ final List<ListingModel> dummyListings = [
         'https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-air-2022-1.jpg',
     category: 'Tablets',
     isFavorite: true,
+      ownerId: '1'
   ),
 ];

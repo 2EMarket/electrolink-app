@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/favorite_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/listings_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_screen.dart';
+
+import '../../features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
+import '../../features/profile/presentation/pages/public_profile/report_user_screen/send_report_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.mainLayout}',
+    initialLocation: '/${AppRoutes.reportUser}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -67,35 +66,26 @@ class AppRouter {
         name: AppRoutes.location,
         builder: (context, state) => LocationScreen(),
       ),
-      GoRoute(
-        path: '/${AppRoutes.verification}',
-        name: AppRoutes.verification,
-        builder: (context, state) => VerificationScreen(),
-      ),
+      // GoRoute(
+      //   path: '/${AppRoutes.home}',
+      //   name: AppRoutes.home,
+      //   builder: (context, state) => HomeScreen(),
+      // ),
       GoRoute(
         path: '/${AppRoutes.mainLayout}',
         name: AppRoutes.mainLayout,
         builder: (context, state) => MainLayoutScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoutes.listings,
-            name: AppRoutes.listings,
-            builder: (context, state) {
-              final args = state.extra as Map<String, dynamic>;
-              return ListingsScreen(
-                title: args['title'] as String,
-                listings: args['listings'] as List<ListingModel>,
-              );
-            },
-          ),
-          GoRoute(
-            path: AppRoutes.favorite,
-            name: AppRoutes.favorite,
-            builder: (context, state) => FavoriteScreen(),
-          ),
-        ],
       ),
-
+      GoRoute(
+        path: '/${AppRoutes.publicProfile}',
+        name: AppRoutes.publicProfile,
+        builder: (context, state) =>  PublicProfile(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.reportUser}',
+        name: AppRoutes.reportUser,
+        builder: (context, state) =>  SendReportScreen(),
+      ),
       // // Auth routes
       // GoRoute(
       //   path: '/${AppRoutes.signIn}',

@@ -1,6 +1,3 @@
-export 'package:second_hand_electronics_marketplace/core/widgets/text_area_inputs_description_field.dart';
-export 'package:second_hand_electronics_marketplace/core/widgets/text_inputs_username_field.dart';
-export 'package:second_hand_electronics_marketplace/core/widgets/text_inputs_phone_field.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/app_notification.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/custom_popup.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/custom_tab_controller.dart';
@@ -12,3 +9,5 @@ export 'package:second_hand_electronics_marketplace/core/widgets/notifications_l
 export 'package:second_hand_electronics_marketplace/core/widgets/otp_input_field.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/search&filter.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/status_feedback_widget.dart';
+export '../../features/profile/presentation/widgets/public_profile_widgets/bottom_sheet_profile_options.dart';
+export '../../features/profile/presentation/widgets/public_profile_widgets/empty_listings_section.dart';
