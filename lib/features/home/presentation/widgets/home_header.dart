@@ -14,6 +14,8 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/w
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_states.dart';
 
+import '../../../profile/presentation/widgets/report_user_widgets/toggle_circle_button.dart';
+
 class HomeHeader extends StatelessWidget {
   HomeHeader({super.key});
 
@@ -80,14 +82,26 @@ class HomeHeader extends StatelessWidget {
               ),
               Row(
                 children: [
-                  FavoriteButton(
+                  ToggleCircleButton(
+                    value: false,
+                    isActive: false,
+                    size: 40,
+                    activeIcon: AppAssets.favIcon,
+                    inactiveIcon: AppAssets.unfavIcon,
+                    activeColor: context.colors.error,
+                    inactiveColor: context.colors.icons,
+                    onTap: () {
+                      context.pushNamed(AppRoutes.favorite);
+                    },
+                  ),
+                 /* FavoriteButton(
                     isFavorite: false,
                     size: 40,
                     onTap: () {
                       context.pushNamed(AppRoutes.favorite);
                     },
                     isActive: false,
-                  ),
+                  ),*/
                   const SizedBox(width: AppSizes.paddingXS),
                   Stack(
                     children: [

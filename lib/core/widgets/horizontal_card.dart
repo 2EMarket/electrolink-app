@@ -8,6 +8,8 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
+import '../../features/profile/presentation/widgets/report_user_widgets/toggle_circle_button.dart';
+
 class HorizontalCard extends StatelessWidget {
   final ListingModel listing;
   final VoidCallback? onTap;
@@ -60,10 +62,18 @@ class HorizontalCard extends StatelessWidget {
                     Positioned(
                       top: AppSizes.paddingXS,
                       left: AppSizes.paddingXS,
-                      child: FavoriteButton(
+                      child: ToggleCircleButton(
+                        value: listing.isFavorite,
+                        size: favButtonSize,
+                        activeIcon: AppAssets.favIcon,
+                        inactiveIcon: AppAssets.unfavIcon,
+                        activeColor: context.colors.error,
+                        inactiveColor: context.colors.icons,
+                      ),
+                      /*   FavoriteButton(
                         isFavorite: listing.isFavorite,
                         size: favButtonSize,
-                      ),
+                      ),*/
                     ),
                   ],
                 ),
