@@ -52,7 +52,6 @@ class CustomPopup {
                       onPressed:
                           onSecondaryButtonPressed ??
                           () => Navigator.pop(context),
-
                       child: Text(secondaryButtonText),
                     ),
                   ),
