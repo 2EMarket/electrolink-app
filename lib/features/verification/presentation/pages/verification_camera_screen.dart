@@ -1,8 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'camera_overlay_painter.dart'; // استدعاء الرسام
+import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/camera_overlay_painter.dart';
 
 class VerificationCameraScreen extends StatefulWidget {
   final String title;

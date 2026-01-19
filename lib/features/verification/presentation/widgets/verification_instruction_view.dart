@@ -19,11 +19,10 @@ class VerificationInstructionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppSizes.paddingM),
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingM),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. العنوان الرئيسي
           Text(title, style: AppTypography.h3_18Medium),
           const SizedBox(height: AppSizes.paddingS),
 

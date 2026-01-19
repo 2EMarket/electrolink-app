@@ -2,14 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'camera_overlay_painter.dart'; // ✅ نفس الرسام عشان الإطار يضل موجود
+import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/camera_overlay_painter.dart';
 
 class VerificationPreviewScreen extends StatelessWidget {
   final String imagePath;
   final String title;
   final String subtitle;
 
-  const VerificationPreviewScreen({
+  VerificationPreviewScreen({
     super.key,
     required this.imagePath,
     required this.title,

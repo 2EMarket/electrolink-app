@@ -13,7 +13,7 @@ import 'package:second_hand_electronics_marketplace/features/verification/presen
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.mainLayout}',
+    initialLocation: '/${AppRoutes.verification}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
