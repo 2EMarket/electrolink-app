@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_sizes.dart';
-import '../../../../../core/widgets/trust_indicator_card.dart';
+import 'trust_indicator_card.dart';
 
 class TrustIndicatorsSection extends StatelessWidget {
   const TrustIndicatorsSection();

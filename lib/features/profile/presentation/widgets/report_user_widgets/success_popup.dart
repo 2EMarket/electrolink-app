@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_assets.dart';
-import '../../../../../core/widgets/custom_popup.dart';
-import '../../../../../core/widgets/status_feedback_widget.dart';
+import 'custom_popup.dart';
+import 'status_feedback_widget.dart';
 
 class SuccessPopup {
   static void show(

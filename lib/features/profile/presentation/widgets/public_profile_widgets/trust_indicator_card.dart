@@ -4,7 +4,7 @@ import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dar
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 
-import '../constants/app_sizes.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 class TrustIndicatorCard extends StatelessWidget {
   const TrustIndicatorCard({
