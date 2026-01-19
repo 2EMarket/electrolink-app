@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/status_feedback_widget.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/report_user_widgets/status_feedback_widget.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});

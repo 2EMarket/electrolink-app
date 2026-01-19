@@ -3,7 +3,7 @@ import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String label;
+  final String? label;
   final String hintText;
   final TextEditingController? controller;
   final bool isRequired;
@@ -15,7 +15,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? prefix;
   const CustomTextField({
     super.key,
-    required this.label,
+     this.label,
     required this.hintText,
     this.controller,
     this.isRequired = false,
@@ -62,10 +62,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (widget.label != null && widget.label!.isNotEmpty)
         Row(
           children: [
             Text(
-              widget.label,
+              widget.label!,
               style: AppTypography.body14Regular.copyWith(color: colors.titles),
             ),
             if (widget.isRequired) ...[
@@ -79,7 +80,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ],
           ],
         ),
-        const SizedBox(height: AppSizes.paddingXS),
+        if (widget.label != null && widget.label!.isNotEmpty)
+          const SizedBox(height: AppSizes.paddingXS),
         Stack(
           children: [
             TextFormField(

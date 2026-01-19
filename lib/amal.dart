@@ -7,6 +7,7 @@ import 'core/widgets/notification_overlay.dart';
 import 'core/widgets/otp_input_field.dart';
 import 'core/widgets/search&filter.dart';
 import 'core/widgets/widgets_exports.dart';
+import 'features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
 import 'imports.dart';
 
 class AmalsApp extends StatelessWidget {
@@ -15,7 +16,14 @@ class AmalsApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    return MaterialApp(
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(body: PublicProfile()),
+
+      /* final _formKey = GlobalKey<FormState>();
     final _descriptionController = TextEditingController();
     final usernameController = TextEditingController();
     final _phoneController = TextEditingController();
@@ -34,13 +42,8 @@ class AmalsApp extends StatelessWidget {
       title: 'New Message',
       message: 'You received a new message',
       type: NotificationType.newMessage,
-    );
-    return MaterialApp(
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      home:
+    );*/
+
       /*Builder(
         builder: (context) {
           return  Scaffold(
@@ -75,7 +78,7 @@ class AmalsApp extends StatelessWidget {
           );
         },
       ), */
-      Scaffold(
+      /*    Scaffold(
         appBar: AppBar(title: Text('Second Hand Electronics Marketplace')),
         body: Form(
           key: _formKey,
@@ -143,11 +146,7 @@ class AmalsApp extends StatelessWidget {
             ),
           ),
         ),
-      ),
-
-      // body: Center(
-      //   child: ElevatedButton(onPressed: () {}, child: Text('hi')),
-      // ),
+      ), */
     );
   }
 }

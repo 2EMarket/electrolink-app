@@ -8,6 +8,7 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
+
 class VerticalCard extends StatelessWidget {
   final ListingModel listing;
   final VoidCallback? onTap;

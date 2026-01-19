@@ -14,9 +14,11 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.onTap,
     required this.onAddTap,
   });
+
   final int currentIndex;
   final Function(int) onTap;
   final VoidCallback onAddTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,7 +85,7 @@ class CustomBottomNavBar extends StatelessWidget {
       onTap: () => onTap(index),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
-        width: 73.2,
+        width: 64,
         height: 56,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -93,10 +95,13 @@ class CustomBottomNavBar extends StatelessWidget {
 
             if (isSelected) ...[
               const SizedBox(height: AppSizes.paddingXS),
-              Text(
-                label,
-                style: AppTypography.label12Medium.copyWith(
-                  color: context.colors.mainColor,
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  style: AppTypography.label12Medium.copyWith(
+                    color: context.colors.mainColor,
+                  ),
                 ),
               ),
             ],

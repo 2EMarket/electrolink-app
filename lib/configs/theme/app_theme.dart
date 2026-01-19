@@ -38,7 +38,12 @@ class AppTheme {
           );
         },
       ),
-
+      listTileTheme: const ListTileThemeData(
+        contentPadding: EdgeInsets.zero,
+        dense: true,
+        minVerticalPadding: 0,
+        visualDensity: VisualDensity.compact,
+      ),
       colorScheme: ColorScheme(
         brightness: brightness,
         primary: colors.mainColor,
