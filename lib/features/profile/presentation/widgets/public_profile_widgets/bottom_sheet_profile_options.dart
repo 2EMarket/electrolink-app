@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/constants/app_sizes.dart';
-
 
 // you can use this vertical More Icon function to show the bottom sheet
 void showCustomBottomSheet(BuildContext context) {
@@ -43,7 +44,7 @@ class BottomSheetProfileOptions extends StatelessWidget {
               Text('Options', style: Theme.of(context).textTheme.titleSmall),
               const Spacer(),
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 icon: Container(
                   width: 19,
                   height: 19,
@@ -61,7 +62,10 @@ class BottomSheetProfileOptions extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomLeft,
               child: InkWell(
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  context.pop(); // أولًا تغلق الـ bottom sheet
+                  context.goNamed(AppRoutes.reportUser); // ثم تنتقل للصفحة
+                },
                 child: Text(
                   'Report',
                   style: Theme.of(context).textTheme.bodySmall,

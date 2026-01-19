@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../../core/constants/app_routes.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../widgets/report_user_widgets/error_popup.dart';
 import '../../../widgets/report_user_widgets/report_reson_selector.dart';
@@ -42,7 +44,11 @@ class _SendReportScreenState extends State<SendReportScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           onPressed: () {
-            //    Navigator.of(context).pop();
+            if (GoRouter.of(context).canPop()) {
+              context.pop();
+            } else {
+              context.goNamed(AppRoutes.publicProfile); // أو أي شاشة افتراضية تريد الرجوع لها
+            }
           },
         ),
       ),

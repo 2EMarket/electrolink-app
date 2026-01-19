@@ -12,7 +12,7 @@ import '../../features/profile/presentation/pages/public_profile/report_user_scr
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.reportUser}',
+    initialLocation: '/${AppRoutes.publicProfile}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
