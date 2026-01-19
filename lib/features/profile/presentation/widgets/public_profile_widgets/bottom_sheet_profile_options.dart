@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/constants/app_sizes.dart';
 
@@ -41,7 +42,8 @@ class BottomSheetProfileOptions extends StatelessWidget {
           Row(
             children: [
               const Spacer(),
-              Text('Options', style: Theme.of(context).textTheme.titleSmall),
+              Text('Options',
+                  style: AppTypography.body16Medium.copyWith(color:context.colors.titles)),
               const Spacer(),
               IconButton(
                 onPressed: () => context.pop(),
@@ -68,7 +70,7 @@ class BottomSheetProfileOptions extends StatelessWidget {
                 },
                 child: Text(
                   'Report',
-                  style: Theme.of(context).textTheme.bodySmall,
+                    style: AppTypography.body14Regular.copyWith(color:context.colors.titles)
                 ),
               ),
             ),

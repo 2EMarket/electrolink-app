@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/widgets/custom_textfield.dart';
 
 class ReportReasonSelector extends StatelessWidget {
@@ -30,7 +31,9 @@ class ReportReasonSelector extends StatelessWidget {
             dense: true,
             title: Text(
               reasons[index],
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: AppTypography.body16Regular.copyWith(
+                color: context.colors.titles,
+              ),
             ),
             onChanged: (int? value) => onChanged(value!),
           ),

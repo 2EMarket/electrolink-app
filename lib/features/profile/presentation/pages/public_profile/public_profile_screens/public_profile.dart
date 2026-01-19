@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
+import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../../../../core/widgets/widgets_exports.dart';
 import '../../../../../listing/data/listing_model.dart';
@@ -33,12 +34,7 @@ class PublicProfile extends StatelessWidget {
             .toList();
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          onPressed: () {},
-        ),
         title: Text(profile.name),
-        centerTitle: true,
         actions: [
           IconButton(
             icon: Padding(
@@ -63,12 +59,13 @@ class PublicProfile extends StatelessWidget {
             const SizedBox(height: AppSizes.paddingL),
             Text(
               'Trust Indicators',
-              style: Theme.of(context).textTheme.titleSmall,
+              style: AppTypography.body16Medium.copyWith(color:context.colors.titles)
             ),
             const SizedBox(height: AppSizes.paddingXS),
             const TrustIndicatorsSection(),
             const SizedBox(height: AppSizes.paddingM),
-            Text('Add Listings', style: Theme.of(context).textTheme.titleSmall),
+            Text('Active Listings',
+                style: AppTypography.body16Medium.copyWith(color:context.colors.titles)),
             const SizedBox(height: AppSizes.paddingM),
             //   const EmptyListingsSection(),
             ProfileListingsSection(listings: userListings),

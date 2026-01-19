@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../../configs/theme/app_colors.dart';
+import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_routes.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../widgets/report_user_widgets/error_popup.dart';
@@ -40,17 +42,18 @@ class _SendReportScreenState extends State<SendReportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Report User'),
-        centerTitle: true,
-        leading: IconButton(
+        /*  leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           onPressed: () {
             if (GoRouter.of(context).canPop()) {
               context.pop();
             } else {
-              context.goNamed(AppRoutes.publicProfile); // أو أي شاشة افتراضية تريد الرجوع لها
+              context.goNamed(
+                AppRoutes.publicProfile,
+              ); // أو أي شاشة افتراضية تريد الرجوع لها
             }
           },
-        ),
+        ), */
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -88,7 +91,9 @@ class _SendReportScreenState extends State<SendReportScreen> {
             Center(
               child: Text(
                 "The reported user will not be notified.",
-                style: Theme.of(context).textTheme.labelLarge,
+                style: AppTypography.label12Regular.copyWith(
+                  color: context.colors.titles,
+                ),
               ),
             ),
           ],

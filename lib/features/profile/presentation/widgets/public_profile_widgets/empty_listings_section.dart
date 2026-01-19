@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
 
+import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_sizes.dart';
 
@@ -23,7 +24,9 @@ class EmptyListingsSection extends StatelessWidget {
             const SizedBox(height: AppSizes.paddingM),
             Text(
               'This user has no active listing',
-              style: Theme.of(context).textTheme.labelLarge,
+              style: AppTypography.label12Regular.copyWith(
+                color: context.colors.titles,
+              ),
             ),
           ],
         ),

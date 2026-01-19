@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/public_profile_widgets/public_profile_info_row.dart';
 
+import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../data/models/public_profile_view_data.dart';
@@ -28,7 +29,9 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.labelLarge;
+    final textStyle = AppTypography.label12Regular.copyWith(
+      color: context.colors.titles,
+    );
     return Container(
       padding: const EdgeInsets.all(AppSizes.paddingM),
       decoration: BoxDecoration(
@@ -74,7 +77,12 @@ class ProfileHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(profile.name, style: Theme.of(context).textTheme.bodyLarge),
+              Text(
+                profile.name,
+                style: AppTypography.h3_18Regular.copyWith(
+                  color: context.colors.titles,
+                ),
+              ),
               const SizedBox(height: AppSizes.paddingXS),
               PublicProfileInfoRow(
                 icon: AppAssets.locationOutlinedIcon,
