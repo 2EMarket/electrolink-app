@@ -145,7 +145,7 @@ class _State extends State<_ToastAnimationWrapper>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 60,
+      bottom: 60,
       left: 20,
       right: 20,
       child: Material(

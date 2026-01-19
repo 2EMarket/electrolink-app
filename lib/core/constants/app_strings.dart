@@ -39,6 +39,7 @@ class AppStrings {
   static const String confirm = "Confirm";
   static const String location = "Location";
   static const String favorite = 'Favorite';
+  static const String identityVerification = 'Identity Verification';
   //login
   static const String login = 'Login';
 
@@ -63,4 +64,11 @@ class AppStrings {
   static const String recent = 'Recent';
   static const String nearby = 'Nearby';
   static const String sort = 'Sort';
+
+  //verification
+  static const String selectYourIdType = 'Select your ID type';
+  static const String idCard = 'ID Card';
+  static const String passport = 'Passport';
+  static const String driversLicense = 'Driver\'s License';
+  static const String continueText = 'Continue';
 }

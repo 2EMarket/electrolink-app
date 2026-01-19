@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:country_picker/country_picker.dart'; // ✅ استدعاء المكتبة
-import 'package:flutter_svg/svg.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/custom_radio_button_item.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/location_bottomsheet.dart';
 
 class CountrySelectionScreen extends StatefulWidget {
@@ -106,10 +106,14 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                                 _selectedCountry?.countryCode ==
                                 country.countryCode;
 
-                            return _buildCountryPickerItem(
-                              country,
-                              context,
-                              isSelected,
+                            return CustomRadioButtonItem(
+                              label: country.name,
+                              isSelected: isSelected,
+                              onTap: () {
+                                setState(() {
+                                  _selectedCountry = country;
+                                });
+                              },
                             );
                           },
                         ),
@@ -144,75 +148,4 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
     );
   }
 
-  GestureDetector _buildCountryPickerItem(
-    Country country,
-    BuildContext context,
-    bool isSelected,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedCountry = country;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.paddingM,
-          vertical: AppSizes.paddingS,
-        ),
-        decoration: BoxDecoration(
-          color: context.colors.surface,
-          borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-          border: Border.all(
-            color:
-                isSelected ? context.colors.mainColor : context.colors.border,
-            width: 1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 200,
-              child: Text(
-                country.name,
-                style: AppTypography.body16Regular.copyWith(
-                  color: isSelected ? context.colors.text : context.colors.hint,
-
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color:
-                      isSelected
-                          ? context.colors.mainColor
-                          : context.colors.placeholders,
-                  width: 1.5,
-                ),
-              ),
-              child:
-                  isSelected
-                      ? Center(
-                        child: Container(
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            color: context.colors.mainColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      )
-                      : null,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
