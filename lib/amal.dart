@@ -5,7 +5,6 @@ import 'configs/theme/theme_exports.dart';
 import 'core/widgets/app_notification.dart';
 import 'core/widgets/notification_overlay.dart';
 import 'core/widgets/otp_input_field.dart';
-import 'core/widgets/search&filter.dart';
 import 'core/widgets/widgets_exports.dart';
 import 'features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
 import 'imports.dart';
