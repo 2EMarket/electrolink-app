@@ -7,8 +7,12 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
 
+import '../../features/home/presentation/pages/favorite_screen.dart';
+import '../../features/home/presentation/pages/listings_screen.dart';
+import '../../features/listing/data/listing_model.dart';
 import '../../features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
 import '../../features/profile/presentation/pages/public_profile/report_user_screen/send_report_screen.dart';
+import '../../features/verification/presentation/pages/verification_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
@@ -66,6 +70,11 @@ class AppRouter {
         name: AppRoutes.location,
         builder: (context, state) => LocationScreen(),
       ),
+      GoRoute(
+        path: '/${AppRoutes.verification}',
+        name: AppRoutes.verification,
+        builder: (context, state) => VerificationScreen(),
+      ),
       // GoRoute(
       //   path: '/${AppRoutes.home}',
       //   name: AppRoutes.home,
@@ -75,16 +84,34 @@ class AppRouter {
         path: '/${AppRoutes.mainLayout}',
         name: AppRoutes.mainLayout,
         builder: (context, state) => MainLayoutScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoutes.listings,
+            name: AppRoutes.listings,
+            builder: (context, state) {
+              final args = state.extra as Map<String, dynamic>;
+              return ListingsScreen(
+                title: args['title'] as String,
+                listings: args['listings'] as List<ListingModel>,
+              );
+            },
+          ),
+          GoRoute(
+            path: AppRoutes.favorite,
+            name: AppRoutes.favorite,
+            builder: (context, state) => FavoriteScreen(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/${AppRoutes.publicProfile}',
         name: AppRoutes.publicProfile,
-        builder: (context, state) =>  PublicProfile(),
+        builder: (context, state) => PublicProfile(),
       ),
       GoRoute(
         path: '/${AppRoutes.reportUser}',
         name: AppRoutes.reportUser,
-        builder: (context, state) =>  SendReportScreen(),
+        builder: (context, state) => SendReportScreen(),
       ),
       // // Auth routes
       // GoRoute(
