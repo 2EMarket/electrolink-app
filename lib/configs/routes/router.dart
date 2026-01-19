@@ -6,6 +6,7 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/user_profile.dart';
 
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
@@ -16,7 +17,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.publicProfile}',
+    initialLocation: '/${AppRoutes.userProfile}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -124,6 +125,11 @@ class AppRouter {
       //   name: AppRoutes.signUp,
       //   builder: (context, state) => SignUpPage(),
       // ),
+      GoRoute(
+        path: '/${AppRoutes.userProfile}',
+        name: AppRoutes.userProfile,
+        builder: (context, state) => UserProfile(),
+      ),
     ],
 
     // Error page

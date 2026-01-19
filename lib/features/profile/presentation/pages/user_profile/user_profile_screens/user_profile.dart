@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
+
+import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../configs/theme/app_typography.dart';
+import '../../../../../../core/constants/app_assets.dart';
 import '../../../../../../core/constants/app_sizes.dart';
-import '../../../../../../core/widgets/widgets_exports.dart';
 import '../../../../../listing/data/listing_model.dart';
 import '../../../../data/models/profile_view_data.dart';
 import '../../../../data/models/user_model.dart';
 import '../../../widgets/public_profile_widgets/profile_header.dart';
+import '../../../widgets/public_profile_widgets/public_profile_info_row.dart';
 import '../../../widgets/public_profile_widgets/trust_indicators_section.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/listings_grid_view.dart';
+import '../../public_profile/public_profile_screens/public_profile.dart';
 
-class PublicProfile extends StatelessWidget {
-  PublicProfile({super.key});
+class UserProfile extends StatelessWidget {
+  UserProfile({super.key});
 
   final mockUser = UserModel(
-    id: '2',
+    id: '1',
     name: 'Eleanor Vance',
     avatar: AppAssets.profilePic,
     location: 'Berlin',
@@ -29,7 +30,7 @@ class PublicProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final profile = ProfileViewData.fromUser(
       mockUser,
-      type: ProfileType.public,
+      type: ProfileType.private,
     );
     final userListings =
         dummyListings
@@ -37,14 +38,14 @@ class PublicProfile extends StatelessWidget {
             .toList();
     return Scaffold(
       appBar: AppBar(
-        title: Text(profile.name),
+        title: Text('Profile'),
         actions: [
           IconButton(
             icon: Padding(
               padding: const EdgeInsets.all(AppSizes.paddingS),
-              child: Icon(Icons.more_vert, color: context.colors.icons),
+              child: Icon(Icons.settings_rounded, color: context.colors.icons),
             ),
-            onPressed: () => showCustomBottomSheet(context),
+            onPressed: () {},
           ),
         ],
       ),
@@ -57,26 +58,34 @@ class PublicProfile extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ProfileHeader(
               profile: profile, // ProfileViewData
-              type: ProfileType.public,
-            ),
-            const SizedBox(height: AppSizes.paddingL),
-            Text(
-              'Trust Indicators',
-              style: AppTypography.body16Medium.copyWith(
-                color: context.colors.titles,
-              ),
+              type: ProfileType.private,
             ),
             const SizedBox(height: AppSizes.paddingXS),
             const TrustIndicatorsSection(),
             const SizedBox(height: AppSizes.paddingM),
-            Text(
-              'Active Listings',
-              style: AppTypography.body16Medium.copyWith(
-                color: context.colors.titles,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'My Listings',
+                  style: AppTypography.body16Medium.copyWith(
+                    color: context.colors.titles,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'See All',
+                    style: AppTypography.label12Regular.copyWith(
+                      color: context.colors.titles,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: AppSizes.paddingM),
             //   const EmptyListingsSection(),
@@ -84,25 +93,6 @@ class PublicProfile extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ProfileListingsSection extends StatelessWidget {
-  final List<ListingModel> listings;
-
-  const ProfileListingsSection({super.key, required this.listings});
-
-  @override
-  Widget build(BuildContext context) {
-    if (listings.isEmpty) {
-      return const EmptyListingsSection();
-    }
-
-    return ListingsGridView(
-      listings: listings,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
     );
   }
 }

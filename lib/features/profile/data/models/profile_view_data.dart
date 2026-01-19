@@ -1,62 +1,71 @@
 import 'package:second_hand_electronics_marketplace/features/profile/data/models/user_model.dart';
+enum ProfileType {
+  public,
+  private,
+}
 
-class PublicProfileViewData {
+class ProfileViewData {
   final String name;
   final String avatar;
   final String location;
   final String memberSince;
-  final String lastSeen;
-  final String responseTime;
+  final String? lastSeen;
+  final String? responseTime;
   final bool isOnline;
-  const PublicProfileViewData({
+
+  // private-only
+  final String? email;
+  final String? phone;
+
+  const ProfileViewData({
     required this.name,
     required this.avatar,
     required this.location,
     required this.memberSince,
-    required this.lastSeen,
-    required this.responseTime,
     required this.isOnline,
-
+    this.lastSeen,
+    this.responseTime,
+    this.email,
+    this.phone,
   });
 
-  factory PublicProfileViewData.fromUser(UserModel user) {
-    return PublicProfileViewData(
+  factory ProfileViewData.fromUser(
+      UserModel user, {
+        required ProfileType type,
+      }) {
+    return ProfileViewData(
       name: user.name,
       avatar: user.avatar,
       location: user.location,
       memberSince: _formatDate(user.createdAt),
-      lastSeen: _formatLastSeen(user.lastSeen),
-      responseTime: _formatResponseTime(user.responseTimeMinutes),
-      isOnline: user.isOnline, // جديد
+      isOnline: user.isOnline,
 
+      lastSeen: type == ProfileType.public
+          ? _formatLastSeen(user.lastSeen)
+          : null,
+
+      responseTime: type == ProfileType.public
+          ? _formatResponseTime(user.responseTimeMinutes)
+          : 'Replies within ${user.responseTimeMinutes} min',
+
+
+      email: type == ProfileType.private ? 'user@email.com' : null,
+      phone: type == ProfileType.private ? '+970...' : null,
     );
   }
 }
-
 String _formatDate(DateTime date) {
-  // نعرض الشهر والسنة فقط
   return '${_monthName(date.month)} ${date.year}';
 }
 
 String _monthName(int month) {
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
   return months[month - 1];
 }
 
-// output: May 2023
 String _formatLastSeen(DateTime lastSeen) {
   final duration = DateTime.now().difference(lastSeen);
 
@@ -69,8 +78,6 @@ String _formatLastSeen(DateTime lastSeen) {
   }
 }
 
-// إذا آخر ظهور قبل ساعة:
-// output: 1 hour ago
 String _formatResponseTime(int minutes) {
   if (minutes < 60) {
     return 'Replies within $minutes min';
@@ -79,5 +86,3 @@ String _formatResponseTime(int minutes) {
     return 'Replies within $hours hr';
   }
 }
-
-// minutes = 60 → "Replies within 1 hr"
