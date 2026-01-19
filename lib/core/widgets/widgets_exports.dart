@@ -6,7 +6,6 @@ export 'package:second_hand_electronics_marketplace/core/widgets/notification_ov
 export 'package:second_hand_electronics_marketplace/core/widgets/notification_toast.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/notifications_list.dart';
 export 'package:second_hand_electronics_marketplace/core/widgets/otp_input_field.dart';
-export 'package:second_hand_electronics_marketplace/core/widgets/search&filter.dart';
 export 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/report_user_widgets/status_feedback_widget.dart';
 export '../../features/profile/presentation/widgets/public_profile_widgets/bottom_sheet_profile_options.dart';
 export '../../features/profile/presentation/widgets/public_profile_widgets/empty_listings_section.dart';

@@ -5,6 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/notification_toast.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/progress_indicator.dart';
 import 'package:second_hand_electronics_marketplace/features/verification/data/enums/id_type.dart';
 import 'package:second_hand_electronics_marketplace/features/verification/data/models/verification_form_data.dart';
 import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_camera_screen.dart';
@@ -172,8 +173,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  // Helper method to handle selfie capture, preview, and validation flow
-  // Helper method to handle selfie capture, preview, and validation flow
   Future<void> _handleSelfieCapture({
     required Function(String) onValidated,
   }) async {
@@ -302,16 +301,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: progressValue,
-                        minHeight: 16,
-                        backgroundColor: context.colors.border,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          context.colors.mainColor,
-                        ),
-                      ),
+                    child: ProgressIndicatorWidget(
+                      progressValue: progressValue,
                     ),
                   ),
                   const SizedBox(width: AppSizes.paddingM),
