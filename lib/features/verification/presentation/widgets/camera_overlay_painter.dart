@@ -5,7 +5,7 @@ class CameraOverlayPainter extends CustomPainter {
   final Color overlayColor;
 
   CameraOverlayPainter({
-    this.overlayColor = const Color.fromRGBO(0, 0, 0, 0.7), // أسود شفاف 70%
+    this.overlayColor = const Color.fromRGBO(0, 0, 0, 255), // أسود شفاف 70%
   });
 
   @override

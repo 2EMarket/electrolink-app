@@ -2,22 +2,20 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/notification_toast.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/progress_indicator.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/data/enums/id_type.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/data/models/verification_form_data.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_camera_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_preview_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/steps/verification_type_selection_step.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/steps/verification_capture_step.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/steps/verification_selfie_step.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/steps/verification_success_step.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/verification_instruction_view.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/services/verification_service.dart';
-
-enum VerificationStep { selectType, frontId, backId, selfie, success }
+import 'package:second_hand_electronics_marketplace/core/widgets/widgets_exports.dart';
+import 'package:second_hand_electronics_marketplace/features/verification/data/models/verification_content.dart';
+import '../../../../configs/theme/theme_exports.dart';
+import '../../../../core/widgets/notification_toast.dart';
+import '../../../../core/widgets/progress_indicator.dart';
+import '../../data/enums/id_type.dart';
+import '../../data/models/verification_form_data.dart';
+import '../../services/verification_service.dart';
+import '../widgets/steps/verification_success_step.dart';
+import '../widgets/steps/verification_type_selection_step.dart';
+import '../widgets/verification_instruction_view.dart';
+import 'verification_camera_screen.dart';
+import 'verification_preview_screen.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -28,22 +26,31 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final VerificationService _verificationService = VerificationService();
-
   final VerificationFormData _formData = VerificationFormData();
+
   VerificationStep currentStep = VerificationStep.selectType;
-  double get progressValue {
+
+  int get totalSteps {
+    return _formData.idType == IdType.passport ? 3 : 4;
+  }
+
+  int get currentStepNumber {
     switch (currentStep) {
       case VerificationStep.selectType:
-        return 0.25;
+        return 1;
       case VerificationStep.frontId:
-        return 0.50;
+        return 2;
       case VerificationStep.backId:
-        return 0.75;
+        return 3;
       case VerificationStep.selfie:
-        return 1.0;
+        return _formData.idType == IdType.passport ? 3 : 4;
       case VerificationStep.success:
-        return 1.0;
+        return totalSteps;
     }
+  }
+
+  double get progressValue {
+    return currentStepNumber / totalSteps;
   }
 
   void nextStep() {
@@ -52,15 +59,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
         case VerificationStep.selectType:
           currentStep = VerificationStep.frontId;
           break;
+
         case VerificationStep.frontId:
-          currentStep = VerificationStep.backId;
+          if (_formData.idType == IdType.passport) {
+            currentStep = VerificationStep.selfie;
+          } else {
+            currentStep = VerificationStep.backId;
+          }
           break;
+
         case VerificationStep.backId:
           currentStep = VerificationStep.selfie;
           break;
+
         case VerificationStep.selfie:
           currentStep = VerificationStep.success;
           break;
+
         case VerificationStep.success:
           context.pop();
           break;
@@ -78,24 +93,56 @@ class _VerificationScreenState extends State<VerificationScreen> {
         case VerificationStep.frontId:
           currentStep = VerificationStep.selectType;
           break;
+
         case VerificationStep.backId:
           currentStep = VerificationStep.frontId;
           break;
+
         case VerificationStep.selfie:
-          currentStep = VerificationStep.backId;
+          if (_formData.idType == IdType.passport) {
+            currentStep = VerificationStep.frontId;
+          } else {
+            currentStep = VerificationStep.backId;
+          }
           break;
+
         default:
           break;
       }
     });
   }
 
-  void _showErrorSnackBar(String message) {
-    NotificationToast.show(
-      context,
-      'Please try again',
-      message,
-      ToastType.error,
+  Future<bool> _checkCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (status.isDenied) status = await Permission.camera.request();
+    if (status.isPermanentlyDenied) {
+      _showPermissionDialog();
+      return false;
+    }
+    return status.isGranted;
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text(AppStrings.cameraPermTitle),
+            content: const Text(AppStrings.cameraPermTitle),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(AppStrings.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  openAppSettings();
+                },
+                child: const Text(AppStrings.openSettings),
+              ),
+            ],
+          ),
     );
   }
 
@@ -106,12 +153,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
     required String previewSubtitle,
     required Function(String) onValidated,
   }) async {
-    final hasPermission = await _checkCameraPermission();
-    if (!hasPermission) return; // إذا فشل، وقف الدالة فوراً
+    if (!await _checkCameraPermission()) return;
+    if (!mounted) return;
 
-    // 2. Open camera (نكمل الكود عادي)
-    if (!mounted) return; // تأكد إن الشاشة
-    // 1. Open camera
     final imagePath = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -123,8 +167,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
 
-    // 2. If we got an image, open preview
     if (imagePath != null) {
+      if (!mounted) return;
       final isConfirmed = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -137,46 +181,49 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       );
 
-      // 3. If confirmed, validate AND compress
       if (isConfirmed == true) {
-        // Show loading indicator
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (c) => const Center(child: CircularProgressIndicator()),
         );
 
-        // A. Validate using service
+        // 1. Validation
         final isValid = await _verificationService.validateIdCard(imagePath);
 
-        // B. Compress if valid
-        String finalPath = imagePath; // نفترض المسار الأصلي أولاً
+        // 2. Compression (if valid)
+        String finalPath = imagePath;
         if (isValid) {
           final compressedPath = await _verificationService.compressImage(
             imagePath,
           );
-          if (compressedPath != null) {
-            finalPath = compressedPath; // نعتمد المسار المضغوط
-          }
+          if (compressedPath != null) finalPath = compressedPath;
         }
 
         if (!mounted) return;
-        Navigator.pop(context); // Hide loading
+        Navigator.pop(context); // Hide Loading
 
-        // C. Handle result
         if (isValid) {
-          onValidated(finalPath); // ✅ نمرر الصورة المضغوطة
+          onValidated(finalPath);
         } else {
-          _showErrorSnackBar("Please ensure the ID is clear and well-lit.");
+          NotificationToast.show(
+            context,
+            'Please try again',
+            "Please ensure the ID is clear and well-lit.",
+            ToastType.error,
+          );
         }
       }
     }
   }
 
+  // 🤳 معالجة التقاط السيلفي
   Future<void> _handleSelfieCapture({
     required Function(String) onValidated,
   }) async {
-    // 1. Open camera (front-facing)
+    if (!await _checkCameraPermission()) return;
+    if (!mounted) return;
+
     final imagePath = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -189,8 +236,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
 
-    // 2. Preview
     if (imagePath != null) {
+      if (!mounted) return;
       final isConfirmed = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -203,87 +250,72 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       );
 
-      // 3. Validate AND compress
       if (isConfirmed == true) {
-        // Show loading indicator
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (c) => const Center(child: CircularProgressIndicator()),
         );
 
-        // A. Validate using service
+        // 1. Validation
         final isValid = await _verificationService.validateSelfie(imagePath);
 
-        // B. Compress if valid
+        // 2. Compression (if valid)
         String finalPath = imagePath;
         if (isValid) {
           final compressedPath = await _verificationService.compressImage(
             imagePath,
           );
-          if (compressedPath != null) {
-            finalPath = compressedPath;
-          }
+          if (compressedPath != null) finalPath = compressedPath;
         }
 
         if (!mounted) return;
-        Navigator.pop(context); // Hide loading
+        Navigator.pop(context); // Hide Loading
 
-        // C. Handle result
         if (isValid) {
-          onValidated(finalPath); // ✅ نمرر الصورة المضغوطة
+          onValidated(finalPath);
         } else {
-          _showErrorSnackBar(
+          NotificationToast.show(
+            context,
+            'Please try again',
             "Face validation failed. Please ensure good lighting and look straight at the camera.",
+            ToastType.error,
           );
         }
       }
     }
   }
 
-  Future<bool> _checkCameraPermission() async {
-    // 1. فحص الحالة الحالية
-    var status = await Permission.camera.status;
-
-    // 2. إذا لم يتم طلبه من قبل، نطلبه الآن
-    if (status.isDenied) {
-      status = await Permission.camera.request();
+  Widget _buildCaptureStep(VerificationStep step) {
+    final content = step.getContent(_formData.idType ?? IdType.idCard);
+    void onImageValidated(String path) {
+      setState(() {
+        if (step == VerificationStep.frontId) _formData.frontIdPath = path;
+        if (step == VerificationStep.backId) _formData.backIdPath = path;
+        if (step == VerificationStep.selfie) _formData.selfiePath = path;
+      });
+      print("✅ ${step.name} Validated & Saved: $path");
+      nextStep();
     }
 
-    // 3. إذا المستخدم اختار "Don't allow" بشكل نهائي (أو رفض مرتين)
-    if (status.isPermanentlyDenied) {
-      _showPermissionDialog(); // نعرض له رسالة توجيه للإعدادات
-      return false;
+    VoidCallback onTakePictureAction;
+    if (step == VerificationStep.selfie) {
+      onTakePictureAction =
+          () => _handleSelfieCapture(onValidated: onImageValidated);
+    } else {
+      onTakePictureAction =
+          () => _handleIdCardCapture(
+            cameraTitle: content.cameraTitle,
+            cameraDescription: content.cameraDesc,
+            previewTitle: content.previewTitle,
+            previewSubtitle: content.previewSubtitle,
+            onValidated: onImageValidated,
+          );
     }
 
-    // 4. نرجع النتيجة (true إذا وافق، false إذا رفض)
-    return status.isGranted;
-  }
-
-  /// دالة تعرض نافذة تنبيه لفتح الإعدادات
-  void _showPermissionDialog() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text("Camera Permission Required"),
-            content: const Text(
-              "We need camera access to verify your identity. Please enable it in settings.",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  openAppSettings(); // 👈 تفتح إعدادات التطبيق في الجوال
-                },
-                child: const Text("Open Settings"),
-              ),
-            ],
-          ),
+    return VerificationInstructionView(
+      content: content,
+      onTakePicture: onTakePictureAction,
     );
   }
 
@@ -311,12 +343,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       style: AppTypography.label12Regular,
                       children: [
                         TextSpan(
-                          text: "${(progressValue * 4).toInt()}",
+                          // ✅ التعديل هنا: رقم الخطوة الحالية
+                          text: "$currentStepNumber",
                           style: TextStyle(color: context.colors.mainColor),
                         ),
-
                         TextSpan(
-                          text: " / 4",
+                          // ✅ التعديل هنا: العدد الكلي (يصير 3 للجواز و 4 للباقي)
+                          text: " / $totalSteps",
                           style: TextStyle(color: context.colors.icons),
                         ),
                       ],
@@ -326,60 +359,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
           const SizedBox(height: AppSizes.paddingL),
+
           Expanded(child: _buildCurrentStepBody()),
         ],
       ),
     );
-  }
-
-  // تعريف هيكل البيانات لكل خطوة
-  Map<String, dynamic> _getStepConfig(VerificationStep step) {
-    switch (step) {
-      case VerificationStep.frontId:
-        return {
-          "title": "Capture the Front of Your ID",
-          "subtitle": "Follow the guidelines for best quality",
-          "guidelines": [
-            "Place the ID inside the frame",
-            "Avoid glare, shadows, or blur",
-            "Make sure details are readable",
-          ],
-          "cameraTitle": "Capture Front ID",
-          "cameraDesc": "Place the front of your ID within the frame.",
-          "previewTitle": "Check your Front ID",
-          "previewSubtitle": "Make sure details are clear and readable.",
-        };
-
-      case VerificationStep.backId:
-        return {
-          "title": "Capture the Back of Your ID",
-          "subtitle": "Follow the guidelines for best quality",
-          "guidelines": [
-            "Flip your ID card to the back side",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear",
-          ],
-          "cameraTitle": "Capture Back ID",
-          "cameraDesc": "Place the back of your ID within the frame.",
-          "previewTitle": "Check your Back ID",
-          "previewSubtitle": "Make sure details are clear and readable.",
-        };
-
-      case VerificationStep.selfie:
-        return {
-          "title": "Take a Selfie With Your ID",
-          "subtitle": "Follow the guidelines for best quality",
-          "guidelines": [
-            "Hold your ID near your face",
-            "Ensure good lighting",
-            "Look straight at the camera",
-          ],
-          // السيلفي لا يحتاج نصوص كاميرا إضافية لأنها ثابتة في الدالة الخاصة به
-        };
-
-      default:
-        return {};
-    }
   }
 
   Widget _buildCurrentStepBody() {
@@ -392,74 +376,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
           },
           onContinue: nextStep,
         );
+
       case VerificationStep.frontId:
-        return VerificationInstructionView(
-          title: "Capture the Front of Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Place the ID inside the frame",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear and details are readable",
-          ],
-          onTakePicture:
-              () => _handleIdCardCapture(
-                cameraTitle: "Capture Front ID",
-                cameraDescription:
-                    "Place the front of your ID within the frame.",
-                previewTitle: "Check your Front ID",
-                previewSubtitle: "Make sure details are clear and readable.",
-                onValidated: (imagePath) {
-                  setState(() => _formData.frontIdPath = imagePath); // ✅ للوجه
-                  print("✅ Front ID Validated & Saved");
-                  nextStep();
-                },
-              ),
-        );
-
       case VerificationStep.backId:
-        return VerificationInstructionView(
-          title: "Capture the Back of Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Flip your ID card to the back side",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear",
-          ],
-          onTakePicture:
-              () => _handleIdCardCapture(
-                cameraTitle: "Capture Back ID",
-                cameraDescription:
-                    "Place the back of your ID within the frame.",
-                previewTitle: "Check your Back ID",
-                previewSubtitle: "Make sure details are clear and readable.",
-                onValidated: (imagePath) {
-                  setState(() => _formData.backIdPath = imagePath); // ✅ للظهر
-                  print("✅ Back ID Validated & Saved");
-                  nextStep();
-                },
-              ),
-        );
-
       case VerificationStep.selfie:
-        return VerificationInstructionView(
-          title: "Take a Selfie With Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Hold your ID near your face",
-            "Ensure good lighting on your face",
-            "Look straight at the camera",
-          ],
-          onTakePicture:
-              () => _handleSelfieCapture(
-                onValidated: (imagePath) {
-                  setState(() => _formData.selfiePath = imagePath); // ✅ للسيلفي
-                  nextStep();
-                },
-              ),
-        );
+        return _buildCaptureStep(currentStep);
 
       case VerificationStep.success:
-        return VerificationSuccessStep(onGoHome: () => Navigator.pop(context));
+        return VerificationSuccessStep();
     }
   }
 }

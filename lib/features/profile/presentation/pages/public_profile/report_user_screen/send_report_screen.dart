@@ -4,7 +4,7 @@ import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../widgets/report_user_widgets/report_reson_selector.dart';
-import '../../../widgets/report_user_widgets/custom_popup.dart';
+import '../../../../../../core/widgets/custom_popup.dart';
 import '../../../widgets/report_user_widgets/status_feedback_widget.dart';
 import '../../../../../../core/constants/app_assets.dart';
 

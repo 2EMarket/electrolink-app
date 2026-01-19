@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
+import '../../../../profile/presentation/widgets/report_user_widgets/status_feedback_widget.dart';
 
-/// Widget displayed when verification is successfully completed
 class VerificationSuccessStep extends StatelessWidget {
-  /// Callback when user taps "Go Home" button
-  final VoidCallback onGoHome;
-
-  const VerificationSuccessStep({super.key, required this.onGoHome});
+  const VerificationSuccessStep({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(AppSizes.paddingM),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check_circle, size: 80, color: Colors.green),
-          SizedBox(height: 16),
-          Text("Under Review", style: AppTypography.h3_18Medium),
-          TextButton(onPressed: onGoHome, child: Text("Go Home")),
+          StatusFeedbackWidget(
+            iconPath: AppAssets.popupDone,
+            title: AppStrings.successStepTitle,
+            description: AppStrings.successStepDescription,
+            height: 113,
+          ),
+          SizedBox(height: AppSizes.padding2XL),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                context.pop();
+              },
+              child: Text(AppStrings.goToProfile),
+            ),
+          ),
         ],
       ),
     );

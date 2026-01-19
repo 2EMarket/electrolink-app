@@ -72,40 +72,25 @@ class VerificationPreviewScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                // 4. أزرار التحكم (Continue & Capture Again)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.paddingM,
                   ),
                   child: Column(
                     children: [
-                      // زر المتابعة
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // نرجع true للشاشة الرئيسية (يعني وافقنا)
                             Navigator.pop(context, true);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: context.colors.mainColor,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            "Continue to Next Step",
-                            style: AppTypography.body16Medium.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
+
+                          child: Text("Continue to Next Step"),
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
 
-                      // زر إعادة التصوير
                       TextButton(
                         onPressed: () {
                           // نرجع null أو false (يعني بدنا نعيد)
