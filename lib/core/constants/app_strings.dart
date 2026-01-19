@@ -71,4 +71,12 @@ class AppStrings {
   static const String passport = 'Passport';
   static const String driversLicense = 'Driver\'s License';
   static const String continueText = 'Continue';
+  static const String successStepDescription =
+      'Your information has been sent for review. We will notify you within 24-48 hours.';
+  static const String successStepTitle = 'Your Information is under review';
+  static const String goToProfile = 'Go to Profile';
+  static const String cameraPermTitle = "Camera Permission Required";
+  static const String cameraPerContent =
+      "We need camera access to verify your identity. Please enable it in settings.";
+  static const String openSettings = "Open Settings";
 }
