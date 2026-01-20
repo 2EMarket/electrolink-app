@@ -1,8 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'camera_overlay_painter.dart'; // استدعاء الرسام
+import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/camera_overlay_painter.dart';
+
+import '../../../../core/constants/app_sizes.dart';
 
 class VerificationCameraScreen extends StatefulWidget {
   final String title;
@@ -34,14 +35,13 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
   Future<void> _initCamera() async {
     final cameras = await availableCameras();
 
-    // نختار الكاميرا بناءً على المتغير الذي مررناه (أمامية أو خلفية)
     final selectedCamera = cameras.firstWhere(
       (camera) => camera.lensDirection == widget.cameraLensDirection,
       orElse: () => cameras.first,
     );
 
     _controller = CameraController(
-      selectedCamera, // 👈 استخدام الكاميرا المختارة
+      selectedCamera,
       ResolutionPreset.high,
       enableAudio: false,
     );
@@ -56,7 +56,6 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
     super.dispose();
   }
 
-  // دالة التقاط الصورة
   Future<void> _takePicture() async {
     if (_isTakingPicture ||
         _controller == null ||
@@ -68,7 +67,6 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
 
       final image = await _controller!.takePicture();
 
-      // هنا: الصورة التقطت! سنرجع المسار للشاشة السابقة
       if (mounted) {
         Navigator.pop(context, image.path);
       }
@@ -82,7 +80,7 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
@@ -91,77 +89,81 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
             return Stack(
               fit: StackFit.expand,
               children: [
-                // 1. بث الكاميرا (يملأ الشاشة)
                 CameraPreview(_controller!),
 
-                // 2. طبقة الرسم (Overlay)
                 CustomPaint(painter: CameraOverlayPainter()),
 
-                // 3. واجهة المستخدم (أزرار ونصوص)
                 SafeArea(
-                  child: Column(
-                    children: [
-                      // زر إغلاق في الأعلى
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // العناوين
-                      Text(
-                        widget.title,
-                        style: AppTypography.h3_18Medium.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: Text(
-                          widget.description,
-                          textAlign: TextAlign.center,
-                          style: AppTypography.body14Regular.copyWith(
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ),
-
-                      const Spacer(),
-
-                      // منطقة التصوير
-                      if (_isTakingPicture)
-                        const CircularProgressIndicator(color: Colors.white)
-                      else
-                        GestureDetector(
-                          onTap: _takePicture,
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: context.colors.surface,
+                              size: 30,
                             ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+
+                        const SizedBox(height: AppSizes.paddingL),
+
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            widget.title,
+                            style: AppTypography.body16Medium.copyWith(
+                              color: context.colors.surface,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSizes.paddingM),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            widget.description,
+                            style: AppTypography.body14Regular.copyWith(
+                              color: context.colors.surface,
+                            ),
+                          ),
+                        ),
+
+                        const Spacer(),
+
+                        if (_isTakingPicture)
+                          CircularProgressIndicator(
+                            color: context.colors.surface,
+                          )
+                        else
+                          GestureDetector(
+                            onTap: _takePicture,
                             child: Container(
-                              margin: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white,
+                                border: Border.all(
+                                  color: context.colors.surface,
+                                  width: 4,
+                                ),
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: context.colors.surface,
+                                ),
                               ),
                             ),
                           ),
-                        ),
 
-                      const SizedBox(height: 40),
-                    ],
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
               ],

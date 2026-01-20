@@ -39,6 +39,7 @@ class AppStrings {
   static const String confirm = "Confirm";
   static const String location = "Location";
   static const String favorite = 'Favorite';
+  static const String identityVerification = 'Identity Verification';
   //login
   static const String login = 'Login';
 
@@ -63,4 +64,19 @@ class AppStrings {
   static const String recent = 'Recent';
   static const String nearby = 'Nearby';
   static const String sort = 'Sort';
+
+  //verification
+  static const String selectYourIdType = 'Select your ID type';
+  static const String idCard = 'ID Card';
+  static const String passport = 'Passport';
+  static const String driversLicense = 'Driver\'s License';
+  static const String continueText = 'Continue';
+  static const String successStepDescription =
+      'Your information has been sent for review. We will notify you within 24-48 hours.';
+  static const String successStepTitle = 'Your Information is under review';
+  static const String goToProfile = 'Go to Profile';
+  static const String cameraPermTitle = "Camera Permission Required";
+  static const String cameraPerContent =
+      "We need camera access to verify your identity. Please enable it in settings.";
+  static const String openSettings = "Open Settings";
 }

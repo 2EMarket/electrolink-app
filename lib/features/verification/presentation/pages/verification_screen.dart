@@ -1,15 +1,21 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_camera_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_instruction_view.dart';
-import 'package:second_hand_electronics_marketplace/features/verification/presentation/pages/verification_preview_screen.dart';
-
-// 1. Enum عشان نعرف شو الخطوة الحالية
-enum VerificationStep { selectType, frontId, backId, selfie, success }
+import 'package:second_hand_electronics_marketplace/core/widgets/widgets_exports.dart';
+import 'package:second_hand_electronics_marketplace/features/verification/data/models/verification_content.dart';
+import '../../../../configs/theme/theme_exports.dart';
+import '../../../../core/widgets/notification_toast.dart';
+import '../../../../core/widgets/progress_indicator.dart';
+import '../../data/enums/id_type.dart';
+import '../../data/models/verification_form_data.dart';
+import '../../services/verification_service.dart';
+import '../widgets/steps/verification_success_step.dart';
+import '../widgets/steps/verification_type_selection_step.dart';
+import '../widgets/verification_instruction_view.dart';
+import 'verification_camera_screen.dart';
+import 'verification_preview_screen.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -19,56 +25,67 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-  // ... داخل _VerificationScreenState
-  String? frontIdPath;
-  String? backIdPath;
-  String? selfiePath;
-  VerificationStep currentStep = VerificationStep.selectType;
-  String? selectedIdType; // 'id_card', 'passport', 'driver_license'
+  final VerificationService _verificationService = VerificationService();
+  final VerificationFormData _formData = VerificationFormData();
 
-  // دالة لحساب نسبة التقدم (Progress Bar)
-  double get progressValue {
+  VerificationStep currentStep = VerificationStep.selectType;
+
+  int get totalSteps {
+    return _formData.idType == IdType.passport ? 3 : 4;
+  }
+
+  int get currentStepNumber {
     switch (currentStep) {
       case VerificationStep.selectType:
-        return 0.25;
+        return 1;
       case VerificationStep.frontId:
-        return 0.50;
+        return 2;
       case VerificationStep.backId:
-        return 0.75;
+        return 3;
       case VerificationStep.selfie:
-        return 1.0;
+        return _formData.idType == IdType.passport ? 3 : 4;
       case VerificationStep.success:
-        return 1.0;
+        return totalSteps;
     }
   }
 
-  // دالة الانتقال للخطوة التالية
+  double get progressValue {
+    return currentStepNumber / totalSteps;
+  }
+
   void nextStep() {
     setState(() {
       switch (currentStep) {
         case VerificationStep.selectType:
           currentStep = VerificationStep.frontId;
           break;
+
         case VerificationStep.frontId:
-          currentStep = VerificationStep.backId;
+          if (_formData.idType == IdType.passport) {
+            currentStep = VerificationStep.selfie;
+          } else {
+            currentStep = VerificationStep.backId;
+          }
           break;
+
         case VerificationStep.backId:
           currentStep = VerificationStep.selfie;
           break;
+
         case VerificationStep.selfie:
           currentStep = VerificationStep.success;
           break;
+
         case VerificationStep.success:
-          Navigator.pop(context); // الرجوع للبروفايل
+          context.pop();
           break;
       }
     });
   }
 
-  // دالة الرجوع للخطوة السابقة
   void prevStep() {
     if (currentStep == VerificationStep.selectType) {
-      Navigator.pop(context);
+      context.pop();
       return;
     }
     setState(() {
@@ -76,529 +93,297 @@ class _VerificationScreenState extends State<VerificationScreen> {
         case VerificationStep.frontId:
           currentStep = VerificationStep.selectType;
           break;
+
         case VerificationStep.backId:
           currentStep = VerificationStep.frontId;
           break;
+
         case VerificationStep.selfie:
-          currentStep = VerificationStep.backId;
+          if (_formData.idType == IdType.passport) {
+            currentStep = VerificationStep.frontId;
+          } else {
+            currentStep = VerificationStep.backId;
+          }
           break;
+
         default:
           break;
       }
     });
   }
 
-  // ...
-
-  Future<bool> _validateIdCard(String imagePath) async {
-    // 1. تعريف المتغيرات
-    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    final inputImage = InputImage.fromFilePath(imagePath);
-
-    try {
-      // 2. استخراج النصوص من الصورة
-      final RecognizedText recognizedText = await textRecognizer.processImage(
-        inputImage,
-      );
-
-      // تنظيف الذاكرة (مهم جداً)
-      await textRecognizer.close();
-
-      // 3. تحليل النتائج (اللوجيك)
-      String text = recognizedText.text.trim();
-
-      // الشرط الأول: هل الصورة فارغة تماماً؟ (سوداء أو بدون أي تفاصيل)
-      if (text.isEmpty) {
-        _showErrorSnackBar(
-          "No text detected! Please ensure the ID is clear and well-lit.",
-        );
-        return false;
-      }
-
-      // الشرط الثاني: هل كمية النص قليلة جداً؟
-      // الهوية عادة فيها اسم، تاريخ، أرقام.. يعني لازم يكون فيها حروف كثيرة.
-      // إذا لقينا أقل من 10 حروف، غالباً الصورة مهزوزة جداً أو بعيدة.
-      if (text.length < 10) {
-        _showErrorSnackBar(
-          "Image is blurry or invalid. Please hold the camera steady.",
-        );
-        return false;
-      }
-
-      // (اختياري) الشرط الثالث: ممكن تطبعي النص عشان تشوفي شو قرأ
-      print(
-        "✅ ID Text Detected: ${text.substring(0, text.length > 50 ? 50 : text.length)}...",
-      );
-
-      return true; // الصورة مقبولة
-    } catch (e) {
-      print("Error in ID validation: $e");
-      _showErrorSnackBar("Validation failed. Please try again.");
+  Future<bool> _checkCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (status.isDenied) status = await Permission.camera.request();
+    if (status.isPermanentlyDenied) {
+      _showPermissionDialog();
       return false;
     }
+    return status.isGranted;
   }
 
-  Future<bool> _validateSelfie(String imagePath) async {
-    // 1. تجهيز الكاشف (Detector)
-    final options = FaceDetectorOptions(
-      enableContours: true,
-      enableLandmarks: true, // عشان يشوف العيون والانف (مهم للوضوح)
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text(AppStrings.cameraPermTitle),
+            content: const Text(AppStrings.cameraPermTitle),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(AppStrings.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  openAppSettings();
+                },
+                child: const Text(AppStrings.openSettings),
+              ),
+            ],
+          ),
     );
-    final faceDetector = FaceDetector(options: options);
+  }
 
-    // 2. تحويل الصورة لصيغة بيفهمها الـ AI
-    final inputImage = InputImage.fromFilePath(imagePath);
+  Future<void> _handleIdCardCapture({
+    required String cameraTitle,
+    required String cameraDescription,
+    required String previewTitle,
+    required String previewSubtitle,
+    required Function(String) onValidated,
+  }) async {
+    if (!await _checkCameraPermission()) return;
+    if (!mounted) return;
 
-    try {
-      // 3. معالجة الصورة
-      final List<Face> faces = await faceDetector.processImage(inputImage);
+    final imagePath = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => VerificationCameraScreen(
+              title: cameraTitle,
+              description: cameraDescription,
+            ),
+      ),
+    );
 
-      // 4. إغلاق الكاشف عشان الذاكرة
-      await faceDetector.close();
+    if (imagePath != null) {
+      if (!mounted) return;
+      final isConfirmed = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => VerificationPreviewScreen(
+                imagePath: imagePath,
+                title: previewTitle,
+                subtitle: previewSubtitle,
+              ),
+        ),
+      );
 
-      // --- الشروط (اللوجيك) ---
-
-      // الشرط أ: هل يوجد وجه أصلاً؟ (بيحل مشكلة الصورة السوداء أو صورة الحيطة)
-      if (faces.isEmpty) {
-        _showErrorSnackBar(
-          "No face detected! Please ensure good lighting and face the camera.",
+      if (isConfirmed == true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (c) => const Center(child: CircularProgressIndicator()),
         );
-        return false;
-      }
 
-      // الشرط ب: هل يوجد أكثر من وجه؟ (ممنوع حدا يتصور معك)
-      if (faces.length > 1) {
-        _showErrorSnackBar(
-          "Multiple faces detected. Please take a selfie alone.",
-        );
-        return false;
-      }
+        // 1. Validation
+        final isValid = await _verificationService.validateIdCard(imagePath);
 
-      // الشرط ج: التحقق من "زاوية الوجه" (عشان نتأكد إنه بتطلع عالكاميرا مش عالجنب)
-      final Face face = faces.first;
-      if (face.headEulerAngleY! > 15 || face.headEulerAngleY! < -15) {
-        _showErrorSnackBar("Please look straight at the camera.");
-        return false;
-      }
+        // 2. Compression (if valid)
+        String finalPath = imagePath;
+        if (isValid) {
+          final compressedPath = await _verificationService.compressImage(
+            imagePath,
+          );
+          if (compressedPath != null) finalPath = compressedPath;
+        }
 
-      // إذا عدى كل الشروط -> الصورة ممتازة ✅
-      return true;
-    } catch (e) {
-      print("Error in face detection: $e");
-      return false;
+        if (!mounted) return;
+        Navigator.pop(context); // Hide Loading
+
+        if (isValid) {
+          onValidated(finalPath);
+        } else {
+          NotificationToast.show(
+            context,
+            'Please try again',
+            "Please ensure the ID is clear and well-lit.",
+            ToastType.error,
+          );
+        }
+      }
     }
   }
 
-  // دالة مساعدة لإظهار رسالة خطأ
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
+  // 🤳 معالجة التقاط السيلفي
+  Future<void> _handleSelfieCapture({
+    required Function(String) onValidated,
+  }) async {
+    if (!await _checkCameraPermission()) return;
+    if (!mounted) return;
+
+    final imagePath = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => const VerificationCameraScreen(
+              title: "Take a Selfie",
+              description: "Hold your ID and look at the camera.",
+              cameraLensDirection: CameraLensDirection.front,
+            ),
       ),
+    );
+
+    if (imagePath != null) {
+      if (!mounted) return;
+      final isConfirmed = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => VerificationPreviewScreen(
+                imagePath: imagePath,
+                title: "Check your Selfie",
+                subtitle: "Is your face and ID clear?",
+              ),
+        ),
+      );
+
+      if (isConfirmed == true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (c) => const Center(child: CircularProgressIndicator()),
+        );
+
+        // 1. Validation
+        final isValid = await _verificationService.validateSelfie(imagePath);
+
+        // 2. Compression (if valid)
+        String finalPath = imagePath;
+        if (isValid) {
+          final compressedPath = await _verificationService.compressImage(
+            imagePath,
+          );
+          if (compressedPath != null) finalPath = compressedPath;
+        }
+
+        if (!mounted) return;
+        Navigator.pop(context); // Hide Loading
+
+        if (isValid) {
+          onValidated(finalPath);
+        } else {
+          NotificationToast.show(
+            context,
+            'Please try again',
+            "Face validation failed. Please ensure good lighting and look straight at the camera.",
+            ToastType.error,
+          );
+        }
+      }
+    }
+  }
+
+  Widget _buildCaptureStep(VerificationStep step) {
+    final content = step.getContent(_formData.idType ?? IdType.idCard);
+    void onImageValidated(String path) {
+      setState(() {
+        if (step == VerificationStep.frontId) _formData.frontIdPath = path;
+        if (step == VerificationStep.backId) _formData.backIdPath = path;
+        if (step == VerificationStep.selfie) _formData.selfiePath = path;
+      });
+      print("✅ ${step.name} Validated & Saved: $path");
+      nextStep();
+    }
+
+    VoidCallback onTakePictureAction;
+    if (step == VerificationStep.selfie) {
+      onTakePictureAction =
+          () => _handleSelfieCapture(onValidated: onImageValidated);
+    } else {
+      onTakePictureAction =
+          () => _handleIdCardCapture(
+            cameraTitle: content.cameraTitle,
+            cameraDescription: content.cameraDesc,
+            previewTitle: content.previewTitle,
+            previewSubtitle: content.previewSubtitle,
+            onValidated: onImageValidated,
+          );
+    }
+
+    return VerificationInstructionView(
+      content: content,
+      onTakePicture: onTakePictureAction,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          onPressed: prevStep, // ربطنا زر الرجوع باللوجيك
-        ),
-        title: const Text("Identity Verification"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text(AppStrings.identityVerification)),
       body: Column(
         children: [
-          // 1. شريط التقدم (Progress Bar)
           if (currentStep != VerificationStep.success)
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.paddingM,
-                vertical: AppSizes.paddingS,
               ),
               child: Row(
                 children: [
                   Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: progressValue,
-                        minHeight: 8,
-                        backgroundColor: context.colors.neutral5,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          context.colors.mainColor,
-                        ),
-                      ),
+                    child: ProgressIndicatorWidget(
+                      progressValue: progressValue,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "${(progressValue * 4).toInt()}/4",
-                    style: AppTypography.label12Regular.copyWith(
-                      color: context.colors.neutral,
+                  const SizedBox(width: AppSizes.paddingM),
+                  RichText(
+                    text: TextSpan(
+                      style: AppTypography.label12Regular,
+                      children: [
+                        TextSpan(
+                          // ✅ التعديل هنا: رقم الخطوة الحالية
+                          text: "$currentStepNumber",
+                          style: TextStyle(color: context.colors.mainColor),
+                        ),
+                        TextSpan(
+                          // ✅ التعديل هنا: العدد الكلي (يصير 3 للجواز و 4 للباقي)
+                          text: " / $totalSteps",
+                          style: TextStyle(color: context.colors.icons),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
+          const SizedBox(height: AppSizes.paddingL),
 
-          // 2. محتوى الصفحة المتغير
           Expanded(child: _buildCurrentStepBody()),
         ],
       ),
     );
   }
 
-  // دالة بتعرض الـ Widget المناسب حسب الخطوة
   Widget _buildCurrentStepBody() {
-    // داخل دالة _buildCurrentStepBody
     switch (currentStep) {
-      // ---------------------------------------------------------
-      // الخطوة 1: اختيار نوع الهوية (جاهزة من قبل)
-      // ---------------------------------------------------------
       case VerificationStep.selectType:
-        return _buildSelectTypeStep();
+        return VerificationTypeSelectionStep(
+          selectedIdType: _formData.idType,
+          onTypeSelected: (IdType value) {
+            setState(() => _formData.idType = value);
+          },
+          onContinue: nextStep,
+        );
 
-      // ---------------------------------------------------------
-      // الخطوة 2: تصوير وجه الهوية (Front ID)
-      // ---------------------------------------------------------
       case VerificationStep.frontId:
-        return VerificationInstructionView(
-          title: "Capture the Front of Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Place the ID inside the frame",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear and details are readable",
-          ],
-          onTakePicture: () async {
-            // 1. فتح الكاميرا
-            final imagePath = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => const VerificationCameraScreen(
-                      title: "Capture Front ID",
-                      description:
-                          "Place the front of your ID within the frame.",
-                    ),
-              ),
-            );
-
-            // 2. إذا رجعنا بصورة -> نفتح المعاينة (Preview)
-            if (imagePath != null) {
-              final isConfirmed = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => VerificationPreviewScreen(
-                        imagePath: imagePath,
-                        title: "Check your Front ID",
-                        subtitle: "Make sure details are clear and readable.",
-                      ),
-                ),
-              );
-
-              // داخل case VerificationStep.frontId:
-
-              // ... (كود فتح الكاميرا نفسه) ...
-
-              if (imagePath != null) {
-                // ... (كود فتح المعاينة نفسه) ...
-                final isConfirmed = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => VerificationPreviewScreen(
-                          imagePath: imagePath,
-                          title: "Check your Front ID",
-                          subtitle: "Make sure details are clear and readable.",
-                        ),
-                  ),
-                );
-
-                // 👇👇 هنا اللوجيك الجديد
-                if (isConfirmed == true) {
-                  // 1. إظهار لودينج (عشان المستخدم يعرف إننا بنفحص)
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder:
-                        (c) => const Center(child: CircularProgressIndicator()),
-                  );
-
-                  // 2. استدعاء فحص النصوص
-                  final isValid = await _validateIdCard(imagePath);
-
-                  Navigator.pop(context); // إخفاء اللودينج
-
-                  // 3. النتيجة
-                  if (isValid) {
-                    setState(() => frontIdPath = imagePath); // ✅ حفظنا الصورة
-                    print("✅ Front ID Validated & Saved");
-                    nextStep(); // للي بعده
-                  } else {
-                    // ❌ مرفوضة: الـ SnackBar طلعت من الدالة، والمستخدم لسه في مكانه يعيد التصوير
-                  }
-                }
-              }
-            }
-          },
-        );
-
-      // ---------------------------------------------------------
-      // الخطوة 3: تصوير ظهر الهوية (Back ID)
-      // ---------------------------------------------------------
       case VerificationStep.backId:
-        return VerificationInstructionView(
-          title: "Capture the Back of Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Flip your ID card to the back side",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear",
-          ],
-          onTakePicture: () async {
-            // 1. فتح الكاميرا (بنفس الطريقة)
-            final imagePath = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => const VerificationCameraScreen(
-                      title: "Capture Back ID", // 👈 تغيير العنوان
-                      description:
-                          "Place the back of your ID within the frame.",
-                    ),
-              ),
-            );
-
-            // 2. المعاينة
-            if (imagePath != null) {
-              final isConfirmed = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => VerificationPreviewScreen(
-                        imagePath: imagePath,
-                        title: "Check your Back ID", // 👈 تغيير العنوان
-                        subtitle: "Make sure details are clear and readable.",
-                      ),
-                ),
-              );
-
-              // داخل case VerificationStep.frontId:
-
-              // ... (كود فتح الكاميرا نفسه) ...
-
-              if (imagePath != null) {
-                // ... (كود فتح المعاينة نفسه) ...
-                final isConfirmed = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => VerificationPreviewScreen(
-                          imagePath: imagePath,
-                          title: "Check your Front ID",
-                          subtitle: "Make sure details are clear and readable.",
-                        ),
-                  ),
-                );
-
-                // 👇👇 هنا اللوجيك الجديد
-                if (isConfirmed == true) {
-                  // 1. إظهار لودينج (عشان المستخدم يعرف إننا بنفحص)
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder:
-                        (c) => const Center(child: CircularProgressIndicator()),
-                  );
-
-                  // 2. استدعاء فحص النصوص
-                  final isValid = await _validateIdCard(imagePath);
-
-                  Navigator.pop(context); // إخفاء اللودينج
-
-                  // 3. النتيجة
-                  if (isValid) {
-                    setState(() => backIdPath = imagePath); // ✅ حفظنا الصورة
-                    print("✅ Back ID Validated & Saved");
-                    nextStep(); // للي بعده
-                  } else {
-                    // ❌ مرفوضة: الـ SnackBar طلعت من الدالة، والمستخدم لسه في مكانه يعيد التصوير
-                  }
-                }
-              }
-            }
-          },
-        );
-
-      // ---------------------------------------------------------
-      // الخطوة 4: تصوير السيلفي (Selfie)
-      // ---------------------------------------------------------
       case VerificationStep.selfie:
-        return VerificationInstructionView(
-          title: "Take a Selfie With Your ID",
-          subtitle: "Follow the guidelines for best quality",
-          guidelines: const [
-            "Hold your ID near your face",
-            "Ensure good lighting on your face",
-            "Look straight at the camera",
-          ],
-          onTakePicture: () async {
-            // 1. فتح الكاميرا (مع تحديد أنها أمامية)
-            final imagePath = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => const VerificationCameraScreen(
-                      title: "Take a Selfie",
-                      description: "Hold your ID and look at the camera.",
-                      cameraLensDirection:
-                          CameraLensDirection.front, // 👈 🤳 هنا السحر!
-                    ),
-              ),
-            );
-            // 2. المعاينة
-            if (imagePath != null) {
-              final isConfirmed = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => VerificationPreviewScreen(
-                        imagePath: imagePath,
-                        title: "Check your Selfie", // 👈 تغيير العنوان
-                        subtitle: "Is your face and ID clear?",
-                      ),
-                ),
-              );
+        return _buildCaptureStep(currentStep);
 
-              // 3. الحفظ
-              if (isConfirmed == true) {
-                // 1. إظهار لودينج بسيط للمستخدم (اختياري بس حلو)
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder:
-                      (c) => const Center(child: CircularProgressIndicator()),
-                );
-
-                // 2. استدعاء الفحص
-                final isValid = await _validateSelfie(imagePath);
-
-                Navigator.pop(context); // إخفاء اللودينج
-
-                // 3. اتخاذ القرار
-                if (isValid) {
-                  setState(() => selfiePath = imagePath);
-                  nextStep(); // ✅ الصورة مقبولة
-                } else {
-                  // ❌ الصورة مرفوضة (الـ SnackBar رح تطلع وتوضح السبب)
-                  // المستخدم رح يضل في نفس الصفحة عشان يعيد التصوير
-                }
-              }
-            }
-          },
-        );
-
-      // ---------------------------------------------------------
-      // الخطوة 5: شاشة النجاح (Under Review)
-      // ---------------------------------------------------------
       case VerificationStep.success:
-        return _buildSuccessScreen();
+        return VerificationSuccessStep();
     }
-  }
-
-  // شاشة النجاح المؤقتة
-  Widget _buildSuccessScreen() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.check_circle, size: 80, color: Colors.green),
-          SizedBox(height: 16),
-          Text("Under Review", style: AppTypography.h3_18Medium),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Go Home"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // --------- تصميم الخطوة الأولى: اختيار النوع ---------
-  Widget _buildSelectTypeStep() {
-    return Padding(
-      padding: const EdgeInsets.all(AppSizes.paddingM),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Select your ID type", style: AppTypography.body16Medium),
-          const SizedBox(height: AppSizes.paddingM),
-
-          _buildRadioOption("ID Card", "id_card"),
-          const SizedBox(height: AppSizes.paddingS),
-          _buildRadioOption("Passport", "passport"),
-          const SizedBox(height: AppSizes.paddingS),
-          _buildRadioOption("Driver's License", "driver_license"),
-
-          const Spacer(),
-
-          // زر المتابعة
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed:
-                  selectedIdType != null
-                      ? nextStep
-                      : null, // معطل إذا لم يتم الاختيار
-
-              child: Text("Continue"),
-            ),
-          ),
-          const SizedBox(height: AppSizes.paddingL),
-        ],
-      ),
-    );
-  }
-
-  // ويدجت صغير لخيارات الراديو
-  Widget _buildRadioOption(String label, String value) {
-    final isSelected = selectedIdType == value;
-    return GestureDetector(
-      onTap: () => setState(() => selectedIdType = value),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color:
-                isSelected ? context.colors.mainColor : context.colors.neutral5,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label, style: AppTypography.body14Medium),
-            Icon(
-              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color:
-                  isSelected
-                      ? context.colors.mainColor
-                      : context.colors.neutral,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

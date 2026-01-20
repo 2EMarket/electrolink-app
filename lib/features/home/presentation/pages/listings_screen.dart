@@ -83,9 +83,9 @@ class _ListingsScreenState extends State<ListingsScreen> {
 
             Expanded(
               child:
-                  isGridView
-                      ? ListingsGridView(listings: widget.listings)
-                      : ListingsListView(listings: widget.listings),
+              isGridView
+                  ? ListingsGridView(listings: widget.listings)
+                  : ListingsListView(listings: widget.listings),
             ),
           ],
         ),

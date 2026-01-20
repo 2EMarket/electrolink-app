@@ -2,14 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import 'camera_overlay_painter.dart'; // ✅ نفس الرسام عشان الإطار يضل موجود
+import 'package:second_hand_electronics_marketplace/features/verification/presentation/widgets/camera_overlay_painter.dart';
 
 class VerificationPreviewScreen extends StatelessWidget {
   final String imagePath;
   final String title;
   final String subtitle;
 
-  const VerificationPreviewScreen({
+  VerificationPreviewScreen({
     super.key,
     required this.imagePath,
     required this.title,
@@ -72,40 +72,25 @@ class VerificationPreviewScreen extends StatelessWidget {
 
                 const Spacer(),
 
-                // 4. أزرار التحكم (Continue & Capture Again)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSizes.paddingM,
                   ),
                   child: Column(
                     children: [
-                      // زر المتابعة
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // نرجع true للشاشة الرئيسية (يعني وافقنا)
                             Navigator.pop(context, true);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: context.colors.mainColor,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            "Continue to Next Step",
-                            style: AppTypography.body16Medium.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
+
+                          child: Text("Continue to Next Step"),
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
 
-                      // زر إعادة التصوير
                       TextButton(
                         onPressed: () {
                           // نرجع null أو false (يعني بدنا نعيد)
