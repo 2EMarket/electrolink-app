@@ -5,7 +5,7 @@ import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../widgets/report_user_widgets/report_reson_selector.dart';
 import '../../../../../../core/widgets/custom_popup.dart';
-import '../../../widgets/report_user_widgets/status_feedback_widget.dart';
+import '../../../../../../core/widgets/status_feedback_widget.dart';
 import '../../../../../../core/constants/app_assets.dart';
 
 class SendReportScreen extends StatefulWidget {
@@ -90,7 +90,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
 
   Future<void> _submitReport() async {
     EasyLoading.show(status: 'Waiting...');
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 5000));
 
     if (_selectedOptionIndex == -1) {
       EasyLoading.dismiss();
