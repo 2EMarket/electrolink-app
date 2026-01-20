@@ -6,6 +6,7 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/edit_user_profile.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/user_profile.dart';
 
 import '../../features/home/presentation/pages/favorite_screen.dart';
@@ -17,7 +18,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.reportUser}',
+    initialLocation: '/${AppRoutes.editUserProfile}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -113,6 +114,11 @@ class AppRouter {
         path: '/${AppRoutes.reportUser}',
         name: AppRoutes.reportUser,
         builder: (context, state) => SendReportScreen(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.editUserProfile}',
+        name: AppRoutes.editUserProfile,
+        builder: (context, state) => EditUserProfile(),
       ),
       // // Auth routes
       // GoRoute(

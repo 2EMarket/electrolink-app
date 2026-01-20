@@ -7,6 +7,8 @@ class UserModel {
   final DateTime lastSeen;
   final int responseTimeMinutes;
   final bool isOnline;
+  final String? email;
+  final String? phone;
 
   const UserModel({
     required this.id,
@@ -17,5 +19,7 @@ class UserModel {
     required this.lastSeen,
     required this.responseTimeMinutes,
     this.isOnline = false,
+    this.email = 'james.monroe@example.com',
+    this.phone = '059788464'
   });
 }

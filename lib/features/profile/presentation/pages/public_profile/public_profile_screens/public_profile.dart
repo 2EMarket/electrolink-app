@@ -44,7 +44,11 @@ class PublicProfile extends StatelessWidget {
               padding: const EdgeInsets.all(AppSizes.paddingS),
               child: Icon(Icons.more_vert, color: context.colors.icons),
             ),
-            onPressed: () => showCustomBottomSheet(context),
+            onPressed:
+                () => showCustomBottomSheet(
+                  context,
+                  const BottomSheetProfileOptions(),
+                ),
           ),
         ],
       ),

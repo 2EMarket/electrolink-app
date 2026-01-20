@@ -145,14 +145,14 @@ class ProfileHeader extends StatelessWidget {
               textStyle: privateTextStyle,
             ),
           ),
-          if (profile.responseTime != null)
+         /* if (profile.responseTime != null)
             _centeredRow(
               PublicProfileInfoRow(
                 icon: AppAssets.chatOutlineIcon,
                 text: profile.responseTime!,
                 textStyle: privateTextStyle,
               ),
-            ),
+            ),*/
         ],
       );
     }

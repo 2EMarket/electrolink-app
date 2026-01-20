@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/public_profile_widgets/profile_error_screen.dart';
 
 import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_assets.dart';
+import '../../../../../../core/constants/app_routes.dart';
 import '../../../../../../core/constants/app_sizes.dart';
 import '../../../../../../core/widgets/progress_indicator.dart';
 import '../../../../../listing/data/listing_model.dart';
@@ -52,7 +55,12 @@ class _UserProfileState extends State<UserProfile> {
               padding: const EdgeInsets.all(AppSizes.paddingS),
               child: Icon(Icons.settings_rounded, color: context.colors.icons),
             ),
-            onPressed: () {},
+            onPressed: () {
+              // context.goNamed(AppRoutes.p);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => ProfileErrorScreen()),
+              );
+            },
           ),
         ],
       ),
@@ -122,7 +130,9 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context.goNamed(AppRoutes.editUserProfile);
+                          },
                           child: Icon(
                             Icons.arrow_forward_ios,
                             size: AppSizes.paddingM,

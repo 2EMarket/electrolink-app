@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../configs/theme/app_typography.dart';
 import '../../../../../../core/constants/app_sizes.dart';
-import '../../../widgets/report_user_widgets/report_reson_selector.dart';
+import '../../../widgets/report_user_widgets/report_reason_selector.dart';
 import '../../../../../../core/widgets/custom_popup.dart';
 import '../../../../../../core/widgets/status_feedback_widget.dart';
 import '../../../../../../core/constants/app_assets.dart';
@@ -94,7 +94,8 @@ class _SendReportScreenState extends State<SendReportScreen> {
 
     if (_selectedOptionIndex == -1) {
       EasyLoading.dismiss();
-      _showStatusPopup(
+      ShowStatusPopup(
+        context: context,
         icon: _warningIcon,
         title: 'No reason selected',
         description: 'Please select a reason before submitting.',
@@ -107,7 +108,8 @@ class _SendReportScreenState extends State<SendReportScreen> {
     if (_selectedOptionIndex == _reasons.length - 1 &&
         _textController.text.trim().isEmpty) {
       EasyLoading.dismiss();
-      _showStatusPopup(
+      ShowStatusPopup(
+        context: context,
         icon: _warningIcon,
         title: 'Missing description',
         description: 'Please describe the issue in the text field.',
@@ -120,7 +122,8 @@ class _SendReportScreenState extends State<SendReportScreen> {
     try {
       await Future.delayed(const Duration(seconds: 2));
       EasyLoading.dismiss();
-      _showStatusPopup(
+      ShowStatusPopup(
+        context: context,
         icon: _successIcon,
         title: 'Report Submitted',
         description:
@@ -129,7 +132,8 @@ class _SendReportScreenState extends State<SendReportScreen> {
       );
     } catch (_) {
       EasyLoading.dismiss();
-      _showStatusPopup(
+      ShowStatusPopup(
+        context: context,
         icon: _warningIcon,
         title: 'Something went wrong',
         description: 'We couldn’t submit your report.\nPlease try again.',
@@ -140,30 +144,30 @@ class _SendReportScreenState extends State<SendReportScreen> {
       );
     }
   }
+}
 
-  void _showStatusPopup({
-    required String icon,
-    required String title,
-    required String description,
-    required String primaryText,
-    VoidCallback? onPrimary,
-    String? secondaryText,
-    VoidCallback? onSecondary,
-    Color? primaryColor,
-  }) {
-    CustomPopup.show(
-      context,
-      body: StatusFeedbackWidget(
-        iconPath: icon,
-        title: title,
-        description: description,
-      ),
-      primaryButtonText: primaryText,
-      secondaryButtonText: secondaryText,
-      onSecondaryButtonPressed: onSecondary,
-      primaryButtonColor: primaryColor,
-      onPrimaryButtonPressed:
-          onPrimary ?? () => Navigator.of(context, rootNavigator: true).pop(),
-    );
-  }
+void ShowStatusPopup({required BuildContext context,
+  required String icon,
+  required String title,
+  required String description,
+  required String primaryText,
+  VoidCallback? onPrimary,
+  String? secondaryText,
+  VoidCallback? onSecondary,
+  Color? primaryColor,
+}) {
+  CustomPopup.show(
+    context,
+    body: StatusFeedbackWidget(
+      iconPath: icon,
+      title: title,
+      description: description,
+    ),
+    primaryButtonText: primaryText,
+    secondaryButtonText: secondaryText,
+    onSecondaryButtonPressed: onSecondary,
+    primaryButtonColor: primaryColor,
+    onPrimaryButtonPressed:
+    onPrimary ?? () => Navigator.of(context, rootNavigator: true).pop(),
+  );
 }

@@ -96,4 +96,8 @@ class AppAssets {
   static const String headphoneCatIcon = '$_svgPath/headphone_category.svg';
   static const String gameCatIcon = '$_svgPath/game_category.svg';
   static const String aiChipCatIcon = '$_svgPath/ai_chip_category.svg';
+
+  static const String editIcon = '$_svgPath/Edit icon.svg';
+
+
 }

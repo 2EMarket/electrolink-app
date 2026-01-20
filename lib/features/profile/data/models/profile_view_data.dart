@@ -39,7 +39,6 @@ class ProfileViewData {
       location: user.location,
       memberSince: _formatDate(user.createdAt),
       isOnline: user.isOnline,
-
       lastSeen: type == ProfileType.public
           ? _formatLastSeen(user.lastSeen)
           : null,
@@ -49,8 +48,8 @@ class ProfileViewData {
           : 'Replies within ${user.responseTimeMinutes} min',
 
 
-      email: type == ProfileType.private ? 'user@email.com' : null,
-      phone: type == ProfileType.private ? '+970...' : null,
+      email: type == ProfileType.private ? user.email : 'user@email.com' ,
+      phone: type == ProfileType.private ? user.phone: '+970...',
     );
   }
 }
