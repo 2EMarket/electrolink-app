@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:second_hand_electronics_marketplace/configs/routes/router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/circle_button.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/filter_button.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/search_with_filter.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_states.dart';
@@ -46,7 +43,7 @@ class HomeHeader extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset(
-                        AppAssets.locationIcon,
+                        AppAssets.locationOutlinedIcon,
                         width: 16,
                         height: 16,
                         colorFilter: ColorFilter.mode(
