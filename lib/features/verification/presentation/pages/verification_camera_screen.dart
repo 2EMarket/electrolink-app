@@ -34,18 +34,15 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
 
   Future<void> _initCamera() async {
     final cameras = await availableCameras();
-
     final selectedCamera = cameras.firstWhere(
       (camera) => camera.lensDirection == widget.cameraLensDirection,
       orElse: () => cameras.first,
     );
-
     _controller = CameraController(
       selectedCamera,
       ResolutionPreset.high,
       enableAudio: false,
     );
-
     _initializeControllerFuture = _controller!.initialize();
     if (mounted) setState(() {});
   }
@@ -80,7 +77,6 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
@@ -103,21 +99,19 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
                           child: IconButton(
                             icon: Icon(
                               Icons.close,
-                              color: context.colors.surface,
+                              color: Colors.white,
                               size: 30,
                             ),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),
-
                         const SizedBox(height: AppSizes.paddingL),
-
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             widget.title,
                             style: AppTypography.body16Medium.copyWith(
-                              color: context.colors.surface,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -127,7 +121,7 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
                           child: Text(
                             widget.description,
                             style: AppTypography.body14Regular.copyWith(
-                              color: context.colors.surface,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -135,9 +129,7 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
                         const Spacer(),
 
                         if (_isTakingPicture)
-                          CircularProgressIndicator(
-                            color: context.colors.surface,
-                          )
+                          CircularProgressIndicator(color: Colors.white)
                         else
                           GestureDetector(
                             onTap: _takePicture,
@@ -147,7 +139,7 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: context.colors.surface,
+                                  color: Colors.white,
                                   width: 4,
                                 ),
                               ),
@@ -155,7 +147,7 @@ class _VerificationCameraScreenState extends State<VerificationCameraScreen> {
                                 margin: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: context.colors.surface,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),

@@ -1,4 +1,6 @@
-// تأكدي من مسار ملف IdType عندك
+import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
+
 import '../../data/enums/id_type.dart';
 
 enum VerificationStep { selectType, frontId, backId, selfie, success }
@@ -25,62 +27,53 @@ class VerificationStepContent {
 
 extension VerificationStepExtension on VerificationStep {
   VerificationStepContent getContent(IdType type) {
-    String docName;
-    switch (type) {
-      case IdType.passport:
-        docName = "Passport";
-        break;
-      case IdType.driverLicense:
-        docName = "Driver's License";
-        break;
-      case IdType.idCard:
-        docName = "ID Card";
-        break;
-    }
+    String docName = type.label;
 
     switch (this) {
       case VerificationStep.frontId:
         return VerificationStepContent(
-          title: "Capture the Front of Your $docName",
+          title: AppStrings.captureFront + docName,
           subtitle:
               type == IdType.passport
-                  ? "Open the photo page of your passport"
-                  : "Follow the guidelines for best quality",
+                  ? AppStrings.openPassPhoto
+                  : AppStrings.followGuidelines,
           guidelines: [
-            "Place the $docName inside the frame",
-            "Avoid glare, shadows, or blur",
-            "Make sure details are readable",
+            AppStrings.placeThe + docName + AppStrings.insideFrame,
+            AppStrings.avoidGlare,
+            AppStrings.makeDetailsRead,
           ],
-          cameraTitle: "Capture Front $docName",
+          cameraTitle: AppStrings.captureFront + docName,
           cameraDesc:
-              "Place the $docName inside the frame and make sure the image is clear.",
-          previewTitle: "Check your Front $docName",
-          previewSubtitle: "Make sure details are clear and readable.",
+              AppStrings.placeThe +
+              docName +
+              AppStrings.insideTheFrameImageClear,
+          previewTitle: AppStrings.checkFront + docName,
+          previewSubtitle: AppStrings.makeDetailsRead,
         );
 
       case VerificationStep.backId:
         return VerificationStepContent(
-          title: "Capture the Back of Your $docName",
-          subtitle: "Follow the guidelines for best quality",
+          title: AppStrings.captureBack + docName,
+          subtitle: AppStrings.followGuidelines,
           guidelines: [
-            "Flip your $docName to the back side",
-            "Avoid glare, shadows, or blur",
-            "Make sure the image is clear",
+            AppStrings.flipBack + docName + AppStrings.toTheBack,
+            AppStrings.avoidGlare,
+            AppStrings.makeSureImageClear,
           ],
-          cameraTitle: "Capture Back $docName",
-          cameraDesc: "Place the back of your $docName within the frame.",
-          previewTitle: "Check your Back $docName",
-          previewSubtitle: "Make sure details are clear and readable.",
+          cameraTitle: AppStrings.captureBack + docName,
+          cameraDesc: AppStrings.placeThe + docName + AppStrings.insideFrame,
+          previewTitle: AppStrings.checkBack + docName,
+          previewSubtitle: AppStrings.makeDetailsRead,
         );
 
       case VerificationStep.selfie:
         return VerificationStepContent(
-          title: "Take a Selfie With Your $docName",
-          subtitle: "Follow the guidelines for best quality",
+          title: AppStrings.takeSelfie + docName,
+          subtitle: AppStrings.followGuidelines,
           guidelines: [
-            "Hold your $docName near your face",
-            "Ensure good lighting",
-            "Look straight at the camera",
+            AppStrings.holdYour + docName + AppStrings.nearYourFace,
+            AppStrings.ensureLightning,
+            AppStrings.lookStraight,
           ],
         );
 

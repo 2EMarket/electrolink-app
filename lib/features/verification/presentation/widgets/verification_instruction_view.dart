@@ -30,14 +30,13 @@ class VerificationInstructionView extends StatelessWidget {
           ),
           const SizedBox(height: AppSizes.paddingL),
 
-          // 3. قائمة التعليمات (Bullet Points)
           ...content.guidelines.map(
             (guide) => Padding(
               padding: const EdgeInsets.only(bottom: AppSizes.paddingS),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("• ", style: AppTypography.body14Medium), // النقطة
+                  Text("• ", style: AppTypography.body14Medium),
                   Expanded(
                     child: Text(guide, style: AppTypography.body14Regular),
                   ),
@@ -48,7 +47,6 @@ class VerificationInstructionView extends StatelessWidget {
 
           const Spacer(),
 
-          // 4. زر فتح الكاميرا
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -61,7 +59,7 @@ class VerificationInstructionView extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Take Photo",
+                AppStrings.takePhoto,
                 style: AppTypography.body16Medium.copyWith(color: Colors.white),
               ),
             ),

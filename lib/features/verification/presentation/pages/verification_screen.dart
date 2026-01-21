@@ -208,8 +208,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
         } else {
           NotificationToast.show(
             context,
-            'Please try again',
-            "Please ensure the ID is clear and well-lit.",
+            AppStrings.pleaseTryAgain,
+            AppStrings.pleaseEnsureIdClear,
             ToastType.error,
           );
         }
@@ -217,7 +217,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  // 🤳 معالجة التقاط السيلفي
   Future<void> _handleSelfieCapture({
     required Function(String) onValidated,
   }) async {
@@ -277,7 +276,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         } else {
           NotificationToast.show(
             context,
-            'Please try again',
+            AppStrings.pleaseTryAgain,
             "Face validation failed. Please ensure good lighting and look straight at the camera.",
             ToastType.error,
           );
@@ -343,12 +342,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       style: AppTypography.label12Regular,
                       children: [
                         TextSpan(
-                          // ✅ التعديل هنا: رقم الخطوة الحالية
                           text: "$currentStepNumber",
                           style: TextStyle(color: context.colors.mainColor),
                         ),
                         TextSpan(
-                          // ✅ التعديل هنا: العدد الكلي (يصير 3 للجواز و 4 للباقي)
                           text: " / $totalSteps",
                           style: TextStyle(color: context.colors.icons),
                         ),

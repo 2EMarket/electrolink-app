@@ -73,11 +73,8 @@ class HomeTab extends StatelessWidget {
             title: AppStrings.recent,
             onSeeAll: () {
               context.pushNamed(
-                AppRoutes.listings, // الاسم
-                extra: {
-                  'title': 'Recent Listings', // العنوان
-                  'listings': dummyListings, // الليست
-                },
+                AppRoutes.listings, //
+                extra: {'title': 'Recent Listings', 'listings': dummyListings},
               );
             },
           ),
