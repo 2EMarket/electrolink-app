@@ -8,13 +8,12 @@ import 'package:second_hand_electronics_marketplace/features/location/presentati
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/listing/data/listing_model.dart';
-import '../../features/profile/presentation/pages/profile_screen.dart';
-import '../../features/profile/presentation/pages/public_profile/report_user_screen/send_report_screen.dart';
+import '../../features/profile/profile_exports.dart';
 import '../../features/verification/presentation/pages/verification_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.userProfile}',
+    initialLocation: '/${AppRoutes.reportUser}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first

@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../../../../core/constants/app_sizes.dart';
-import '../../../listing/data/listing_model.dart';
-import '../../data/data_sources/profile_mock_data_source.dart';
-import '../../data/models/profile_view_data.dart';
-import '../../data/repository/profile_repository.dart';
-import '../bloc/profile_bloc.dart';
-import '../bloc/profile_event.dart';
-import '../bloc/profile_state.dart';
-import '../widgets/profile_widgets/private_profile_completion.dart';
-import '../widgets/profile_widgets/private_profile_widget.dart';
-import '../widgets/profile_widgets/profile_appbar_actions.dart';
-import '../widgets/profile_widgets/profile_error_screen.dart';
-import '../widgets/profile_widgets/profile_header.dart';
-import '../widgets/profile_widgets/public_profile_widget.dart';
+import '../../../../../../core/constants/constants_exports.dart';
+import '../../../../../listing/data/listing_model.dart';
+import '../../../../profile_exports.dart';
+import '../../../widgets/profile_widgets_exports.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isMe;

@@ -1,5 +1,5 @@
 
-import '../../data/models/user_model.dart';
+import '../../../data/models/user_model.dart';
 
 abstract class ProfileState {}
 
@@ -17,3 +17,4 @@ class ProfileError extends ProfileState {
 
   ProfileError(this.message);
 }
+
