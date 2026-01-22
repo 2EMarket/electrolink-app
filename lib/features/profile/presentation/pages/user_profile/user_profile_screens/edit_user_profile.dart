@@ -1,18 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../../../configs/theme/app_colors.dart';
-import '../../../../../../core/constants/app_assets.dart';
-import '../../../../../../core/constants/app_routes.dart';
-import '../../../../../../core/constants/app_sizes.dart';
+import '../../../../../../core/constants/constants_exports.dart';
 import '../../../../../../core/widgets/custom_textfield.dart';
 import '../../../../../../core/widgets/notification_toast.dart';
-import '../../../../data/models/profile_view_data.dart';
-import '../../../../data/models/user_model.dart';
-/*
+import '../../../../profile_exports.dart';
+import '../../../widgets/profile_widgets_exports.dart';
+
 class EditUserProfile extends StatefulWidget {
-  EditUserProfile({super.key});
+  const EditUserProfile({super.key});
 
   static const double _avatarSizePrivate = 150;
   static const double _editIndicatorSize = 32;
@@ -23,58 +24,130 @@ class EditUserProfile extends StatefulWidget {
 
 class _EditUserProfileState extends State<EditUserProfile> {
   static const _warningIcon = AppAssets.popupWarning;
+  File? _selectedAvatar;
 
-  final mockUser = UserModel(
-    id: '1',
-    name: 'Eleanor Vance',
-    avatar: AppAssets.profilePic,
-    location: 'Berlin',
-    createdAt: DateTime(2023, 5, 1),
-    lastSeen: DateTime.now().subtract(const Duration(hours: 1)),
-    responseTimeMinutes: 60,
-    isOnline: true,
-    email: "EleanorVance@example.com",
-  );
+  final ProfileMockDataSource mockUser = ProfileMockDataSource();
+
+  ProfileViewData? profile;
+  Map<String, TextEditingController>? controllers;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _takePhoto() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+
+    if (image == null) return;
+
+    setState(() {
+      _selectedAvatar = File(image.path);
+    });
+  }
+
+  Future<void> _pickFromGallery() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+
+    if (image == null) return;
+
+    setState(() {
+      _selectedAvatar = File(image.path);
+    });
+  }
 
   @override
-  Widget build(BuildContext context) {
-    final profile = ProfileViewData.fromUser(
-      mockUser,
-      type: ProfileType.private,
-    );
-    Widget avatar = Stack(
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadProfile();
+    });
+  }
+
+  Future<void> _loadProfile() async {
+    EasyLoading.show(status: 'Loading...');
+    try {
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      final user = await mockUser.getUser('1');
+
+      profile = ProfileViewData.fromUser(user, type: ProfileType.private);
+
+      controllers = {
+        'Full Name': TextEditingController(text: profile!.name),
+        'Email': TextEditingController(text: profile!.email ?? ''),
+        'Phone Number': TextEditingController(text: profile!.phone ?? ''),
+        'Country': TextEditingController(text: profile!.location),
+      };
+
+      setState(() {});
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  @override
+  void dispose() {
+    controllers?.values.forEach((c) => c.dispose());
+    super.dispose();
+  }
+
+  Widget _buildAvatar() {
+    return Stack(
       clipBehavior: Clip.none,
       children: [
-        Image.asset(
-          profile.avatar,
-          width: EditUserProfile._avatarSizePrivate,
-          height: EditUserProfile._avatarSizePrivate,
-          fit: BoxFit.cover,
+        ClipOval(
+          child:
+              _selectedAvatar != null
+                  ? Image.file(
+                    _selectedAvatar!,
+                    width: EditUserProfile._avatarSizePrivate,
+                    height: EditUserProfile._avatarSizePrivate,
+                    fit: BoxFit.cover,
+                  )
+                  : Image.asset(
+                    profile!.avatar,
+                    width: EditUserProfile._avatarSizePrivate,
+                    height: EditUserProfile._avatarSizePrivate,
+                    fit: BoxFit.cover,
+                  ),
         ),
         Positioned(
           bottom: EditUserProfile._avatarSizePrivate * 0.15,
           right: EditUserProfile._avatarSizePrivate * 0.15,
           child: GestureDetector(
             onTap:
-                () => showCustomBottomSheet(
+                () => showProfileOptionsSheet(
                   context,
-                  const BottomSheetPhotoOptions(),
+                  type: ProfileOptionType.photo,
+                  onTakePhoto: _takePhoto,
+                  onPickGallery: _pickFromGallery,
                 ),
             child: Container(
               width: EditUserProfile._editIndicatorSize,
               height: EditUserProfile._editIndicatorSize,
-              child: SvgPicture.asset(AppAssets.editIcon),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: context.colors.mainColor,
               ),
+              child: SvgPicture.asset(AppAssets.editIcon),
             ),
           ),
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (profile == null || controllers == null) {
+      return ProfileErrorScreen();
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text('Edit Profile')),
+      appBar: AppBar(title: const Text('Edit Profile')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
           AppSizes.paddingM,
@@ -86,38 +159,24 @@ class _EditUserProfileState extends State<EditUserProfile> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(child: avatar),
+            Center(child: _buildAvatar()),
             const SizedBox(height: AppSizes.paddingM),
-            CustomTextField(
-              label: 'Full Name',
-              hintText: profile.name,
-              controller: TextEditingController(text: profile.name),
-            ),
-            const SizedBox(height: AppSizes.paddingM),
-            CustomTextField(
-              label: 'Email',
-              hintText: profile.email!,
-              controller: TextEditingController(text: profile.email!),
-            ),
-            const SizedBox(height: AppSizes.paddingM),
-            CustomTextField(
-              label: 'Phone Number',
-              hintText: profile.phone!,
-              controller: TextEditingController(text: profile.phone),
-            ),
-            const SizedBox(height: AppSizes.paddingM),
-            CustomTextField(
-              label: 'Country',
-              hintText: profile.location,
-              controller: TextEditingController(text: profile.location),
+            ...controllers!.entries.map(
+              (e) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSizes.paddingM),
+                child: CustomTextField(
+                  label: e.key,
+                  hintText: e.value.text,
+                  controller: e.value,
+                ),
+              ),
             ),
             const SizedBox(height: AppSizes.paddingL),
-
             SizedBox(
               width: double.infinity,
               height: 56,
               child: ElevatedButton(
-                onPressed: EasyLoading.isShow ? null : _submitReport,
+                onPressed: EasyLoading.isShow ? null : _updateProfile,
                 child: const Text("Update Profile"),
               ),
             ),
@@ -127,13 +186,15 @@ class _EditUserProfileState extends State<EditUserProfile> {
     );
   }
 
-  Future<void> _submitReport() async {
+  Future<void> _updateProfile() async {
     EasyLoading.show(status: 'Waiting...');
     await Future.delayed(const Duration(milliseconds: 500));
+
     try {
       await Future.delayed(const Duration(seconds: 2));
       EasyLoading.dismiss();
       context.goNamed(AppRoutes.userProfile);
+
       NotificationToast.show(
         context,
         'Edited Successfully',
@@ -149,10 +210,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
         description:
             'We couldn’t load your profile information.  Please check your internet connection and try again.',
         primaryText: 'Try again',
-        //     secondaryText: 'Cancel',
-        onPrimary: _submitReport,
+        onPrimary: _updateProfile,
         primaryColor: Theme.of(context).colorScheme.error,
       );
     }
   }
-}*/
+}

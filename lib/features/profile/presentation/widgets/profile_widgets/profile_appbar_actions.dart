@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../../../configs/theme/app_colors.dart';
@@ -22,10 +21,9 @@ class ProfileAppBarActions extends StatelessWidget {
       ),
       onPressed: () {
         if (isMe) {
-
         } else {
           // فعل الـ BottomSheet
-          showCustomBottomSheet(context, const BottomSheetProfileOptions());
+          showProfileOptionsSheet(context, type: ProfileOptionType.report);
         }
       },
     );
