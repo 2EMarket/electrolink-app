@@ -13,7 +13,10 @@ import '../../../../profile_exports.dart';
 import '../../../widgets/profile_widgets_exports.dart';
 
 class EditUserProfile extends StatefulWidget {
-  const EditUserProfile({super.key});
+  final bool isMe;
+  final String userId;
+
+  const EditUserProfile({super.key, required this.userId, required this.isMe});
 
   static const double _avatarSizePrivate = 150;
   static const double _editIndicatorSize = 32;
@@ -193,7 +196,13 @@ class _EditUserProfileState extends State<EditUserProfile> {
     try {
       await Future.delayed(const Duration(seconds: 2));
       EasyLoading.dismiss();
-      context.goNamed(AppRoutes.userProfile);
+      context.goNamed(
+        AppRoutes.userProfile,
+        queryParameters: {
+          'userId': '1',
+          'isMe': 'true',
+        },
+      );
 
       NotificationToast.show(
         context,

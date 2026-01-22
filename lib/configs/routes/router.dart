@@ -110,8 +110,12 @@ class AppRouter {
       GoRoute(
         path: '/${AppRoutes.editUserProfile}',
         name: AppRoutes.editUserProfile,
-        builder: (context, state) => EditUserProfile(),
+        builder: (context, state) => EditUserProfile(
+          userId: state.uri.queryParameters['userId'] ?? '1',
+          isMe: state.uri.queryParameters['isMe'] == 'true',
+        ),
       ),
+
       // // Auth routes
       // GoRoute(
       //   path: '/${AppRoutes.signIn}',
@@ -126,8 +130,12 @@ class AppRouter {
       GoRoute(
         path: '/${AppRoutes.userProfile}',
         name: AppRoutes.userProfile,
-        builder: (context, state) => ProfileScreen(userId: '1', isMe: false),
+        builder: (context, state) => ProfileScreen(
+          userId: state.uri.queryParameters['userId'] ?? '1',
+          isMe: state.uri.queryParameters['isMe'] == 'true',
+        ),
       ),
+
     ],
 
     // Error page
