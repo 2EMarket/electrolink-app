@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/public_profile_widgets/public_profile_info_row.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/public_profile_info_row.dart';
 
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_assets.dart';
@@ -145,14 +145,14 @@ class ProfileHeader extends StatelessWidget {
               textStyle: privateTextStyle,
             ),
           ),
-         /* if (profile.responseTime != null)
+          if (profile.responseTime != null)
             _centeredRow(
               PublicProfileInfoRow(
                 icon: AppAssets.chatOutlineIcon,
                 text: profile.responseTime!,
                 textStyle: privateTextStyle,
               ),
-            ),*/
+            ),
         ],
       );
     }

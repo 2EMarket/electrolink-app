@@ -6,7 +6,6 @@ import 'core/widgets/app_notification.dart';
 import 'core/widgets/notification_overlay.dart';
 import 'core/widgets/otp_input_field.dart';
 import 'core/widgets/widgets_exports.dart';
-import 'features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
 import 'imports.dart';
 
 class AmalsApp extends StatelessWidget {
@@ -20,7 +19,7 @@ class AmalsApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: PublicProfile()),
+     // home: Scaffold(body: ()),
 
       /* final _formKey = GlobalKey<FormState>();
     final _descriptionController = TextEditingController();

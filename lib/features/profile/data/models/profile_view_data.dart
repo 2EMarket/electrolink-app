@@ -42,7 +42,6 @@ class ProfileViewData {
       lastSeen: type == ProfileType.public
           ? _formatLastSeen(user.lastSeen)
           : null,
-
       responseTime: type == ProfileType.public
           ? _formatResponseTime(user.responseTimeMinutes)
           : 'Replies within ${user.responseTimeMinutes} min',
@@ -52,7 +51,28 @@ class ProfileViewData {
       phone: type == ProfileType.private ? user.phone: '+970...',
     );
   }
+  factory ProfileViewData.fromModel(
+      UserModel user, {
+        required ProfileType type,
+      }) {
+    return ProfileViewData(
+      name: user.name,
+      avatar: user.avatar,
+      location: user.location,
+      memberSince: _formatDate(user.createdAt),
+      isOnline: user.isOnline,
+      lastSeen: type == ProfileType.public
+          ? _formatLastSeen(user.lastSeen)
+          : null,
+      responseTime: type == ProfileType.public
+          ? _formatResponseTime(user.responseTimeMinutes)
+          : 'Replies within ${user.responseTimeMinutes} min',
+      email: type == ProfileType.private ? user.email : 'user@email.com',
+      phone: type == ProfileType.private ? user.phone : '+970...',
+    );
+  }
 }
+
 String _formatDate(DateTime date) {
   return '${_monthName(date.month)} ${date.year}';
 }

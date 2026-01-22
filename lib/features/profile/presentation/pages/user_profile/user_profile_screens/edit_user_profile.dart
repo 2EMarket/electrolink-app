@@ -10,9 +10,8 @@ import '../../../../../../core/widgets/custom_textfield.dart';
 import '../../../../../../core/widgets/notification_toast.dart';
 import '../../../../data/models/profile_view_data.dart';
 import '../../../../data/models/user_model.dart';
-import '../../../widgets/public_profile_widgets/bottom_sheet_profile_options.dart';
 import '../../public_profile/report_user_screen/send_report_screen.dart';
-
+/*
 class EditUserProfile extends StatefulWidget {
   EditUserProfile({super.key});
 
@@ -120,7 +119,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
               height: 56,
               child: ElevatedButton(
                 onPressed: EasyLoading.isShow ? null : _submitReport,
-                child: const Text("Submit"),
+                child: const Text("Update Profile"),
               ),
             ),
           ],
@@ -157,4 +156,4 @@ class _EditUserProfileState extends State<EditUserProfile> {
       );
     }
   }
-}
+}*/

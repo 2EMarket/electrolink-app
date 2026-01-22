@@ -2,23 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
-import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/edit_user_profile.dart';
-import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/user_profile.dart';
-
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/listing/data/listing_model.dart';
-import '../../features/profile/presentation/pages/public_profile/public_profile_screens/public_profile.dart';
+import '../../features/profile/presentation/pages/profile_screen.dart';
 import '../../features/profile/presentation/pages/public_profile/report_user_screen/send_report_screen.dart';
 import '../../features/verification/presentation/pages/verification_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.editUserProfile}',
+    initialLocation: '/${AppRoutes.userProfile}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -105,21 +101,17 @@ class AppRouter {
           ),
         ],
       ),
-      GoRoute(
-        path: '/${AppRoutes.publicProfile}',
-        name: AppRoutes.publicProfile,
-        builder: (context, state) => PublicProfile(),
-      ),
+
       GoRoute(
         path: '/${AppRoutes.reportUser}',
         name: AppRoutes.reportUser,
         builder: (context, state) => SendReportScreen(),
       ),
-      GoRoute(
+      /* GoRoute(
         path: '/${AppRoutes.editUserProfile}',
         name: AppRoutes.editUserProfile,
         builder: (context, state) => EditUserProfile(),
-      ),
+      ),*/
       // // Auth routes
       // GoRoute(
       //   path: '/${AppRoutes.signIn}',
@@ -134,7 +126,7 @@ class AppRouter {
       GoRoute(
         path: '/${AppRoutes.userProfile}',
         name: AppRoutes.userProfile,
-        builder: (context, state) => UserProfile(),
+        builder: (context, state) => ProfileScreen(userId: '1', isMe: false),
       ),
     ],
 

@@ -14,6 +14,7 @@ class UserModel {
     required this.id,
     required this.name,
     required this.avatar,
+
     required this.location,
     required this.createdAt,
     required this.lastSeen,
