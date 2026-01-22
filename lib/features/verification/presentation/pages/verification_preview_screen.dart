@@ -23,17 +23,11 @@ class VerificationPreviewScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 1. الصورة الملتقطة (بدل الكاميرا)
           Image.file(File(imagePath), fit: BoxFit.cover),
-
-          // 2. طبقة الرسم (Overlay) والإطار
           CustomPaint(painter: CameraOverlayPainter()),
-
-          // 3. الأزرار والنصوص
           SafeArea(
             child: Column(
               children: [
-                // زر إغلاق (اختياري)
                 Align(
                   alignment: Alignment.topRight,
                   child: IconButton(
@@ -42,16 +36,12 @@ class VerificationPreviewScreen extends StatelessWidget {
                       color: Colors.white,
                       size: 30,
                     ),
-                    onPressed:
-                        () => Navigator.pop(
-                          context,
-                        ), // رجوع (كأننا كبسنا Capture Again)
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
-                // العناوين
                 Text(
                   title,
                   style: AppTypography.h3_18Medium.copyWith(

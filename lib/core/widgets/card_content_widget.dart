@@ -35,7 +35,7 @@ class CardContentWidget extends StatelessWidget {
 
         Row(
           children: [
-            SvgPicture.asset(AppAssets.locationIcon),
+            SvgPicture.asset(AppAssets.locationOutlinedIcon),
             const SizedBox(width: AppSizes.paddingXXS),
             Expanded(
               child: Text(
