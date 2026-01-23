@@ -135,7 +135,11 @@ class AppRouter {
           isMe: state.uri.queryParameters['isMe'] == 'true',
         ),
       ),
-
+      GoRoute(
+        path: '/${AppRoutes.settingsScreen}',
+        name: AppRoutes.settingsScreen,
+        builder: (context, state) => SettingsScreen(),
+      ),
     ],
 
     // Error page

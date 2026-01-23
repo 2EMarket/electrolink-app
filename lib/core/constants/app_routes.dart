@@ -21,5 +21,6 @@ class AppRoutes {
   static const userProfile = 'user_profile';
 
   static const editUserProfile = 'edit_user_profile';
+  static const  settingsScreen = 'settingsScreen';
 
 }
