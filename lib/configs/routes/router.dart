@@ -106,20 +106,65 @@ class AppRouter {
           ),
         ],
       ),
-
       GoRoute(
-        path: '/${AppRoutes.reportUser}',
-        name: AppRoutes.reportUser,
-        builder: (context, state) => SendReportScreen(),
-      ),
-      GoRoute(
-        path: '/${AppRoutes.editUserProfile}',
-        name: AppRoutes.editUserProfile,
+        path: '/${AppRoutes.userProfile}',
+        name: AppRoutes.userProfile,
         builder:
-            (context, state) => EditUserProfile(
+            (context, state) => ProfileScreen(
               userId: state.uri.queryParameters['userId'] ?? '1',
               isMe: state.uri.queryParameters['isMe'] == 'true',
             ),
+        routes: [
+          // Edit User Profile
+          GoRoute(
+            path: '/${AppRoutes.editUserProfile}',
+            name: AppRoutes.editUserProfile,
+            builder:
+                (context, state) => EditUserProfile(
+                  userId: state.uri.queryParameters['userId'] ?? '1',
+                  isMe: state.uri.queryParameters['isMe'] == 'true',
+                ),
+          ),
+          GoRoute(
+            path: '/${AppRoutes.reportUser}',
+            name: AppRoutes.reportUser,
+            builder: (context, state) => SendReportScreen(),
+          ),
+          GoRoute(
+            path: '/${AppRoutes.settingsScreen}',
+            name: AppRoutes.settingsScreen,
+            builder: (context, state) => SettingsScreen(),
+            routes: [
+              GoRoute(
+                path: '/${AppRoutes.notificationSettings}',
+                name: AppRoutes.notificationSettings,
+                builder: (context, state) => NotificationSettingsScreen(),
+              ),
+              GoRoute(
+                path: '/${AppRoutes.languageCurrency}',
+                name: AppRoutes.languageCurrency,
+                builder: (context, state) => const LanguageCurrencyScreen(),
+                routes: [
+                  GoRoute(
+                    path: '/${AppRoutes.language}',
+                    name: AppRoutes.language,
+                    builder: (context, state) => const LanguageScreen(),
+                  ),
+                  GoRoute(
+                    path: '/${AppRoutes.currency}',
+                    name: AppRoutes.currency,
+                    builder: (context, state) => const CurrencyScreen(),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: '/${AppRoutes.helpCenter}',
+                name: AppRoutes.helpCenter,
+                builder: (context, state) => HelpCenterScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
 
       // // Auth routes
@@ -133,48 +178,6 @@ class AppRouter {
       //   name: AppRoutes.signUp,
       //   builder: (context, state) => SignUpPage(),
       // ),
-      GoRoute(
-        path: '/${AppRoutes.userProfile}',
-        name: AppRoutes.userProfile,
-        builder:
-            (context, state) => ProfileScreen(
-              userId: state.uri.queryParameters['userId'] ?? '1',
-              isMe: state.uri.queryParameters['isMe'] == 'true',
-            ),
-      ),
-      GoRoute(
-        path: '/${AppRoutes.settingsScreen}',
-        name: AppRoutes.settingsScreen,
-        builder: (context, state) => SettingsScreen(),
-      ),
-      GoRoute(
-        path: '/${AppRoutes.notificationSettings}',
-        name: AppRoutes.notificationSettings,
-        builder: (context, state) => NotificationSettingsScreen(),
-      ),
-      GoRoute(
-        path: '/${AppRoutes.languageCurrency}',
-        name: AppRoutes.languageCurrency,
-        builder: (context, state) => const LanguageCurrencyScreen(),
-        routes: [
-          GoRoute(
-            path: '/${AppRoutes.language}',
-            name: AppRoutes.language,
-            builder: (context, state) => const LanguageScreen(),
-          ),
-          GoRoute(
-            path: '/${AppRoutes.currency}',
-            name: AppRoutes.currency,
-            builder: (context, state) => const CurrencyScreen(),
-          ),
-
-        ],
-      ),
-      GoRoute(
-        path: '/${AppRoutes.helpCenter}',
-        name: AppRoutes.helpCenter,
-        builder: (context, state) => HelpCenterScreen(),
-      ),
     ],
 
     // Error page
