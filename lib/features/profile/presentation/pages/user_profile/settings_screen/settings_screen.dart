@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../core/constants/constants_exports.dart';
 import '../../../widgets/settings_widgets/settings_tile.dart';
@@ -23,7 +24,9 @@ class SettingsScreen extends StatelessWidget {
               title: 'Notifications',
               icon: AppAssets.notificationIcon,
               iconColor: context.colors.mainColor,
-              onTap: () {},
+              onTap: () {
+                context.goNamed(AppRoutes.notificationSettings);
+              },
             ),
             const SizedBox(height: AppSizes.paddingS),
 
