@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
-import '../../../../profile/presentation/widgets/report_user_widgets/status_feedback_widget.dart';
+import '../../../../../core/widgets/status_feedback_widget.dart';
 
 class VerificationSuccessStep extends StatelessWidget {
   const VerificationSuccessStep({super.key});

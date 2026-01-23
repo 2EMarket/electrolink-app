@@ -18,6 +18,8 @@ class AppRoutes {
   //profile pages
   static const publicProfile = 'public_profile';
   static const reportUser = 'report_user';
+  static const userProfile = 'user_profile';
 
+  static const editUserProfile = 'edit_user_profile';
 
 }
