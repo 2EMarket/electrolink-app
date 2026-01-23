@@ -188,7 +188,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
       ),
     );
   }
-
   Future<void> _updateProfile() async {
     EasyLoading.show(status: 'Waiting...');
     await Future.delayed(const Duration(milliseconds: 500));
