@@ -1,54 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../core/constants/constants_exports.dart';
+import '../../../bloc/settings_screen_bloc/language_currency_bloc/language_currency_bloc.dart';
+import '../../../bloc/settings_screen_bloc/language_currency_bloc/language_currency_event.dart';
+import '../../../bloc/settings_screen_bloc/language_currency_bloc/language_currency_state.dart';
 import '../../../widgets/settings_widgets/language_currency_decorated_tile.dart';
 
-class LanguageCurrencyScreen extends StatefulWidget {
+class LanguageCurrencyScreen extends StatelessWidget {
   const LanguageCurrencyScreen({super.key});
 
   @override
-  State<LanguageCurrencyScreen> createState() => _LanguageCurrencyScreenState();
-}
-
-class _LanguageCurrencyScreenState extends State<LanguageCurrencyScreen> {
-  String selectedLanguage = 'English';
-  String selectedCurrency = 'ILS';
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Language & Currency')),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.paddingM),
-        child: Column(
-          children: [
-            LanguageCurrencyDecoratedListTile(
-              title: 'App language',
-              trailingValue: selectedLanguage,
-              onTap: () async {
-                final result = await context.pushNamed(AppRoutes.language);
-                if (result != null) {
-                  setState(() {
-                    selectedLanguage = _mapLanguage(result as String);
-                  });
-                }
-              },
+    return BlocProvider(
+      create: (_) => LanguageCurrencyBloc(),
+      child: BlocBuilder<LanguageCurrencyBloc, LanguageCurrencyState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Language & Currency')),
+            body: Padding(
+              padding: const EdgeInsets.all(AppSizes.paddingM),
+              child: Column(
+                children: [
+                  LanguageCurrencyDecoratedListTile(
+                    title: 'App language',
+                    trailingValue: _mapLanguage(state.language),
+                    onTap: () async {
+                      final result = await context.pushNamed(
+                        AppRoutes.language,
+                      );
+
+                      if (result != null) {
+                        context.read<LanguageCurrencyBloc>().add(
+                          UpdateLanguage(result as String),
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: AppSizes.paddingS),
+                  LanguageCurrencyDecoratedListTile(
+                    title: 'Currency display',
+                    trailingValue: state.currency,
+                    onTap: () async {
+                      final result = await context.pushNamed(
+                        AppRoutes.currency,
+                      );
+
+                      if (result != null) {
+                        context.read<LanguageCurrencyBloc>().add(
+                          UpdateCurrency(result as String),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: AppSizes.paddingS),
-            LanguageCurrencyDecoratedListTile(
-              title: 'Currency display',
-              trailingValue: selectedCurrency,
-              onTap: () async {
-                final result = await context.pushNamed(AppRoutes.currency);
-                if (result != null) {
-                  setState(() {
-                    selectedCurrency = result as String;
-                  });
-                }
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

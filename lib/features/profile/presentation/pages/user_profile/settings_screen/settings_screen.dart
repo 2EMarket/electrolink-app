@@ -42,7 +42,10 @@ class SettingsScreen extends StatelessWidget {
               title: 'Language & Currency',
               icon: AppAssets.languageCircleIcon,
               iconColor: context.colors.mainColor,
-              onTap: () {},
+              onTap: () {
+                context.goNamed(AppRoutes.languageCurrency);
+
+              },
             ),
             const SizedBox(height: AppSizes.paddingS),
 
@@ -50,7 +53,10 @@ class SettingsScreen extends StatelessWidget {
               title: 'Help Center',
               icon: AppAssets.customerSupportIcon,
               iconColor: context.colors.mainColor,
-              onTap: () {},
+              onTap: () {
+                context.goNamed(AppRoutes.helpCenter);
+
+              },
             ),
             const SizedBox(height: AppSizes.paddingS),
 
