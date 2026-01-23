@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../../core/constants/constants_exports.dart';
 
@@ -12,14 +13,19 @@ class SettingsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
           AppSizes.paddingM,
-          0,
+          AppSizes.paddingM,
           AppSizes.paddingM,
           AppSizes.paddingL,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [],
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.all(AppSizes.paddingM),
+              leading: SvgPicture.asset(AppAssets.notificationIcon),
+            ),
+          ],
         ),
       ),
     );

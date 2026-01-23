@@ -14,7 +14,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.editUserProfile}',
+    initialLocation: '/${AppRoutes.settingsScreen}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first

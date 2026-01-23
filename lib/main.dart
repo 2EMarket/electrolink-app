@@ -3,6 +3,6 @@ import 'imports.dart';
 
 void main() {
   runApp(
-    DevicePreview(enabled: false, builder: (context) => const ElectroLinkApp()),
+    DevicePreview(enabled: true, builder: (context) => const ElectroLinkApp()),
   );
 }
