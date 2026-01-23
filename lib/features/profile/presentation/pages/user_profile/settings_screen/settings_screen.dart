@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {},
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            const SizedBox(height: AppSizes.paddingS),
 
             SettingsTile(
               title: 'Change Password',
@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {},
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            const SizedBox(height: AppSizes.paddingS),
 
             SettingsTile(
               title: 'Language & Currency',
@@ -41,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {},
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            const SizedBox(height: AppSizes.paddingS),
 
             SettingsTile(
               title: 'Help Center',
@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {},
             ),
-            const SizedBox(height: AppSizes.paddingXS),
+            const SizedBox(height: AppSizes.paddingS),
 
             SettingsTile(
               title: 'Log out',
