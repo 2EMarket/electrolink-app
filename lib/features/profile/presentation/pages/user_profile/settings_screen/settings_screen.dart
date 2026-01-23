@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
+import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../core/constants/constants_exports.dart';
+import '../../../widgets/settings_widgets/settings_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -18,12 +18,46 @@ class SettingsScreen extends StatelessWidget {
           AppSizes.paddingL,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ListTile(
-              contentPadding: EdgeInsets.all(AppSizes.paddingM),
-              leading: SvgPicture.asset(AppAssets.notificationIcon),
+            SettingsTile(
+              title: 'Notifications',
+              icon: AppAssets.notificationIcon,
+              iconColor: context.colors.mainColor,
+              onTap: () {},
+            ),
+            const SizedBox(height: AppSizes.paddingXS),
+
+            SettingsTile(
+              title: 'Change Password',
+              icon: AppAssets.shieldDoneIcon,
+              iconColor: context.colors.mainColor,
+              onTap: () {},
+            ),
+            const SizedBox(height: AppSizes.paddingXS),
+
+            SettingsTile(
+              title: 'Language & Currency',
+              icon: AppAssets.languageCircleIcon,
+              iconColor: context.colors.mainColor,
+              onTap: () {},
+            ),
+            const SizedBox(height: AppSizes.paddingXS),
+
+            SettingsTile(
+              title: 'Help Center',
+              icon: AppAssets.customerSupportIcon,
+              iconColor: context.colors.mainColor,
+              onTap: () {},
+            ),
+            const SizedBox(height: AppSizes.paddingXS),
+
+            SettingsTile(
+              title: 'Log out',
+              icon: AppAssets.logoutIcon,
+              iconColor: context.colors.error,
+              textColor: context.colors.error,
+              showArrow: false,
+              onTap: () {},
             ),
           ],
         ),
