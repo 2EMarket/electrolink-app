@@ -29,4 +29,6 @@ class AppRoutes {
   static const language = 'language';
   static const currency = 'currency';
   static const languageCurrency = 'languageCurrencyScreen';
+  static const helpCenter = 'helpCenterScreen';
+
 }

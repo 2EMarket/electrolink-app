@@ -5,10 +5,13 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/listing/data/listing_model.dart';
+import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/language_currency_screen.dart';
+import '../../features/profile/presentation/pages/user_profile/settings_screen/language_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/notification_settings_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/user_profile_screens/edit_user_profile.dart';
 import '../../features/profile/profile_exports.dart';
@@ -16,7 +19,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.languageCurrency}',
+    initialLocation: '/${AppRoutes.helpCenter}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first
@@ -164,7 +167,13 @@ class AppRouter {
             name: AppRoutes.currency,
             builder: (context, state) => const CurrencyScreen(),
           ),
+
         ],
+      ),
+      GoRoute(
+        path: '/${AppRoutes.helpCenter}',
+        name: AppRoutes.helpCenter,
+        builder: (context, state) => HelpCenterScreen(),
       ),
     ],
 
