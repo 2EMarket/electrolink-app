@@ -20,7 +20,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 class AppRouter {
   static final GoRouter _router = GoRouter(
     initialLocation:
-        '/${AppRoutes.userProfile}/${AppRoutes.settingsScreen}/${AppRoutes.languageCurrency}',
+        '/${AppRoutes.userProfile}/${AppRoutes.settingsScreen}/${AppRoutes.helpCenter}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       // Check onboarding status first

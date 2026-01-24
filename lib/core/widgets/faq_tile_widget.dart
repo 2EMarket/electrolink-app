@@ -17,13 +17,14 @@ class FAQWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-        boxShadow: [
+        boxShadow: context.shadows.card,
+      /*  boxShadow: [
           BoxShadow(
             color: context.colors.border,
             blurRadius: 1,
             offset: const Offset(0, 1),
           ),
-        ],
+        ],*/
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.paddingXS),
