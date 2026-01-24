@@ -1,6 +1,7 @@
 class AppRoutes {
   // Onboarding
   static const onboarding = 'onboarding';
+
   // Auth
   static const signIn = 'sign-in';
   static const signUp = 'sign-up';
@@ -10,6 +11,7 @@ class AppRoutes {
   static const mainLayout = 'main-layout';
   static const listings = 'listings';
   static const favorite = 'favorite';
+
   // Other pages
   static const location = 'location';
   static const countrySelection = 'country-selection';
@@ -21,5 +23,12 @@ class AppRoutes {
   static const userProfile = 'user_profile';
 
   static const editUserProfile = 'edit_user_profile';
+  static const settingsScreen = 'settingsScreen';
+  static const notificationSettings = 'notificationSettings';
+
+  static const language = 'language';
+  static const currency = 'currency';
+  static const languageCurrency = 'languageCurrencyScreen';
+  static const helpCenter = 'helpCenterScreen';
 
 }

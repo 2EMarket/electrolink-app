@@ -18,30 +18,40 @@ class FAQWidget extends StatelessWidget {
         color: colors.surface,
         borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         boxShadow: context.shadows.card,
-      ),
-      child: ExpansionTile(
-        childrenPadding: const EdgeInsets.only(
-          left: AppSizes.paddingM,
-          right: AppSizes.paddingM,
-          bottom: AppSizes.paddingM,
-        ),
-        collapsedShape: const Border(),
-        shape: const Border(),
-        title: Text(
-          title,
-          style: AppTypography.body16Medium.copyWith(color: colors.titles),
-        ),
-
-        iconColor: colors.hint,
-        collapsedIconColor: colors.hint,
-        children: [
-          const Divider(thickness: 1, height: 1),
-          const SizedBox(height: AppSizes.paddingS),
-          Text(
-            description,
-            style: AppTypography.body14Regular.copyWith(color: colors.hint),
+      /*  boxShadow: [
+          BoxShadow(
+            color: context.colors.border,
+            blurRadius: 1,
+            offset: const Offset(0, 1),
           ),
-        ],
+        ],*/
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.paddingXS),
+        child: ExpansionTile(
+          childrenPadding: const EdgeInsets.only(
+            left: AppSizes.paddingM,
+            right: AppSizes.paddingM,
+            bottom: AppSizes.paddingM,
+          ),
+          collapsedShape: const Border(),
+          shape: const Border(),
+          title: Text(
+            title,
+            style: AppTypography.body16Medium.copyWith(color: colors.titles),
+          ),
+
+          iconColor: colors.hint,
+          collapsedIconColor: colors.hint,
+          children: [
+            const Divider(thickness: 1, height: 1),
+            const SizedBox(height: AppSizes.paddingS),
+            Text(
+              description,
+              style: AppTypography.body14Regular.copyWith(color: colors.hint),
+            ),
+          ],
+        ),
       ),
     );
   }

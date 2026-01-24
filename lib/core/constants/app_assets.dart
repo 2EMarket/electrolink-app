@@ -98,6 +98,10 @@ class AppAssets {
   static const String aiChipCatIcon = '$_svgPath/ai_chip_category.svg';
 
   static const String editIcon = '$_svgPath/Edit icon.svg';
+  static const String shieldDoneIcon = '$_svgPath/Shield Done.svg';
+  static const String logoutIcon = '$_svgPath/Logout.svg';
+  static const String customerSupportIcon = '$_svgPath/customer-support.svg';
+  static const String languageCircleIcon = '$_svgPath/language-circle.svg';
 
 
 }
