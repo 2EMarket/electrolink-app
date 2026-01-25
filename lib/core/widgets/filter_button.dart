@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/filter_model.dart';
 
 class FilterButton extends StatelessWidget {
   const FilterButton({super.key});
@@ -10,7 +11,12 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: Navigator.of(context, rootNavigator: true).context,
+          builder: (_) => FilterModel(),
+        );
+      },
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
