@@ -1,4 +1,4 @@
-import 'package:second_hand_electronics_marketplace/core/widgets/filter_model.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/filter_model.dart';
 
 class AppRoutes {
   // Onboarding

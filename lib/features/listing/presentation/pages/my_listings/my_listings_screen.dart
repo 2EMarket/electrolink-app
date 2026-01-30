@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/filter_button.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
@@ -91,23 +92,13 @@ class _MyListingScreenState extends State<MyListingScreen> {
                                   border: Border.all(
                                     color:
                                         isSelected
-                                            ? const Color.fromRGBO(
-                                              37,
-                                              99,
-                                              235,
-                                              1,
-                                            )
-                                            : const Color.fromARGB(
-                                              255,
-                                              187,
-                                              187,
-                                              187,
-                                            ),
+                                            ? context.colors.mainColor
+                                            : context.colors.border,
                                   ),
                                   color:
                                       isSelected
-                                          ? const Color.fromRGBO(37, 99, 235, 1)
-                                          : Colors.white,
+                                          ? context.colors.mainColor
+                                          : context.colors.surface,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -116,12 +107,7 @@ class _MyListingScreenState extends State<MyListingScreen> {
                                     color:
                                         isSelected
                                             ? Colors.white
-                                            : const Color.fromARGB(
-                                              255,
-                                              160,
-                                              159,
-                                              159,
-                                            ),
+                                            : context.colors.text,
 
                                     fontSize: 14,
                                   ),
@@ -149,8 +135,8 @@ class _MyListingScreenState extends State<MyListingScreen> {
                                   'assets/svgs/document_colord.svg',
                                   color:
                                       !isGridView
-                                          ? const Color.fromRGBO(37, 99, 235, 1)
-                                          : Colors.grey,
+                                          ? context.colors.mainColor
+                                          : context.colors.icons,
                                 ),
                               ),
                               IconButton(
@@ -163,8 +149,8 @@ class _MyListingScreenState extends State<MyListingScreen> {
                                   'assets/svgs/category_uncolord.svg',
                                   color:
                                       isGridView
-                                          ? const Color.fromRGBO(37, 99, 235, 1)
-                                          : Colors.grey,
+                                          ? context.colors.mainColor
+                                          : context.colors.icons,
                                 ),
                               ),
                             ],

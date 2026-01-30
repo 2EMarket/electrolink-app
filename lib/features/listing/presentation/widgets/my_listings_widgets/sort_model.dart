@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/simple_selection_list.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 
@@ -36,22 +38,26 @@ class SortModel extends StatelessWidget {
                   child: Column(
                     children: [
                       Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Stack(
                         children: [
-                          Text(
-                            'Sort By',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Sort By',
+                              style: AppTypography.body14Regular.copyWith(
+                                color: context.colors.titles,
+                              ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: SvgPicture.asset(
-                              'assets/svgs/Close Square.svg',
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: SvgPicture.asset(
+                                'assets/svgs/Close_Square.svg',
+                              ),
                             ),
                           ),
                         ],

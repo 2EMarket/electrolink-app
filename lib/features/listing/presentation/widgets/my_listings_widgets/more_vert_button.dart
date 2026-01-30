@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/custom_popup.dart';
 
 class MoreVertButton extends StatelessWidget {
@@ -35,11 +36,10 @@ class MoreVertButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Stack(
                     children: [
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Text(
                           'Option Listings',
                           style: AppTypography.body14Regular.copyWith(
@@ -48,11 +48,16 @@ class MoreVertButton extends StatelessWidget {
                         ),
                       ),
 
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: SvgPicture.asset('assets/svgs/Close Square.svg'),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: SvgPicture.asset(
+                            'assets/svgs/Close_Square.svg',
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -77,6 +82,39 @@ class MoreVertButton extends StatelessWidget {
                           switch (option) {
                             case 'Edit':
                               // Handle edit action
+                              CustomPopup.show(
+                                context,
+                                body: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/svgs/pop_up_icon.svg',
+                                    ),
+                                    Gap(10),
+                                    Text(
+                                      'Edit Listing',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    Gap(10),
+                                    Text(
+                                      'Are you sure you want to edit this listing?',
+                                    ),
+                                  ],
+                                ),
+                                //: SvgPicture.asset('assets/svgs/Frame.svg'),
+                                primaryButtonText: 'Edit',
+                                onPrimaryButtonPressed: () {
+                                  // Perform delete action
+                                  Navigator.pop(context);
+                                },
+                                secondaryButtonText: AppStrings.cancel,
+                                onSecondaryButtonPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                primaryButtonColor: context.colors.mainColor,
+                              );
                               break;
                             case 'Delete':
                               // Handle delete action
@@ -85,7 +123,7 @@ class MoreVertButton extends StatelessWidget {
                                 body: Column(
                                   children: [
                                     SvgPicture.asset(
-                                      'assets/svgs/pop up icon.svg',
+                                      'assets/svgs/pop_up_icon.svg',
                                     ),
                                     Gap(10),
                                     Text(
@@ -107,7 +145,7 @@ class MoreVertButton extends StatelessWidget {
                                   // Perform delete action
                                   Navigator.pop(context);
                                 },
-                                secondaryButtonText: 'Cancel',
+                                secondaryButtonText: AppStrings.cancel,
                                 onSecondaryButtonPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -125,6 +163,39 @@ class MoreVertButton extends StatelessWidget {
                               break;
                             case 'Mark as Sold':
                               // Handle mark as sold action
+                              CustomPopup.show(
+                                context,
+                                body: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/svgs/pop_up_icon.svg',
+                                    ),
+                                    Gap(10),
+                                    Text(
+                                      'Mark as Sold',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    Gap(10),
+                                    Text(
+                                      'Are you sure you want to Mark this listing as Sold?',
+                                    ),
+                                  ],
+                                ),
+                                //: SvgPicture.asset('assets/svgs/Frame.svg'),
+                                primaryButtonText: 'Mark as Sold',
+                                onPrimaryButtonPressed: () {
+                                  // Perform delete action
+                                  Navigator.pop(context);
+                                },
+                                secondaryButtonText: AppStrings.cancel,
+                                onSecondaryButtonPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                primaryButtonColor: context.colors.mainColor,
+                              );
                               break;
                             case 'Archive':
                               // Handle archive action

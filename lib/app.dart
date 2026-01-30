@@ -5,6 +5,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/listings_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'configs/routes/router.dart';
 import 'features/home/presentation/pages/main_layout_screen.dart';
@@ -34,15 +36,18 @@ class ElectroLinkApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
+        //BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
+        BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
+        BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
       ],
-      child: MaterialApp.router(
-        routerConfig: AppRouter.router,
-        locale: DevicePreview.locale(context),
-        builder: (context, widget) {
-          widget = DevicePreview.appBuilder(context, widget);
-          return FlutterEasyLoading(child: MyListingScreen());
-        },
+      child: MaterialApp(
+        //routerConfig: AppRouter.router,
+        //locale: DevicePreview.locale(context),
+        // builder: (context, widget) {
+        //   widget = DevicePreview.appBuilder(context, widget);
+        //   return FlutterEasyLoading(child: MyListingScreen());
+        // },
+        home: MyListingScreen(),
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 
 class CategoriesChip extends StatefulWidget {
   CategoriesChip({
@@ -29,21 +31,20 @@ class _CategoriesChipState extends State<CategoriesChip> {
       child: Text(
         widget.label,
         style: TextStyle(
-          fontSize: 13,
+          fontSize: 12,
           color: widget.isSelected ? Colors.white : Theme.of(context).hintColor,
         ),
       ),
       style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 6),
         backgroundColor:
-            widget.isSelected
-                ? const Color.fromRGBO(37, 99, 235, 1)
-                : Colors.white,
+            widget.isSelected ? context.colors.mainColor : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
             color:
                 widget.isSelected
-                    ? const Color.fromRGBO(37, 99, 235, 1)
+                    ? context.colors.mainColor
                     : const Color.fromARGB(255, 171, 172, 172),
           ),
         ),

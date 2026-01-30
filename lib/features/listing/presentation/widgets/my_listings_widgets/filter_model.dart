@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/categories_chip.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/slider_view.dart';
 
 class FilterModel extends StatefulWidget {
   FilterModel({super.key});
@@ -45,16 +48,26 @@ class _FilterModelState extends State<FilterModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Stack(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Filter',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              // Text(
+              //   'Filter',
+              //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              // ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Filter',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
               ),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: SvgPicture.asset('assets/svgs/Close Square.svg'),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: SvgPicture.asset('assets/svgs/Close_Square.svg'),
+                ),
               ),
             ],
           ),
@@ -72,21 +85,8 @@ class _FilterModelState extends State<FilterModel> {
           Gap(20),
           Text('Price'),
           Gap(10),
-          RangeSlider(
-            values: priceRange,
-            min: 0,
-            max: 500,
-            divisions: 100,
-            labels: RangeLabels(
-              '\$${priceRange.start.toInt()}',
-              '\$${priceRange.end.toInt()}',
-            ),
-            onChanged: (values) {
-              setState(() {
-                priceRange = values;
-              });
-            },
-          ),
+          SliderView(min: 1, max: 1000),
+
           Gap(20),
           Text('Condition'),
           Gap(10),
