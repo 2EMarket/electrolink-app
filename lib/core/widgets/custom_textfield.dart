@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/field_label.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? label;
@@ -13,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final Widget? prefix;
+  final ValueChanged<String>? onChanged;
   const CustomTextField({
     super.key,
      this.label,
@@ -25,6 +27,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.prefix,
+    this.onChanged,
   });
 
   @override
@@ -63,23 +66,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null && widget.label!.isNotEmpty)
-        Row(
-          children: [
-            Text(
-              widget.label!,
-              style: AppTypography.body14Regular.copyWith(color: colors.titles),
-            ),
-            if (widget.isRequired) ...[
-              const SizedBox(width: 4),
-              Text(
-                "*",
-                style: AppTypography.body14Regular.copyWith(
-                  color: colors.error,
-                ),
-              ),
-            ],
-          ],
-        ),
+          FieldLabel(
+            label: widget.label!,
+            isRequired: widget.isRequired,
+          ),
         if (widget.label != null && widget.label!.isNotEmpty)
           const SizedBox(height: AppSizes.paddingXS),
         Stack(
@@ -94,6 +84,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 setState(() {
                   _currentLength = val.length;
                 });
+                widget.onChanged?.call(val);
               },
               style: AppTypography.body16Regular.copyWith(color: colors.text),
               decoration: InputDecoration(

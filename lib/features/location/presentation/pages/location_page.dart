@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
@@ -61,7 +60,7 @@ class _LocationScreenState extends State<LocationScreen> {
     } catch (_) {
       formatedAddress = 'error getting address';
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -94,14 +93,25 @@ class _LocationScreenState extends State<LocationScreen> {
                       onMapCreated: (controller) => mapController = controller,
                       onCameraMove: (pos) => cameraPosition = pos,
                       onCameraIdle: _updateAddress,
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
                     ),
                   ),
-                  Center(child: SvgPicture.asset(AppAssets.mapDetectorSvg)),
+                  Center(
+                    child: SvgPicture.asset(
+                      AppAssets.mapDetectorSvg,
+                      width: 84,
+                      height: 84,
+                    ),
+                  ),
                   Positioned(
                     bottom: 115,
                     left: 15,
                     right: 15,
-                    child: AddressInfoWindow(address: formatedAddress),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AddressInfoWindow(address: formatedAddress),
+                    ),
                   ),
                 ],
               ),

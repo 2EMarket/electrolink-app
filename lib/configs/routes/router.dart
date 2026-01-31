@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/data/models/add_listing_draft.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_draft_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_media_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_submit_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/add_listing/add_listing_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/listing_preview_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
@@ -19,10 +27,11 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation:
-        '/${AppRoutes.userProfile}/${AppRoutes.settingsScreen}/${AppRoutes.helpCenter}',
+    initialLocation: '/${AppRoutes.mainLayout}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
+      return null;
+    
       // Check onboarding status first
       // final isOnboardingCompleted =
       //     await OnboardingService.isOnboardingCompleted();
@@ -166,6 +175,38 @@ class AppRouter {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/${AppRoutes.addListing}',
+        name: AppRoutes.addListing,
+        builder:
+            (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => AddListingDraftCubit()..loadDraft(),
+                ),
+                BlocProvider(
+                  create: (_) => AddListingMediaCubit(),
+                ),
+                BlocProvider(
+                  create: (_) => AddListingSubmitCubit(),
+                ),
+              ],
+              child: const AddListingScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.addListingPreview}',
+        name: AppRoutes.addListingPreview,
+        builder: (context, state) {
+          final draft = state.extra as AddListingDraft;
+          return ListingPreviewScreen(draft: draft);
+        },
+      ),
+      GoRoute(
+        path: '/${AppRoutes.noInternet}',
+        name: AppRoutes.noInternet,
+        builder: (context, state) => const NoInternetScreen(),
       ),
 
       // // Auth routes
