@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_content_widget.dart';

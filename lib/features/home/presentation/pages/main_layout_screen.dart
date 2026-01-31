@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_navbar.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 
 class MainLayoutScreen extends StatefulWidget {
@@ -27,7 +29,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           });
         },
         onAddTap: () {
-          print("Add button tapped");
+          context.pushNamed(AppRoutes.addListing);
         },
       ),
     );

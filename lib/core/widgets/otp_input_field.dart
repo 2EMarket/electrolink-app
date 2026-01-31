@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/theme/theme_exports.dart';
-import '../constants/constants_exports.dart';
 
 class OtpInputField extends StatefulWidget {
   @override

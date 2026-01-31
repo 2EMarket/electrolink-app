@@ -11,6 +11,9 @@ class AppRoutes {
   static const mainLayout = 'main-layout';
   static const listings = 'listings';
   static const favorite = 'favorite';
+  static const addListing = 'add-listing';
+  static const addListingPreview = 'add-listing-preview';
+  static const noInternet = 'no-internet';
 
   // Other pages
   static const location = 'location';
