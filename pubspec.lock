@@ -17,7 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
-<<<<<<< HEAD
   audio_session:
     dependency: transitive
     description:
@@ -90,8 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   bloc:
     dependency: transitive
     description:
@@ -108,7 +105,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
-<<<<<<< HEAD
   cached_network_image:
     dependency: "direct main"
     description:
@@ -133,8 +129,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   camera:
     dependency: "direct main"
     description:
@@ -147,18 +141,18 @@ packages:
     dependency: transitive
     description:
       name: camera_android_camerax
-      sha256: bc7a96998258adddd0b653dd693b0874537707d58b0489708f2a646e4f124246
+      sha256: "1abae0a9853401ee875d7f99e9ec5083335f0aab6edf6eb9a219756143a1b3a8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.27"
+    version: "0.6.29"
   camera_avfoundation:
     dependency: transitive
     description:
       name: camera_avfoundation
-      sha256: "087a9fadef20325cb246b4c13344a3ce8e408acfc3e0c665ebff0ec3144d7163"
+      sha256: a600b60a7752cc5fa9de476cd0055539d7a3b9d62662f4f446bae49eba2267df
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.22+8"
+    version: "0.9.22+9"
   camera_platform_interface:
     dependency: transitive
     description:
@@ -195,10 +189,10 @@ packages:
     dependency: transitive
     description:
       name: code_assets
-      sha256: ae0db647e668cbb295a3527f0938e4039e004c80099dce2f964102373f5ce0b5
+      sha256: "83ccdaa064c980b5596c35dd64a8d3ecc68620174ab9b90b6343b753aa721687"
       url: "https://pub.dev"
     source: hosted
-    version: "0.19.10"
+    version: "1.0.0"
   collection:
     dependency: transitive
     description:
@@ -227,10 +221,10 @@ packages:
     dependency: transitive
     description:
       name: cross_file
-      sha256: "701dcfc06da0882883a2657c445103380e53e647060ad8d9dfb710c100996608"
+      sha256: "28bb3ae56f117b5aec029d702a90f57d285cd975c3c5c281eaca38dbc47c5937"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.5+1"
+    version: "0.3.5+2"
   crypto:
     dependency: transitive
     description:
@@ -247,7 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-<<<<<<< HEAD
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -256,8 +249,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   dbus:
     dependency: transitive
     description:
@@ -290,7 +281,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.6"
-<<<<<<< HEAD
   dio:
     dependency: "direct main"
     description:
@@ -315,8 +305,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   equatable:
     dependency: "direct main"
     description:
@@ -402,7 +390,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.1"
-<<<<<<< HEAD
   flutter_cache_manager:
     dependency: "direct main"
     description:
@@ -411,8 +398,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   flutter_easyloading:
     dependency: "direct main"
     description:
@@ -482,7 +467,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.33"
-<<<<<<< HEAD
   flutter_sound:
     dependency: "direct main"
     description:
@@ -507,8 +491,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.30.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   flutter_spinkit:
     dependency: transitive
     description:
@@ -655,7 +637,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "17.0.1"
-<<<<<<< HEAD
   google_fonts:
     dependency: "direct main"
     description:
@@ -664,8 +645,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.3.3"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   google_maps:
     dependency: transitive
     description:
@@ -686,18 +665,18 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: "6dbbfc697eedd29c3634affb2d6b3e5ecfc4e6e50c8345f4b975cc969c74b582"
+      sha256: "98d7f5354f770f3e993db09fc798d40aeb6a254f04c1c468a94818ec2086e83e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.18.9"
+    version: "2.18.12"
   google_maps_flutter_ios:
     dependency: transitive
     description:
       name: google_maps_flutter_ios
-      sha256: b3f9aa62f65f7f266651e156a910ce88b8158de6546c6b145c9ba8080eb861b3
+      sha256: "72812231d1c2051a42f1ae82e2860eb761d4b0c01a5d59213d399521fcb8a8d3"
       url: "https://pub.dev"
     source: hosted
-    version: "2.16.1"
+    version: "2.17.0"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:
@@ -750,10 +729,10 @@ packages:
     dependency: transitive
     description:
       name: hooks
-      sha256: "5410b9f4f6c9f01e8ff0eb81c9801ea13a3c3d39f8f0b1613cda08e27eab3c18"
+      sha256: "5d309c86e7ce34cd8e37aa71cb30cb652d3829b900ab145e4d9da564b31d59f7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.5"
+    version: "1.0.0"
   html:
     dependency: transitive
     description:
@@ -763,11 +742,7 @@ packages:
     source: hosted
     version: "0.15.6"
   http:
-<<<<<<< HEAD
     dependency: "direct main"
-=======
-    dependency: transitive
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
     description:
       name: http
       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
@@ -794,10 +769,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "297e42bd236c4ac4b091d4277292159b3280545e030cae2be3d503f9ecf7e6a1"
+      sha256: "518a16108529fc18657a3e6dde4a043dc465d16596d20ab2abd49a4cac2e703d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+12"
+    version: "0.8.13+13"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -810,10 +785,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_ios
-      sha256: "956c16a42c0c708f914021666ffcd8265dde36e673c9fa68c81f7d085d9774ad"
+      sha256: b9c4a438a9ff4f60808c9cf0039b93a42bb6c2211ef6ebb647394b2b3fa84588
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+3"
+    version: "0.8.13+6"
   image_picker_linux:
     dependency: transitive
     description:
@@ -854,7 +829,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.2"
-<<<<<<< HEAD
   js:
     dependency: transitive
     description:
@@ -863,17 +837,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   json_annotation:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      sha256: "805fa86df56383000f640384b282ce0cb8431f1a7a2396de92fb66186d8c57df"
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.0"
-<<<<<<< HEAD
+    version: "4.10.0"
   just_audio:
     dependency: "direct main"
     description:
@@ -898,8 +869,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   leak_tracker:
     dependency: transitive
     description:
@@ -924,7 +893,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-<<<<<<< HEAD
   logger:
     dependency: transitive
     description:
@@ -933,8 +901,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.2"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   logging:
     dependency: transitive
     description:
@@ -979,10 +945,10 @@ packages:
     dependency: transitive
     description:
       name: native_toolchain_c
-      sha256: f8872ea6c7a50ce08db9ae280ca2b8efdd973157ce462826c82f3c3051d154ce
+      sha256: "89e83885ba09da5fdf2cdacc8002a712ca238c28b7f717910b34bcd27b0d03ac"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.2"
+    version: "0.17.4"
   nested:
     dependency: transitive
     description:
@@ -995,11 +961,10 @@ packages:
     dependency: transitive
     description:
       name: objective_c
-      sha256: "55eb67ede1002d9771b3f9264d2c9d30bc364f0267bc1c6cc0883280d5f0c7cb"
+      sha256: "983c7fa1501f6dcc0cb7af4e42072e9993cb28d73604d25ebf4dab08165d997e"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.2"
-<<<<<<< HEAD
+    version: "9.2.5"
   octo_image:
     dependency: transitive
     description:
@@ -1008,8 +973,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   package_info_plus:
     dependency: transitive
     description:
@@ -1034,7 +997,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
-<<<<<<< HEAD
   path_drawing:
     dependency: transitive
     description:
@@ -1043,8 +1005,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   path_parsing:
     dependency: transitive
     description:
@@ -1189,7 +1149,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-<<<<<<< HEAD
   record:
     dependency: "direct main"
     description:
@@ -1262,8 +1221,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   sanitize_html:
     dependency: transitive
     description:
@@ -1284,10 +1241,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "83af5c682796c0f7719c2bbf74792d113e40ae97981b8f266fa84574573556bc"
+      sha256: cbc40be9be1c5af4dab4d6e0de4d5d3729e6f3d65b89d21e1815d57705644a6f
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.18"
+    version: "2.4.20"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -1341,7 +1298,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
-<<<<<<< HEAD
   sqflite:
     dependency: transitive
     description:
@@ -1382,8 +1338,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   stack_trace:
     dependency: transitive
     description:
@@ -1392,7 +1346,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
-<<<<<<< HEAD
   stop_watch_timer:
     dependency: "direct main"
     description:
@@ -1401,8 +1354,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   stream_channel:
     dependency: transitive
     description:
@@ -1427,7 +1378,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
-<<<<<<< HEAD
   synchronized:
     dependency: transitive
     description:
@@ -1436,8 +1386,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.0"
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   term_glyph:
     dependency: transitive
     description:
@@ -1498,10 +1446,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: d354a7ec6931e6047785f4db12a1f61ec3d43b207fc0790f863818543f8ff0dc
+      sha256: "201e876b5d52753626af64b6359cd13ac6011b80728731428fd34bc840f71c9b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.19"
+    version: "1.1.20"
   vector_math:
     dependency: transitive
     description:

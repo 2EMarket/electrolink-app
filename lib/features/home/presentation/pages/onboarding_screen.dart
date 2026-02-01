@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
-<<<<<<< HEAD
-=======
-import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
 

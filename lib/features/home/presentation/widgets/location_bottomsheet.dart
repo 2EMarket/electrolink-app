@@ -3,10 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
-<<<<<<< HEAD
-=======
-import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/features/location/data/models/location_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat header/chat_header.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/image_message_bubble.dart';
@@ -34,7 +33,6 @@ class ChatingScreen extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.white,
-                  boxShadow: AppShadows.bottomSheet,
                 ),
                 child: ListView(
                   physics: const BouncingScrollPhysics(),

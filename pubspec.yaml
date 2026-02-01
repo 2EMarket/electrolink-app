@@ -28,7 +28,6 @@ dependencies:
   flutter_image_compress: ^2.4.0
   flutter_easyloading: ^3.0.5
   image_picker: ^1.2.1
-<<<<<<< HEAD
   cupertino_icons: ^1.0.8
   google_fonts: ^6.0.0
   audioplayers: ^5.2.1
@@ -42,8 +41,6 @@ dependencies:
   flutter_sound: ^9.3.18+1
   flutter_cache_manager: ^3.4.1
   stop_watch_timer: ^3.1.0
-=======
->>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
 
 dev_dependencies:
   flutter_test:

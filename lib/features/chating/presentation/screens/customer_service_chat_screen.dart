@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/text_message_bubble.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/voice_message_chat_bubble.dart';
@@ -35,7 +34,6 @@ class CustomerServiceChatScreen extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.white,
-                  boxShadow: AppShadows.bottomSheet,
                 ),
                 child: ListView(
                   padding: const EdgeInsets.symmetric(
