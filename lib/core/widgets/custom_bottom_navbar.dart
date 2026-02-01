@@ -3,8 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 
 class CustomBottomNavBar extends StatelessWidget {

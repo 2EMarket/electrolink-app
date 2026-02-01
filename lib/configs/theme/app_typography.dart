@@ -106,4 +106,8 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     fontSize: 12,
   );
+
+  // Backwards-compatible aliases used in older widgets
+  static const TextStyle caption12Regular = label12Regular;
+  static const TextStyle h5_20Medium = h2_20Medium;
 }
