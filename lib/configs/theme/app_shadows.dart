@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 class AppShadows {
   AppShadows._();
 
+<<<<<<< HEAD
   // Backwards-compatible static accessors used across the codebase
   static List<BoxShadow> get card => AppShadows.light.card;
   static List<BoxShadow> get bottomSheet => AppShadows.light.bottomSheet;
   static List<BoxShadow> get dropShadow => AppShadows.light.dropShadow;
 
+=======
+>>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
   // ==================== Light Theme Shadows ====================
   static final AppShadowScheme light = AppShadowScheme(
     // الظل الأسود العادي (كما كان في الكود القديم)

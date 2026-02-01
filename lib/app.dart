@@ -5,6 +5,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
 import 'configs/routes/router.dart';
+<<<<<<< HEAD
+=======
+import 'features/home/presentation/pages/main_layout_screen.dart';
+>>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
 import 'features/location/presentation/cubits/location_cubit.dart';
 
 class ElectroLinkApp extends StatelessWidget {

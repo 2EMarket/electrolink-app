@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
+<<<<<<< HEAD
+=======
+>>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
 
 class CustomPopup {
   static void show(

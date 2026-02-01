@@ -23,8 +23,11 @@ class AppRouter {
         '/${AppRoutes.userProfile}/${AppRoutes.settingsScreen}/${AppRoutes.helpCenter}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
+<<<<<<< HEAD
       return null;
     
+=======
+>>>>>>> 99c4b78366eb600f65ee24d30c1a01cfa052635d
       // Check onboarding status first
       // final isOnboardingCompleted =
       //     await OnboardingService.isOnboardingCompleted();
