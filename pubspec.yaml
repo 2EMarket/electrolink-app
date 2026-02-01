@@ -28,19 +28,7 @@ dependencies:
   flutter_image_compress: ^2.4.0
   flutter_easyloading: ^3.0.5
   image_picker: ^1.2.1
-  cupertino_icons: ^1.0.8
-  google_fonts: ^6.0.0
-  audioplayers: ^5.2.1
-  audio_waveforms: ^2.0.2
-  http: ^1.0.0
-  cached_network_image: ^3.2.3
-  just_audio: ^0.9.39  
-  dio: ^5.2.1
-  dotted_border: ^2.1.0
-  record: ^6.1.2
-  flutter_sound: ^9.3.18+1
-  flutter_cache_manager: ^3.4.1
-  stop_watch_timer: ^3.1.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
