@@ -1,3 +1,5 @@
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/filter_model.dart';
+
 class AppRoutes {
   // Onboarding
   static const onboarding = 'onboarding';
@@ -34,4 +36,8 @@ class AppRoutes {
   static const languageCurrency = 'languageCurrencyScreen';
   static const helpCenter = 'helpCenterScreen';
 
+  /// My Listings
+  static const filterModel = 'filterModel';
+  static const sortModel = 'sortModel';
+  static const mylistings = 'myListings';
 }

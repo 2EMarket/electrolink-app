@@ -5,6 +5,7 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_routes.da
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/models/add_listing_draft.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_draft_cubit.dart';
@@ -70,6 +71,11 @@ class AppRouter {
         path: '/${AppRoutes.onboarding}',
         name: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.mylistings}',
+        name: AppRoutes.mylistings,
+        builder: (context, state) => MyListingScreen(),
       ),
       //country selection
       GoRoute(
