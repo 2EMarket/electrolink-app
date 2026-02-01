@@ -29,7 +29,9 @@ dependencies:
   flutter_easyloading: ^3.0.5
   image_picker: ^1.2.1
   gap: ^3.0.1
-
+  flutter_sound:
+  audioplayers:
+  audio_waveforms:
 dev_dependencies:
   flutter_test:
     sdk: flutter

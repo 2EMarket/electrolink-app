@@ -12,7 +12,6 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_media_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_submit_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/add_listing/add_listing_screen.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/listing_preview_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
@@ -201,14 +200,14 @@ class AppRouter {
               child: const AddListingScreen(),
             ),
       ),
-      GoRoute(
+      /*GoRoute(
         path: '/${AppRoutes.addListingPreview}',
         name: AppRoutes.addListingPreview,
         builder: (context, state) {
           final draft = state.extra as AddListingDraft;
           return ListingPreviewScreen(draft: draft);
         },
-      ),
+      ),*/
       GoRoute(
         path: '/${AppRoutes.noInternet}',
         name: AppRoutes.noInternet,
