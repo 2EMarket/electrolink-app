@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/notification_card.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/notifications_list.dart';
 import 'configs/theme/theme_exports.dart';
-import 'core/widgets/app_notification.dart';
-import 'core/widgets/notification_overlay.dart';
-import 'core/widgets/otp_input_field.dart';
-import 'core/widgets/widgets_exports.dart';
 import 'imports.dart';
 
 class AmalsApp extends StatelessWidget {

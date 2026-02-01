@@ -1,4 +1,3 @@
-import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
 
 import '../../data/enums/id_type.dart';

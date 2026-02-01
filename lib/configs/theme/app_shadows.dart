@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 class AppShadows {
   AppShadows._();
 
+  /// Shadow used for cards across the app.
+  static const List<BoxShadow> card = [
+    BoxShadow(
+      color: Color(0x1A000000), // semi-transparent black
+      blurRadius: 10,
+      spreadRadius: 0,
+      offset: Offset(0, 2),
+    ),
+  ];
+
   // ==================== Light Theme Shadows ====================
   static final AppShadowScheme light = AppShadowScheme(
     // الظل الأسود العادي (كما كان في الكود القديم)

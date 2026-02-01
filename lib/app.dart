@@ -9,7 +9,6 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'configs/routes/router.dart';
-import 'features/home/presentation/pages/main_layout_screen.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
 
 class ElectroLinkApp extends StatelessWidget {
