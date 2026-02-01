@@ -35,5 +35,5 @@ class LocationModel extends Equatable {
     );
   }
   @override
-  List<Object?> get props => [address];
+  List<Object?> get props => [lat, lng, address, country, city];
 }
