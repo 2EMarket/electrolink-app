@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/chat_bubble.dart';
 class TextMessageBubble extends ChatBubbleBase {
   TextMessageBubble({
@@ -22,14 +23,17 @@ class TextMessageBubble extends ChatBubbleBase {
                 children: [
                   Text(
                     time,
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    style: const TextStyle(fontSize: 10, color: AppColors.hint, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(width: 4),
                   if (isSender)
                     Icon(
                       isRead ? Icons.done_all : Icons.done,
                       size: 14,
-                      color: isRead ? const Color(0xFF2563EB) : Colors.grey,
+                      color: isRead ?
+                     AppColors.success
+                      //  const Color(0xFF2563EB) 
+                      : AppColors.hint,
                     ),
                 ],
               ),

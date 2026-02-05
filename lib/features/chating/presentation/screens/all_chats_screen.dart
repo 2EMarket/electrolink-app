@@ -9,8 +9,10 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(      
       backgroundColor: AppColors.greyFillButton,
 
       appBar: AppBar(
@@ -135,7 +137,7 @@ class ChatsScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
+        )  ),
     );
   }
 }

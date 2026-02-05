@@ -34,5 +34,11 @@
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+  // تمكين getUserMedia للويب
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    console.log('MediaDevices supported');
+  }
+</script>
 </body>
 </html>
