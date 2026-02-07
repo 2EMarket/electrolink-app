@@ -26,8 +26,10 @@ class _ListingsScreenState extends State<ListingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+    
+ return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(      appBar: AppBar(title: Text(widget.title)),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.paddingM),
         child: Column(
@@ -85,7 +87,7 @@ class _ListingsScreenState extends State<ListingsScreen> {
                   : ListingsListView(listings: widget.listings),
             ),
           ],
-        ),
+          )    ),
       ),
     );
   }

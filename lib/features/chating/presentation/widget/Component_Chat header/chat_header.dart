@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat list item/device_info_row.dart';
 import 'chat_subtitle_row.dart';
 class ChatHeader extends StatelessWidget {
@@ -17,13 +20,16 @@ class ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.white,
         border: Border(
-          bottom: BorderSide(color: Color(0xFFE5E7EB)),
+          bottom: BorderSide(color: AppColors.border),
         ),
+        boxShadow: AppShadows.card,
       ),
       child: Column(
         children: [
@@ -32,102 +38,91 @@ class ChatHeader extends StatelessWidget {
               // ⬅️ Back
               IconButton(
                 icon: const Icon(Icons.arrow_back_ios, size: 20),
+                color: AppColors.icons,
                 onPressed: () => Navigator.pop(context),
               ),
-          
+
               // 👤 Avatar
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 20,
                     backgroundImage: NetworkImage(imageUrl),
+                    backgroundColor: AppColors.neutralWithoutTransparent,
                   ),
-                  if (isOnline)
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                      ),
-                    ),
+                  // if (isOnline)
+                  //   Positioned(
+                  //     right: 0,
+                  //     bottom: 0,
+                  //     child: Container(
+                  //       width: 10,
+                  //       height: 10,
+                  //       decoration: BoxDecoration(
+                  //         color: AppColors.success,
+                  //         shape: BoxShape.circle,
+                  //         border: Border.all(
+                  //           color: AppColors.white,
+                  //           width: 2,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
                 ],
               ),
-          
+
               const SizedBox(width: 10),
-          
+
               // 📄 Name + Subtitle
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                      style: AppTypography.h3_18Medium.copyWith(
+                        color: AppColors.titles,
                       ),
                     ),
                     const SizedBox(height: 2),
-                    ChatSubtitleRow(
-                      isOnline: isOnline,
-                    ),
+                    ChatSubtitleRow(isOnline: isOnline),
                   ],
                 ),
               ),
-          
-              //  Actions
+
+              // Actions
               IconButton(
                 icon: const Icon(Icons.call, size: 20),
+                color: AppColors.icons,
                 onPressed: () {},
               ),
               IconButton(
                 icon: const Icon(Icons.search, size: 20),
+                color: AppColors.icons,
                 onPressed: () {},
               ),
               IconButton(
                 icon: const Icon(Icons.more_vert, size: 20),
+                color: AppColors.icons,
                 onPressed: () {},
               ),
             ],
           ),
+
+          const SizedBox(height: 6),
+
           Row(
-  children: [
-    Expanded(
-      child: ProductInfoRow(
-        productName: deviceName,
-        imageUrl: imageUrl,
-      ),
-    ),
-    IconButton(
-      icon: const Icon(Icons.arrow_forward_ios, size: 20),
-      onPressed: () => Navigator.pop(context),
-    ),
-  ],
-),
-
-          // Column(
-          //   mainAxisSize: MainAxisSize.min,
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //         // DeviceInfoRow(deviceName: deviceName),
-          //     ProductInfoRow(
-          // productName: deviceName,
-          // imageUrl: imageUrl,
-          // ),
-          
-          //   ],
-          // ),
-
+            children: [
+              Expanded(
+                child: ProductInfoRow(
+                  productName: deviceName,
+                  imageUrl: imageUrl,
+                ),
+              ),
+            
+            ],
+          ),
         ],
       ),
     );

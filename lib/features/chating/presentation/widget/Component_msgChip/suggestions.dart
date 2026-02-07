@@ -1,4 +1,7 @@
-import  'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+
 class SuggestionChips extends StatelessWidget {
   final List<String> suggestions;
   final Function(String) onSelected;
@@ -12,28 +15,35 @@ class SuggestionChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36,
+      height: 40, 
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: suggestions.length,
         separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => onSelected(suggestions[index]),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF9FAFB), // Grey 50
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE5E7EB)), // Grey 300
-              ),
-              child: Center(
-                child: Text(
-                  suggestions[index],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF374151), // Grey 800
-                    fontWeight: FontWeight.w500,
+          final text = suggestions[index];
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => onSelected(text),
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.neutralWithoutTransparent.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.border.withOpacity(0.5),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    text,
+                    style: AppTypography.body14Regular.copyWith(
+                      color: AppColors.titles,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
