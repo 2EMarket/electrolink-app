@@ -20,16 +20,24 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   bool _showClearButton = false;
+  late final VoidCallback _controllerListener;
 
   @override
   void initState() {
     super.initState();
 
-    widget.controller.addListener(() {
+    _controllerListener = () {
       setState(() {
         _showClearButton = widget.controller.text.isNotEmpty;
       });
-    });
+    };
+    widget.controller.addListener(_controllerListener);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_controllerListener);
+    super.dispose();
   }
 
   @override

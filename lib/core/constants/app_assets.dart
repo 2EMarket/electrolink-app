@@ -69,6 +69,15 @@ class AppAssets {
   static const String verifiedMessageSvg = '$_svgPath/Message.svg';
   static const String verifiedIdentityCardSvg = '$_svgPath/identity-card.svg';
   static const String mapDetectorSvg = '$_svgPath/map_detector.svg';
+  static const String mapPinSvg = '$_svgPath/map_pin.svg';
+  static const String mapIcon = '$_svgPath/map.svg';
+  static const String listViewIcon = '$_svgPath/list-view.svg';
+  static const String infoCircleIcon = '$_svgPath/info_circle.svg';
+  static const String photoMainIcon = '$_svgPath/photo_main_pin.svg';
+  static const String photoPinOutlineIcon = '$_svgPath/photo_pin_outline.svg';
+  static const String photoErrorIcon = '$_svgPath/photo_error.svg';
+  static const String closeSquareIcon = '$_svgPath/close_square.svg';
+  static const String plusIcon = '$_svgPath/plus.svg';
 
   // Example image assets
   static const String profilePic = '$_basePath/profile pic.png';

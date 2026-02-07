@@ -10,6 +10,7 @@ class ListingModel extends Equatable {
   final bool isFavorite;
   final bool isSold;
   final String ownerId;
+  final ListingStatus? status;
 
   const ListingModel({
     required this.id,
@@ -20,7 +21,8 @@ class ListingModel extends Equatable {
     required this.category,
     this.isSold = false,
     this.isFavorite = false,
-     this.ownerId = '1',
+    this.ownerId = '1',
+    this.status,
   });
 
   ListingModel copyWith({
@@ -55,6 +57,7 @@ class ListingModel extends Equatable {
     category,
     isFavorite,
     isSold,
+    status,
   ];
 }
 
@@ -69,7 +72,8 @@ final List<ListingModel> dummyListings = [
     category: 'Phones',
     isFavorite: true,
     isSold: true,
-    ownerId: '1'
+    ownerId: '1',
+    status: ListingStatus.pending,
   ),
   const ListingModel(
     id: '2',
@@ -80,7 +84,8 @@ final List<ListingModel> dummyListings = [
         'https://fdn2.gsmarena.com/vv/pics/apple/apple-macbook-pro-14-2021-01.jpg',
     category: 'Laptops',
     isFavorite: false,
-      ownerId: '1'
+    ownerId: '1',
+    status: ListingStatus.active,
   ),
   const ListingModel(
     id: '3',
@@ -91,7 +96,8 @@ final List<ListingModel> dummyListings = [
         'https://m.media-amazon.com/images/I/51SKmu2G9FL._AC_UF1000,1000_QL80_.jpg',
     category: 'Audio',
     isFavorite: false,
-      ownerId: '1'
+    ownerId: '1',
+    status: ListingStatus.sold,
   ),
   const ListingModel(
     id: '4',
@@ -102,6 +108,9 @@ final List<ListingModel> dummyListings = [
         'https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-air-2022-1.jpg',
     category: 'Tablets',
     isFavorite: true,
-      ownerId: '1'
+    ownerId: '1',
+    status: ListingStatus.rejected,
   ),
 ];
+
+enum ListingStatus { pending, active, sold, archived, draft, rejected }
