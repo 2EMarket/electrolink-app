@@ -31,7 +31,10 @@ dependencies:
   gap: ^3.0.1
   flutter_sound:
   audioplayers:
+  flutter_cache_manager:
   audio_waveforms:
+  file_picker:
+  record:
 dev_dependencies:
   flutter_test:
     sdk: flutter

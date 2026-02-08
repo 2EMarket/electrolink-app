@@ -28,7 +28,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 class AppRouter {
   static final GoRouter _router = GoRouter(
     initialLocation: '/${AppRoutes.mainLayout}',
-    debugLogDiagnostics: true,
+  /*  debugLogDiagnostics: true,
     redirect: (context, state) async {
       return null;
     
@@ -63,7 +63,7 @@ class AppRouter {
       // }
 
       // return null;
-    },
+    },*/
     routes: [
       // Onboarding route
       GoRoute(

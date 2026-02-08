@@ -4,8 +4,8 @@ import 'package:second_hand_electronics_marketplace/features/chating/presentatio
 import 'imports.dart';
 void main() {
   runApp(
-    DevicePreview(enabled: true, builder: (context) => const 
-    ChatingScreen()
+    DevicePreview(enabled: true, builder: (context) => const
+    ElectroLinkApp()
     // ChatsScreen(),
     // ListingsScreen(title: 'Listings', listings: []),
     ),
