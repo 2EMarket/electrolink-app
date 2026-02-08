@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 class ChatSubtitleRow extends StatelessWidget {
   final bool isOnline;
 
@@ -10,23 +11,24 @@ class ChatSubtitleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color statusColor =
+        isOnline ? AppColors.success : AppColors.neutral;
+
     return Row(
       children: [
         Container(
           width: 6,
           height: 6,
           decoration: BoxDecoration(
-            color: isOnline ? Colors.green : Colors.grey,
+            color: statusColor,
             shape: BoxShape.circle,
           ),
         ),
         const SizedBox(width: 4),
         Text(
           isOnline ? 'Online' : 'Offline',
-          style: TextStyle(
-            fontSize: 12,
-            color: isOnline ? Colors.green : Colors.grey,
-            fontWeight: FontWeight.w500,
+          style: AppTypography.label12Regular.copyWith(
+            color: statusColor,
           ),
         ),
       ],

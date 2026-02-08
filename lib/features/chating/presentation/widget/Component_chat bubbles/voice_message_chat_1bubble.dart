@@ -1,20 +1,23 @@
+import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
+import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Voice/audio_control.dart';
 
-class VoiceMessageBubble1 extends StatelessWidget {
+class VoiceMessageBuble1 extends StatelessWidget {
   final bool isSender;
   final String audioUrl;
   final String duration;
   final String time;
   final bool isRead;
 
-  const VoiceMessageBubble1({
+  const VoiceMessageBuble1({
     super.key,
     required this.isSender,
     required this.audioUrl,
     required this.duration,
     required this.time,
-    this.isRead = false,
+ required   this.isRead,
   });
 
   @override

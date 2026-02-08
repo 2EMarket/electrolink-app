@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/listings_screen.dart';
+
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
@@ -47,7 +47,7 @@ class ElectroLinkApp extends StatelessWidget {
         //   widget = DevicePreview.appBuilder(context, widget);
         //   return FlutterEasyLoading(child: MyListingScreen());
         // },
-        home: MyListingScreen(),
+        home: SplashScreen(),
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
