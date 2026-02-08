@@ -47,6 +47,7 @@ class ElectroLinkApp extends StatelessWidget {
         //   widget = DevicePreview.appBuilder(context, widget);
         //   return FlutterEasyLoading(child: MyListingScreen());
         // },
+
         home: SplashScreen(),
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
