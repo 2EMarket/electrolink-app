@@ -16,6 +16,7 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
+import '../../features/home/presentation/pages/splash_screen.dart';
 import '../../features/listing/data/listing_model.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/language_currency_screen.dart';
@@ -27,8 +28,8 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.mainLayout}',
-  /*  debugLogDiagnostics: true,
+    initialLocation: '/${AppRoutes.splash}',
+    debugLogDiagnostics: true,
     redirect: (context, state) async {
       return null;
     
@@ -63,8 +64,13 @@ class AppRouter {
       // }
 
       // return null;
-    },*/
+    },
     routes: [
+      GoRoute(
+        path: '/${AppRoutes.splash}',
+        name: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
       // Onboarding route
       GoRoute(
         path: '/${AppRoutes.onboarding}',

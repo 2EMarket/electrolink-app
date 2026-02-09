@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_navbar.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
 
 class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
@@ -14,7 +15,7 @@ class MainLayoutScreen extends StatefulWidget {
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [HomeTab(), HomeTab(), HomeTab(),  HomeTab()];
+  final List<Widget> _screens = [HomeTab(), HomeTab(), HomeTab(),  ProfileScreen(userId: '1', isMe: true)];
 
   @override
   Widget build(BuildContext context) {

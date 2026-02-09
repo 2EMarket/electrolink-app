@@ -1,16 +1,15 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
-
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'configs/routes/router.dart';
 import 'features/home/presentation/pages/splash_screen.dart';
+import 'features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
+import 'imports.dart';
 
 class ElectroLinkApp extends StatelessWidget {
   const ElectroLinkApp({super.key});
@@ -36,24 +35,22 @@ class ElectroLinkApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        //BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
+        BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
         BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
         BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
       ],
-      child: MaterialApp(
-        //routerConfig: AppRouter.router,
-        //locale: DevicePreview.locale(context),
-        // builder: (context, widget) {
-        //   widget = DevicePreview.appBuilder(context, widget);
-        //   return FlutterEasyLoading(child: MyListingScreen());
-        // },
-
-        home: SplashScreen(),
+      child: MaterialApp.router(
+        routerConfig: AppRouter.router,
+        locale: DevicePreview.locale(context),
+        builder: EasyLoading.init(
+          builder: (context, widget) {
+            return DevicePreview.appBuilder(context, widget!);
+          },
+        ),
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-      ),
-    );
+      ));
   }
 }
