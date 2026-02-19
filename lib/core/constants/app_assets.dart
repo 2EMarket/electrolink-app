@@ -111,6 +111,4 @@ class AppAssets {
   static const String logoutIcon = '$_svgPath/Logout.svg';
   static const String customerSupportIcon = '$_svgPath/customer-support.svg';
   static const String languageCircleIcon = '$_svgPath/language-circle.svg';
-
-
 }

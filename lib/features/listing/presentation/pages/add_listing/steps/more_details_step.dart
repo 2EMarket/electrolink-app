@@ -80,18 +80,22 @@ class MoreDetailsStep extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         useSafeArea: true,
-                        builder: (_) => FractionallySizedBox(
-                          heightFactor: 0.9,
-                          child: ListingSelectionSheet(
-                            title: field.label,
-                            options: field.options,
-                            selectedValue:
-                                state.draft.attributes[field.key] ?? '',
-                            // When a user selects an option, update the draft via cubit.
-                            onSelected: (value) =>
-                                draftCubit.updateAttribute(field.key, value),
-                          ),
-                        ),
+                        builder:
+                            (_) => FractionallySizedBox(
+                              heightFactor: 0.9,
+                              child: ListingSelectionSheet(
+                                title: field.label,
+                                options: field.options,
+                                selectedValue:
+                                    state.draft.attributes[field.key] ?? '',
+                                // When a user selects an option, update the draft via cubit.
+                                onSelected:
+                                    (value) => draftCubit.updateAttribute(
+                                      field.key,
+                                      value,
+                                    ),
+                              ),
+                            ),
                       );
                     },
                   ),
@@ -100,7 +104,8 @@ class MoreDetailsStep extends StatelessWidget {
 
               // For text/number fields we reuse or create a controller per-key so
               // the typed value is preserved across rebuilds.
-              final controller = attributeControllers[field.key] ??
+              final controller =
+                  attributeControllers[field.key] ??
                   (attributeControllers[field.key] = TextEditingController(
                     text: state.draft.attributes[field.key] ?? '',
                   ));
@@ -111,16 +116,19 @@ class MoreDetailsStep extends StatelessWidget {
                   label: field.label,
                   isRequired: field.required,
                   // Use provided hint or a default one built from the label.
-                  hintText: field.hint.isEmpty
-                      ? 'Enter ${field.label.toLowerCase()}'
-                      : field.hint,
+                  hintText:
+                      field.hint.isEmpty
+                          ? 'Enter ${field.label.toLowerCase()}'
+                          : field.hint,
                   controller: controller,
                   // Use number keyboard for numerical fields.
-                  keyboardType: field.type == ListingFieldType.number
-                      ? TextInputType.number
-                      : TextInputType.text,
+                  keyboardType:
+                      field.type == ListingFieldType.number
+                          ? TextInputType.number
+                          : TextInputType.text,
                   // Propagate changes to the cubit so shared draft state stays in sync.
-                  onChanged: (value) => draftCubit.updateAttribute(field.key, value),
+                  onChanged:
+                      (value) => draftCubit.updateAttribute(field.key, value),
                 ),
               );
             }),

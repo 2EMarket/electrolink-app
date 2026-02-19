@@ -15,7 +15,7 @@ class SuggestionChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40, 
+      height: 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -33,9 +33,7 @@ class SuggestionChips extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.neutralWithoutTransparent.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppColors.border.withOpacity(0.5),
-                  ),
+                  border: Border.all(color: AppColors.border.withOpacity(0.5)),
                 ),
                 child: Center(
                   child: Text(

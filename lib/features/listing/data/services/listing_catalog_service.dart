@@ -88,11 +88,7 @@ class ListingCatalogService {
             required: true,
             hint: 'Enter model',
           ),
-          ListingFieldConfig(
-            key: 'cpu',
-            label: 'CPU',
-            hint: 'Enter CPU model',
-          ),
+          ListingFieldConfig(key: 'cpu', label: 'CPU', hint: 'Enter CPU model'),
           ListingFieldConfig(
             key: 'ram',
             label: 'RAM',
@@ -111,64 +107,32 @@ class ListingCatalogService {
         name: 'PC Parts',
         icon: AppAssets.aiChipCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
         name: 'Gaming',
         icon: AppAssets.gameCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
         name: 'Audio',
         icon: AppAssets.headphoneCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
         name: 'Smartwatches',
         icon: AppAssets.smartWatchCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
@@ -199,32 +163,16 @@ class ListingCatalogService {
         name: 'Smart Home',
         icon: AppAssets.plugCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
         name: 'TV & Monitors',
         icon: AppAssets.tvCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
           ListingFieldConfig(
             key: 'size',
             label: 'Screen Size',
@@ -236,32 +184,16 @@ class ListingCatalogService {
         name: 'Accessories',
         icon: AppAssets.headphoneCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
       ListingCategoryConfig(
         name: 'Networking',
         icon: AppAssets.routerCatIcon,
         fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            hint: 'Enter brand',
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            hint: 'Enter model',
-          ),
+          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
+          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
         ],
       ),
     ];
@@ -269,22 +201,14 @@ class ListingCatalogService {
 
   ListingCategoryConfig? getCategoryConfig(String categoryName) {
     if (categoryName.trim().isEmpty) return null;
-    return getCategories()
-        .cast<ListingCategoryConfig?>()
-        .firstWhere(
-          (c) => c?.name.toLowerCase() == categoryName.toLowerCase(),
-          orElse: () => null,
-        );
+    return getCategories().cast<ListingCategoryConfig?>().firstWhere(
+      (c) => c?.name.toLowerCase() == categoryName.toLowerCase(),
+      orElse: () => null,
+    );
   }
 
   List<String> getCountryOptions() {
-    return const [
-      'Palestine',
-      'Jordan',
-      'Egypt',
-      'Lebanon',
-      'Saudi Arabia',
-    ];
+    return const ['Palestine', 'Jordan', 'Egypt', 'Lebanon', 'Saudi Arabia'];
   }
 
   List<String> getCityOptions(String country) {

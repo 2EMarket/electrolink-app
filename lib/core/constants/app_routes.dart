@@ -1,7 +1,4 @@
-
-
 class AppRoutes {
-
   static const splash = 'splash';
 
   // Onboarding
@@ -9,7 +6,7 @@ class AppRoutes {
 
   // Auth
   static const signIn = 'sign-in';
-  static const signUp = 'sign-up';
+  static const String register = 'register';
 
   // Home
   static const home = 'home';
@@ -24,6 +21,7 @@ class AppRoutes {
   static const location = 'location';
   static const countrySelection = 'country-selection';
   static const verification = 'verification';
+  static const notification = 'notification';
 
   //profile pages
   static const publicProfile = 'public_profile';

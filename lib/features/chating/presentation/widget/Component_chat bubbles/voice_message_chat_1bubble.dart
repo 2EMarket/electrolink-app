@@ -17,14 +17,16 @@ class VoiceMessageBuble1 extends StatelessWidget {
     required this.audioUrl,
     required this.duration,
     required this.time,
- required   this.isRead,
+    required this.isRead,
   });
 
   @override
   Widget build(BuildContext context) {
     // الألوان بناءً على كود Figma والصورة المرفقة
-    final bgColor = isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
-    final themeColor = isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
+    final bgColor =
+        isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
+    final themeColor =
+        isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
 
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
@@ -169,17 +171,27 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                       ),
                     )
                   else
-                    const SizedBox(height: 30, child: LinearProgressIndicator(value: 0.1)),
+                    const SizedBox(
+                      height: 30,
+                      child: LinearProgressIndicator(value: 0.1),
+                    ),
                   const SizedBox(height: 2),
                   // الوقت الصغير بجانب النقطة الزرقاء كما في الصورة
                   Row(
                     children: [
                       Text(
                         formatDuration(current),
-                        style: const TextStyle(fontSize: 10, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
                       ),
                       const SizedBox(width: 4),
-                      const Icon(Icons.circle, size: 4, color: AppColors.mainColor),
+                      const Icon(
+                        Icons.circle,
+                        size: 4,
+                        color: AppColors.mainColor,
+                      ),
                     ],
                   ),
                 ],
@@ -286,7 +298,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //               radius: 16,
 //               backgroundImage: NetworkImage('https://via.placeholder.com/150'),
 //             ),
-          
+
 //           Container(
 //             margin: const EdgeInsets.symmetric(horizontal: 8),
 //             constraints: BoxConstraints(
@@ -329,7 +341,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //                       ),
 //                     ),
 //                     const SizedBox(width: 12),
-                    
+
 //                     // Audio Wave
 //                     Expanded(
 //                       child: SizedBox(
@@ -342,7 +354,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //                               duration: const Duration(milliseconds: 200),
 //                               margin: const EdgeInsets.symmetric(horizontal: 2),
 //                               width: 3,
-//                               height: widget.isPlaying 
+//                               height: widget.isPlaying
 //                                   ? 4 + Random().nextInt(20).toDouble()
 //                                   : 4 + Random().nextInt(12).toDouble(),
 //                               decoration: BoxDecoration(
@@ -354,9 +366,9 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //                         ),
 //                       ),
 //                     ),
-                    
+
 //                     const SizedBox(width: 12),
-                    
+
 //                     // Duration
 //                     Text(
 //                       widget.duration,
@@ -367,9 +379,9 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //                     ),
 //                   ],
 //                 ),
-                
+
 //                 const SizedBox(height: 8),
-                
+
 //                 // Time and Status
 //                 Row(
 //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -391,10 +403,10 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
 //               ],
 //             ),
 //           ),
-          
+
 //           if (widget.isSender && widget.isRead)
-//             Icon(Icons.done_all, 
-//               size: 12, 
+//             Icon(Icons.done_all,
+//               size: 12,
 //               color: AppColors.mainColor
 //             ),
 //         ],

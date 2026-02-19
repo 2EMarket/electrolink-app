@@ -92,9 +92,9 @@ class AddListingDraft extends Equatable {
           (map['photos'] as List<dynamic>? ?? [])
               .map((e) => ListingPhotoItem.fromMap(e as Map<String, dynamic>))
               .toList(),
-      attributes:
-          (map['attributes'] as Map<String, dynamic>? ?? {})
-              .map((key, value) => MapEntry(key, value.toString())),
+      attributes: (map['attributes'] as Map<String, dynamic>? ?? {}).map(
+        (key, value) => MapEntry(key, value.toString()),
+      ),
       description: map['description'] as String? ?? '',
       location:
           map['location'] != null

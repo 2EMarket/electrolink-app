@@ -188,6 +188,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       ),
     );
   }
+
   Future<void> _updateProfile() async {
     EasyLoading.show(status: 'Waiting...');
     await Future.delayed(const Duration(milliseconds: 500));
@@ -197,10 +198,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       EasyLoading.dismiss();
       context.goNamed(
         AppRoutes.userProfile,
-        queryParameters: {
-          'userId': '1',
-          'isMe': 'true',
-        },
+        queryParameters: {'userId': '1', 'isMe': 'true'},
       );
 
       NotificationToast.show(

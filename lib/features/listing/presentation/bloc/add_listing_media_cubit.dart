@@ -8,8 +8,8 @@ import 'add_listing_media_state.dart';
 
 class AddListingMediaCubit extends Cubit<AddListingMediaState> {
   AddListingMediaCubit({ListingMediaService? mediaService})
-      : _mediaService = mediaService ?? ListingMediaService(),
-        super(const AddListingMediaState());
+    : _mediaService = mediaService ?? ListingMediaService(),
+      super(const AddListingMediaState());
 
   final ListingMediaService _mediaService;
 
@@ -44,9 +44,8 @@ class AddListingMediaCubit extends Cubit<AddListingMediaState> {
   }
 
   void setMainPhoto(String id) {
-    final updated = state.photos
-        .map((p) => p.copyWith(isMain: p.id == id))
-        .toList();
+    final updated =
+        state.photos.map((p) => p.copyWith(isMain: p.id == id)).toList();
     emit(state.copyWith(photos: updated));
   }
 
@@ -56,18 +55,18 @@ class AddListingMediaCubit extends Cubit<AddListingMediaState> {
     final photo = ListingPhotoItem(
       id: id,
       path: result.path,
-      status: tooLarge
-          ? ListingPhotoStatus.tooLarge
-          : ListingPhotoStatus.uploading,
+      status:
+          tooLarge ? ListingPhotoStatus.tooLarge : ListingPhotoStatus.uploading,
       progress: tooLarge ? 0.0 : 0.4,
       sizeBytes: result.sizeBytes,
     );
 
     List<ListingPhotoItem> updated = List.of(state.photos)..add(photo);
     if (updated.length == 1) {
-      updated = updated
-          .map((p) => p.id == id ? p.copyWith(isMain: true) : p)
-          .toList();
+      updated =
+          updated
+              .map((p) => p.id == id ? p.copyWith(isMain: true) : p)
+              .toList();
     }
     emit(state.copyWith(photos: updated));
 
@@ -85,9 +84,8 @@ class AddListingMediaCubit extends Cubit<AddListingMediaState> {
     String id,
     ListingPhotoItem Function(ListingPhotoItem) update,
   ) {
-    final updated = state.photos
-        .map((p) => p.id == id ? update(p) : p)
-        .toList();
+    final updated =
+        state.photos.map((p) => p.id == id ? update(p) : p).toList();
     emit(state.copyWith(photos: updated));
   }
 

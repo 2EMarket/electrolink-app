@@ -271,8 +271,7 @@ class _RecordingBubbleState extends State<RecordingBubble>
   late AnimationController _controller;
   bool _isPaused = false;
 
-  final List<double> _amps =
-      List.generate(40, (_) => Random().nextDouble());
+  final List<double> _amps = List.generate(40, (_) => Random().nextDouble());
 
   @override
   void initState() {
@@ -341,10 +340,7 @@ class _RecordingBubbleState extends State<RecordingBubble>
                     animation: _controller,
                     builder: (_, __) {
                       return CustomPaint(
-                        painter: _WavePainter(
-                          _amps,
-                          _controller.value,
-                        ),
+                        painter: _WavePainter(_amps, _controller.value),
                       );
                     },
                   ),
@@ -409,10 +405,11 @@ class _WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.grey.shade400
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round;
+    final paint =
+        Paint()
+          ..color = Colors.grey.shade400
+          ..strokeWidth = 2
+          ..strokeCap = StrokeCap.round;
 
     final w = size.width / amps.length;
 
@@ -421,11 +418,7 @@ class _WavePainter extends CustomPainter {
       final x = i * w;
       final y = size.height / 2;
 
-      canvas.drawLine(
-        Offset(x, y - amp * 18),
-        Offset(x, y + amp * 18),
-        paint,
-      );
+      canvas.drawLine(Offset(x, y - amp * 18), Offset(x, y + amp * 18), paint);
     }
   }
 

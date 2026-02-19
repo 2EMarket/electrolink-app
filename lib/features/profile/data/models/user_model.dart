@@ -21,6 +21,6 @@ class UserModel {
     required this.responseTimeMinutes,
     this.isOnline = false,
     this.email = 'james.monroe@example.com',
-    this.phone = '059788464'
+    this.phone = '059788464',
   });
 }

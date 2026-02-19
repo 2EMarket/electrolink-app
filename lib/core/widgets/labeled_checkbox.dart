@@ -25,9 +25,7 @@ class LabeledCheckbox extends StatelessWidget {
         Checkbox(
           value: value,
           onChanged: onChanged,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
         Expanded(
           child: Text(
