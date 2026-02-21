@@ -1,8 +1,6 @@
 import 'package:second_hand_electronics_marketplace/features/profile/data/models/user_model.dart';
-enum ProfileType {
-  public,
-  private,
-}
+
+enum ProfileType { public, private }
 
 class ProfileViewData {
   final String name;
@@ -30,43 +28,42 @@ class ProfileViewData {
   });
 
   factory ProfileViewData.fromUser(
-      UserModel user, {
-        required ProfileType type,
-      }) {
+    UserModel user, {
+    required ProfileType type,
+  }) {
     return ProfileViewData(
       name: user.name,
       avatar: user.avatar,
       location: user.location,
       memberSince: _formatDate(user.createdAt),
       isOnline: user.isOnline,
-      lastSeen: type == ProfileType.public
-          ? _formatLastSeen(user.lastSeen)
-          : null,
-      responseTime: type == ProfileType.public
-          ? _formatResponseTime(user.responseTimeMinutes)
-          : 'Replies within ${user.responseTimeMinutes} min',
+      lastSeen:
+          type == ProfileType.public ? _formatLastSeen(user.lastSeen) : null,
+      responseTime:
+          type == ProfileType.public
+              ? _formatResponseTime(user.responseTimeMinutes)
+              : 'Replies within ${user.responseTimeMinutes} min',
 
-
-      email: type == ProfileType.private ? user.email : 'user@email.com' ,
-      phone: type == ProfileType.private ? user.phone: '+970...',
+      email: type == ProfileType.private ? user.email : 'user@email.com',
+      phone: type == ProfileType.private ? user.phone : '+970...',
     );
   }
   factory ProfileViewData.fromModel(
-      UserModel user, {
-        required ProfileType type,
-      }) {
+    UserModel user, {
+    required ProfileType type,
+  }) {
     return ProfileViewData(
       name: user.name,
       avatar: user.avatar,
       location: user.location,
       memberSince: _formatDate(user.createdAt),
       isOnline: user.isOnline,
-      lastSeen: type == ProfileType.public
-          ? _formatLastSeen(user.lastSeen)
-          : null,
-      responseTime: type == ProfileType.public
-          ? _formatResponseTime(user.responseTimeMinutes)
-          : 'Replies within ${user.responseTimeMinutes} min',
+      lastSeen:
+          type == ProfileType.public ? _formatLastSeen(user.lastSeen) : null,
+      responseTime:
+          type == ProfileType.public
+              ? _formatResponseTime(user.responseTimeMinutes)
+              : 'Replies within ${user.responseTimeMinutes} min',
       email: type == ProfileType.private ? user.email : 'user@email.com',
       phone: type == ProfileType.private ? user.phone : '+970...',
     );
@@ -79,8 +76,18 @@ String _formatDate(DateTime date) {
 
 String _monthName(int month) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return months[month - 1];
 }

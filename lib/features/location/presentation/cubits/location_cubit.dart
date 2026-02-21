@@ -128,4 +128,26 @@ class LocationCubit extends Cubit<LocationStates> {
       p.administrativeArea,
     );
   }
+
+  // دالة الحفظ المباشر (الشبكة الآمنة)
+  Future<void> setLocationDirectly({
+    required double lat,
+    required double lng,
+    required String country,
+    required String city,
+    String? address, // اختياري
+  }) async {
+    try {
+      LocationModel selectedLocation = LocationModel(
+        lat,
+        lng,
+        address ?? '$city, $country', // لو ما في عنوان، بنحط المدينة والدولة
+        country,
+        city,
+      );
+      emit(LocationLoaded(selectedLocation));
+    } catch (e) {
+      emit(LocationError('Error setting location directly: $e'));
+    }
+  }
 }

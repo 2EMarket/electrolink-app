@@ -20,8 +20,10 @@ class VoiceMessageBubble1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
-    final themeColor = isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
+    final bgColor =
+        isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
+    final themeColor =
+        isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
 
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
@@ -205,30 +207,27 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: hasError
-                    ? Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 20,
-                      )
-                    : isLoading
+                child:
+                    hasError
+                        ? Icon(Icons.error_outline, color: Colors.red, size: 20)
+                        : isLoading
                         ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                widget.themeColor,
-                              ),
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              widget.themeColor,
                             ),
-                          )
-                        : Icon(
-                            isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                            color: widget.themeColor,
-                            size: 28,
                           ),
+                        )
+                        : Icon(
+                          isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                          color: widget.themeColor,
+                          size: 28,
+                        ),
               ),
             ),
             const SizedBox(width: 10),
@@ -275,10 +274,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                   const SizedBox(height: 2),
                   Text(
                     _formatDuration(currentPosition),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
                   ),
                 ],
               ),
@@ -293,10 +289,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
             children: [
               Text(
                 widget.time,
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Color(0xFF8E8E93),
-                ),
+                style: const TextStyle(fontSize: 10, color: Color(0xFF8E8E93)),
               ),
               const SizedBox(width: 4),
               if (widget.isSender)

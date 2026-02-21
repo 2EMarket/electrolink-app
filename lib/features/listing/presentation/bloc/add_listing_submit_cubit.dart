@@ -9,9 +9,9 @@ class AddListingSubmitCubit extends Cubit<AddListingSubmitState> {
   AddListingSubmitCubit({
     ListingSubmitService? submitService,
     ListingDraftStorage? draftStorage,
-  })  : _submitService = submitService ?? ListingSubmitService(),
-        _draftStorage = draftStorage ?? ListingDraftStorage(),
-        super(const AddListingSubmitState());
+  }) : _submitService = submitService ?? ListingSubmitService(),
+       _draftStorage = draftStorage ?? ListingDraftStorage(),
+       super(const AddListingSubmitState());
 
   final ListingSubmitService _submitService;
   final ListingDraftStorage _draftStorage;

@@ -44,7 +44,6 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {
                 context.goNamed(AppRoutes.languageCurrency);
-
               },
             ),
             const SizedBox(height: AppSizes.paddingS),
@@ -55,7 +54,6 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {
                 context.goNamed(AppRoutes.helpCenter);
-
               },
             ),
             const SizedBox(height: AppSizes.paddingS),

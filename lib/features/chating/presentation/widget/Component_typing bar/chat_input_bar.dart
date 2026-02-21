@@ -79,13 +79,13 @@
 //             _buildRecordingIndicator(),
 //             const SizedBox(height: 16),
 //           ],
-          
+
 //           // 1. الاقتراحات (Chips) - مثل فيغما
 //           if (widget.showSuggestions && !widget.isRecording) ...[
 //             _buildSuggestions(),
 //             const SizedBox(height: 16),
 //           ],
-          
+
 //           // 2. حقل الإدخال والأزرار
 //           Row(
 //             children: [
@@ -103,7 +103,7 @@
 //                 ),
 //                 const SizedBox(width: 8),
 //               ],
-              
+
 //               Expanded(
 //                 child: Container(
 //                   height: 44,
@@ -140,7 +140,7 @@
 //                                 ),
 //                               ),
 //                       ),
-                      
+
 //                       // أيقونة المرفقات والكاميرا - تختفي أثناء التسجيل
 //                       if (!widget.isRecording) ...[
 //                         AttachmentButtons(onAttach: () {  }, onCamera: () {  },)
@@ -173,9 +173,9 @@
 //                   ),
 //                 ),
 //               ),
-              
+
 //               const SizedBox(width: 8),
-              
+
 //               // 3. زر الإرسال / الميكروفون
 //               // GestureDetector(
 //               //   onTap: _handleVoiceButtonTap,
@@ -206,7 +206,7 @@
 //               //             size: 22,
 //               //           ),
 //               //         ),
-                      
+
 //               //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //               //         if (widget.isRecording)
 //               //           Positioned(
@@ -267,7 +267,7 @@
 //             size: 22,
 //           ),
 //         ),
-        
+
 //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //         if (widget.isRecording)
 //           Positioned(
@@ -444,12 +444,12 @@
 //   }
 //   // Widget _buildSuggestions() {
 //   //   final suggestions = [
-//   //     "Is it still available?", 
+//   //     "Is it still available?",
 //   //     "Can you send another picture?",
 //   //     "What's the condition?",
 //   //     "Would you take an offer?"
 //   //   ];
-    
+
 //   //   return SizedBox(
 //   //     height: 36,
 //   //     child: ListView.separated(
@@ -507,7 +507,7 @@ class ChatInputBar extends StatefulWidget {
     this.onSend,
     this.onAttach,
     this.onCamera,
-    this.onEmoji, 
+    this.onEmoji,
   });
 
   @override
@@ -540,7 +540,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
     super.dispose();
   }
 
-
   void _startRecording() {
     setState(() {
       _isRecording = true;
@@ -566,16 +565,13 @@ class _ChatInputBarState extends State<ChatInputBar> {
     setState(() => _isRecording = false);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade200),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -603,16 +599,12 @@ class _ChatInputBarState extends State<ChatInputBar> {
     );
   }
 
-
   Widget _buildInputRow() {
     return Row(
       children: [
         IconButton(
           onPressed: widget.onEmoji,
-          icon: Icon(
-            Icons.emoji_emotions_outlined,
-            color: Colors.grey[600],
-          ),
+          icon: Icon(Icons.emoji_emotions_outlined, color: Colors.grey[600]),
         ),
 
         Expanded(
@@ -627,27 +619,26 @@ class _ChatInputBarState extends State<ChatInputBar> {
             child: Row(
               children: [
                 Expanded(
-                  child: 
-                 TextField(
-  controller: _controller,
-  maxLines: null, // يسمح بتمدد الحقل حسب النص
-  keyboardType: TextInputType.multiline,
-  style: const TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    color: Colors.black87,
-  ),
-  decoration: const InputDecoration(
-    hintText: "Message...",
-    border: InputBorder.none,
-    hintStyle: TextStyle(
-      color: Color(0xFF9CA3AF),
-      fontSize: 15,
-      fontWeight: FontWeight.w400,
-    ),
-    contentPadding: EdgeInsets.zero,
-  ),
-)
+                  child: TextField(
+                    controller: _controller,
+                    maxLines: null, // يسمح بتمدد الحقل حسب النص
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black87,
+                    ),
+                    decoration: const InputDecoration(
+                      hintText: "Message...",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color(0xFF9CA3AF),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
 
                   // child: TextField(
                   //   controller: _controller,
@@ -674,7 +665,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
     );
   }
 
-
   Widget _buildMicOrSendButton() {
     return GestureDetector(
       onTap: () {
@@ -685,14 +675,14 @@ class _ChatInputBarState extends State<ChatInputBar> {
       },
       onLongPress: _hasText ? null : _startRecording,
       child: Container(
-constraints: BoxConstraints( minHeight: 44, maxHeight: 120, // أو حسب التصميم
-),
+        constraints: BoxConstraints(
+          minHeight: 44,
+          maxHeight: 120, // أو حسب التصميم
+        ),
         width: 44,
         // height: 44,
         decoration: BoxDecoration(
-          color: _hasText
-              ? const Color(0xFF2563EB)
-              : Colors.grey.shade200,
+          color: _hasText ? const Color(0xFF2563EB) : Colors.grey.shade200,
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -702,7 +692,6 @@ constraints: BoxConstraints( minHeight: 44, maxHeight: 120, // أو حسب ال�
       ),
     );
   }
-
 
   Widget _buildSuggestions() {
     return SuggestionChips(

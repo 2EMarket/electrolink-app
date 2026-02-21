@@ -55,20 +55,33 @@ class BasicDetailsStep extends StatelessWidget {
               children: [
                 Text(
                   'Photos',
-                  style: AppTypography.body14Regular.copyWith(color: colors.titles),
+                  style: AppTypography.body14Regular.copyWith(
+                    color: colors.titles,
+                  ),
                 ),
                 const SizedBox(width: 4),
-                Text('*', style: AppTypography.body14Regular.copyWith(color: colors.error)),
+                Text(
+                  '*',
+                  style: AppTypography.body14Regular.copyWith(
+                    color: colors.error,
+                  ),
+                ),
                 const Spacer(),
                 GestureDetector(
                   onTap: onOpenTips,
                   child: Row(
                     children: [
-                      SvgPicture.asset(AppAssets.infoCircleIcon, width: 16, height: 16),
+                      SvgPicture.asset(
+                        AppAssets.infoCircleIcon,
+                        width: 16,
+                        height: 16,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         'Tips',
-                        style: AppTypography.body14Regular.copyWith(color: colors.hint),
+                        style: AppTypography.body14Regular.copyWith(
+                          color: colors.hint,
+                        ),
                       ),
                     ],
                   ),
@@ -86,7 +99,9 @@ class BasicDetailsStep extends StatelessWidget {
               const SizedBox(height: AppSizes.paddingXS),
               Text(
                 'Please upload an image smaller than 5 MB.',
-                style: AppTypography.label12Regular.copyWith(color: colors.error),
+                style: AppTypography.label12Regular.copyWith(
+                  color: colors.error,
+                ),
               ),
             ],
             const SizedBox(height: AppSizes.paddingM),
@@ -203,4 +218,3 @@ void showPhotoTipsSheet(BuildContext context) {
         ),
   );
 }
-

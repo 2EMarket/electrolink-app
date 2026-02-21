@@ -78,14 +78,70 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
   int _seconds = 0;
 
   final List<String> _emojis = [
-    '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂',
-    '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍',
-    '👍', '👎', '👏', '🙌', '👋', '🤝', '✋', '🤚',
-    '🎉', '🎊', '🎈', '🎁', '🎀', '🎂', '🍰', '🎃',
-    '😍', '🥰', '😘', '😗', '😚', '😙', '🥲', '😋',
-    '😜', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭',
-    '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏',
-    '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤',
+    '😀',
+    '😃',
+    '😄',
+    '😁',
+    '😆',
+    '😅',
+    '🤣',
+    '😂',
+    '❤️',
+    '🧡',
+    '💛',
+    '💚',
+    '💙',
+    '💜',
+    '🖤',
+    '🤍',
+    '👍',
+    '👎',
+    '👏',
+    '🙌',
+    '👋',
+    '🤝',
+    '✋',
+    '🤚',
+    '🎉',
+    '🎊',
+    '🎈',
+    '🎁',
+    '🎀',
+    '🎂',
+    '🍰',
+    '🎃',
+    '😍',
+    '🥰',
+    '😘',
+    '😗',
+    '😚',
+    '😙',
+    '🥲',
+    '😋',
+    '😜',
+    '😛',
+    '😜',
+    '🤪',
+    '😝',
+    '🤑',
+    '🤗',
+    '🤭',
+    '🤫',
+    '🤔',
+    '🤐',
+    '🤨',
+    '😐',
+    '😑',
+    '😶',
+    '😏',
+    '😒',
+    '🙄',
+    '😬',
+    '🤥',
+    '😌',
+    '😔',
+    '😪',
+    '🤤',
   ];
 
   @override
@@ -382,11 +438,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.close, size: 20),
-            onPressed: () {
-            },
-          ),
+          IconButton(icon: const Icon(Icons.close, size: 20), onPressed: () {}),
         ],
       ),
     );
@@ -416,9 +468,10 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: _isFocused
-                    ? Colors.blue.withOpacity(0.3)
-                    : Colors.grey.withOpacity(0.3),
+                color:
+                    _isFocused
+                        ? Colors.blue.withOpacity(0.3)
+                        : Colors.grey.withOpacity(0.3),
               ),
             ),
             child: Row(
@@ -475,15 +528,16 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
         decoration: BoxDecoration(
           color: _hasText ? Colors.blue : Colors.grey[300],
           shape: BoxShape.circle,
-          boxShadow: _hasText
-              ? [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [],
+          boxShadow:
+              _hasText
+                  ? [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                  : [],
         ),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
@@ -526,10 +580,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
               );
             },
             child: Center(
-              child: Text(
-                _emojis[index],
-                style: const TextStyle(fontSize: 24),
-              ),
+              child: Text(_emojis[index], style: const TextStyle(fontSize: 24)),
             ),
           );
         },
@@ -564,10 +615,7 @@ class RecordingBubble extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             _formatDuration(seconds),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           const Spacer(),
           GestureDetector(

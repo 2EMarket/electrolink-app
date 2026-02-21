@@ -55,13 +55,13 @@ class SettingsTile extends StatelessWidget {
           ),
         ),
         trailing:
-        showArrow
-            ? Icon(
-          Icons.arrow_forward_ios,
-          size: AppSizes.paddingL,
-          color: context.colors.icons,
-        )
-            : null,
+            showArrow
+                ? Icon(
+                  Icons.arrow_forward_ios,
+                  size: AppSizes.paddingL,
+                  color: context.colors.icons,
+                )
+                : null,
         onTap: onTap,
       ),
     );

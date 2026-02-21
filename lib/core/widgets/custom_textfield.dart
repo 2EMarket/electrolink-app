@@ -15,9 +15,12 @@ class CustomTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final Widget? prefix;
   final ValueChanged<String>? onChanged;
+  final bool obscureText;
+  final Widget? suffix;
+  final TextInputAction textInputAction;
   const CustomTextField({
     super.key,
-     this.label,
+    this.label,
     required this.hintText,
     this.controller,
     this.isRequired = false,
@@ -28,6 +31,9 @@ class CustomTextField extends StatefulWidget {
     this.validator,
     this.prefix,
     this.onChanged,
+    this.obscureText = false,
+    this.suffix,
+    this.textInputAction = TextInputAction.next,
   });
 
   @override
@@ -66,15 +72,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null && widget.label!.isNotEmpty)
-          FieldLabel(
-            label: widget.label!,
-            isRequired: widget.isRequired,
-          ),
+          FieldLabel(label: widget.label!, isRequired: widget.isRequired),
         if (widget.label != null && widget.label!.isNotEmpty)
           const SizedBox(height: AppSizes.paddingXS),
         Stack(
           children: [
             TextFormField(
+              textInputAction: widget.textInputAction,
+              obscureText: widget.obscureText,
               controller: widget.controller,
               maxLines: widget.maxLines,
               maxLength: widget.maxLength,
@@ -92,6 +97,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 helperText: widget.helperText,
                 counterText: "",
                 prefixIcon: widget.prefix,
+                suffixIcon: widget.suffix,
+                errorMaxLines: 3,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
               ),
             ),
 

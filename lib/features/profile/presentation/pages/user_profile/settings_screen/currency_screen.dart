@@ -31,8 +31,12 @@ class CurrencyScreen extends StatelessWidget {
     );
   }
 
-  Widget _currencyTile(BuildContext context, String value, CurrencyBloc bloc,
-      String selectedCurrency) {
+  Widget _currencyTile(
+    BuildContext context,
+    String value,
+    CurrencyBloc bloc,
+    String selectedCurrency,
+  ) {
     return LanguageCurrencySelectionTile(
       title: value,
       selected: selectedCurrency == value,

@@ -40,9 +40,10 @@ class _ListingCategorySheetState extends State<ListingCategorySheet> {
       return;
     }
     setState(() {
-      _filtered = widget.categories
-          .where((c) => c.name.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+      _filtered =
+          widget.categories
+              .where((c) => c.name.toLowerCase().contains(value.toLowerCase()))
+              .toList();
     });
   }
 
@@ -95,12 +96,13 @@ class _ListingCategorySheetState extends State<ListingCategorySheet> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _selected == null
-                  ? null
-                  : () {
-                      widget.onSelected(_selected!);
-                      Navigator.pop(context);
-                    },
+              onPressed:
+                  _selected == null
+                      ? null
+                      : () {
+                        widget.onSelected(_selected!);
+                        Navigator.pop(context);
+                      },
               child: const Text('Select Category'),
             ),
           ),

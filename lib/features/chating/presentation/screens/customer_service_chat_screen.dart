@@ -22,9 +22,7 @@ class CustomerServiceChatScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Customer Service',
-          style: AppTypography.h5_20Medium.copyWith(
-            color: AppColors.black,
-          ),
+          style: AppTypography.h5_20Medium.copyWith(color: AppColors.black),
         ),
       ),
 
@@ -33,9 +31,7 @@ class CustomerServiceChatScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                ),
+                decoration: BoxDecoration(color: AppColors.white),
                 child: ListView(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -48,7 +44,9 @@ class CustomerServiceChatScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 16),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.neutral10,
                             borderRadius: BorderRadius.circular(12),
@@ -86,21 +84,22 @@ class CustomerServiceChatScreen extends StatelessWidget {
                       isRead: false,
                     ),
                     const SizedBox(height: 12),
-                                       VoiceMessageBubble1(
-  isSender: true,
-  audioUrl: 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_1c5f401d51.mp3',
-  duration: '0:10',
-  time: '09:20',
-  isRead: true,
- ),
+                    VoiceMessageBubble1(
+                      isSender: true,
+                      audioUrl:
+                          'https://cdn.pixabay.com/download/audio/2022/03/10/audio_1c5f401d51.mp3',
+                      duration: '0:10',
+                      time: '09:20',
+                      isRead: true,
+                    ),
                     const SizedBox(height: 12),
-VoiceMessageBuble1(
+                    VoiceMessageBuble1(
                       isSender: true,
                       audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
                       duration: '0:10',
                       time: '09:20',
                       isRead: true,
-)
+                    ),
                     // VoiceMessageBuble1(
                     //   isSender: true,
                     //   audioUrl:

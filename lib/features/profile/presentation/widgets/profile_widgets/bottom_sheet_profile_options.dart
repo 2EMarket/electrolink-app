@@ -29,8 +29,8 @@ enum ProfileOptionType { report, photo }
 void showProfileOptionsSheet(
   BuildContext context, {
   required ProfileOptionType type,
-      VoidCallback? onTakePhoto,
-      VoidCallback? onPickGallery,
+  VoidCallback? onTakePhoto,
+  VoidCallback? onPickGallery,
 }) {
   showModalBottomSheet(
     context: context,
@@ -41,8 +41,12 @@ void showProfileOptionsSheet(
         top: Radius.circular(AppSizes.bottomSheetRadiusTop),
       ),
     ),
-    builder: (_) => _ProfileOptionsSheet(type: type, onTakePhoto: onTakePhoto,
-      onPickGallery: onPickGallery,),
+    builder:
+        (_) => _ProfileOptionsSheet(
+          type: type,
+          onTakePhoto: onTakePhoto,
+          onPickGallery: onPickGallery,
+        ),
   );
 }
 
@@ -123,10 +127,10 @@ class _ProfileOptionsSheet extends StatelessWidget {
           context,
           label: 'Take Photo',
           iconPath: AppAssets.cameraIcon,
-            onTap: ()  {
-              context.pop();
-              onTakePhoto?.call();
-            },
+          onTap: () {
+            context.pop();
+            onTakePhoto?.call();
+          },
         ),
         _buildOption(
           context,

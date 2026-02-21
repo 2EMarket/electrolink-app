@@ -13,7 +13,7 @@ class AmalsApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-     // home: Scaffold(body: ()),
+      // home: Scaffold(body: ()),
 
       /* final _formKey = GlobalKey<FormState>();
     final _descriptionController = TextEditingController();

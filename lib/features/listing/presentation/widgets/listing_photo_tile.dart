@@ -48,7 +48,6 @@ class ListingPhotoTile extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
-            
             Positioned.fill(
               child:
                   photo.path.isEmpty
@@ -61,7 +60,7 @@ class ListingPhotoTile extends StatelessWidget {
                         },
                       ),
             ),
-            
+
             Positioned(
               top: 6,
               right: 6,
@@ -77,7 +76,7 @@ class ListingPhotoTile extends StatelessWidget {
             Positioned(
               top: 6,
               left: 6,
-              
+
               child: GestureDetector(
                 onTap: onRemove,
                 child: Container(
@@ -136,7 +135,11 @@ class ListingPhotoTile extends StatelessWidget {
                 child: Container(
                   color: Colors.black.withOpacity(0.35),
                   child: Center(
-                    child: SvgPicture.asset(AppAssets.photoErrorIcon, width: 28, height: 28),
+                    child: SvgPicture.asset(
+                      AppAssets.photoErrorIcon,
+                      width: 28,
+                      height: 28,
+                    ),
                   ),
                 ),
               ),

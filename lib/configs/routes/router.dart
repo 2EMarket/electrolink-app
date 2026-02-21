@@ -13,7 +13,9 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_submit_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/add_listing/add_listing_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/notification/presentation/pages/notifications_list_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
+import '../../features/auth/presentation/pages/register_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/home/presentation/pages/splash_screen.dart';
@@ -28,11 +30,11 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.splash}',
+    initialLocation: '/${AppRoutes.register}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       return null;
-    
+
       // Check onboarding status first
       // final isOnboardingCompleted =
       //     await OnboardingService.isOnboardingCompleted();
@@ -92,7 +94,17 @@ class AppRouter {
       GoRoute(
         path: '/${AppRoutes.location}',
         name: AppRoutes.location,
-        builder: (context, state) => LocationScreen(),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return LocationScreen(
+            initialLat: extra?['initialLat'] as double? ?? 0.0,
+            initialLng: extra?['initialLng'] as double? ?? 0.0,
+            fallbackCountry:
+                extra?['fallbackCountry'] as String? ?? '', // ✅ نستقبل الدولة
+            fallbackCity:
+                extra?['fallbackCity'] as String? ?? '', // ✅ نستقبل المدينة
+          );
+        },
       ),
       GoRoute(
         path: '/${AppRoutes.verification}',
@@ -196,12 +208,8 @@ class AppRouter {
                 BlocProvider(
                   create: (_) => AddListingDraftCubit()..loadDraft(),
                 ),
-                BlocProvider(
-                  create: (_) => AddListingMediaCubit(),
-                ),
-                BlocProvider(
-                  create: (_) => AddListingSubmitCubit(),
-                ),
+                BlocProvider(create: (_) => AddListingMediaCubit()),
+                BlocProvider(create: (_) => AddListingSubmitCubit()),
               ],
               child: const AddListingScreen(),
             ),
@@ -226,11 +234,16 @@ class AppRouter {
       //   name: AppRoutes.signIn,
       //   builder: (context, state) => SignInPage(),
       // ),
-      // GoRoute(
-      //   path: '/${AppRoutes.signUp}',
-      //   name: AppRoutes.signUp,
-      //   builder: (context, state) => SignUpPage(),
-      // ),
+      GoRoute(
+        path: '/${AppRoutes.register}',
+        name: AppRoutes.register, // أو استخدمي AppRoutes.register
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.notification}',
+        name: AppRoutes.notification,
+        builder: (context, state) => NotificationsListScreen(),
+      ),
     ],
 
     // Error page

@@ -15,7 +15,12 @@ class MainLayoutScreen extends StatefulWidget {
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [HomeTab(), HomeTab(), HomeTab(),  ProfileScreen(userId: '1', isMe: true)];
+  final List<Widget> _screens = [
+    HomeTab(),
+    HomeTab(),
+    HomeTab(),
+    ProfileScreen(userId: '1', isMe: true),
+  ];
 
   @override
   Widget build(BuildContext context) {

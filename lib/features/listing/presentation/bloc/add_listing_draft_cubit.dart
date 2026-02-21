@@ -12,9 +12,9 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
   AddListingDraftCubit({
     ListingCatalogService? catalogService,
     ListingDraftStorage? draftStorage,
-  })  : _catalogService = catalogService ?? ListingCatalogService(),
-        _draftStorage = draftStorage ?? ListingDraftStorage(),
-        super(AddListingDraftState.initial());
+  }) : _catalogService = catalogService ?? ListingCatalogService(),
+       _draftStorage = draftStorage ?? ListingDraftStorage(),
+       super(AddListingDraftState.initial());
 
   final ListingCatalogService _catalogService;
   final ListingDraftStorage _draftStorage;
@@ -50,9 +50,7 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
   }
 
   void updateCategory(String value) {
-    _emitDraft(
-      state.draft.copyWith(category: value, attributes: const {}),
-    );
+    _emitDraft(state.draft.copyWith(category: value, attributes: const {}));
   }
 
   void updateCondition(String value) {
@@ -101,10 +99,7 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
     emit(AddListingDraftState.initial());
   }
 
-  void _emitDraft(
-    AddListingDraft draft, {
-    bool? isLoadingDraft,
-  }) {
+  void _emitDraft(AddListingDraft draft, {bool? isLoadingDraft}) {
     final computed = _computeFlags(draft);
     emit(
       state.copyWith(

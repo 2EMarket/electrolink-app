@@ -65,12 +65,12 @@ class _RealTimeRecordingBubbleState extends State<RealTimeRecordingBubble> {
       _amplitudeSubscription = _audioRecorder
           .onAmplitudeChanged(const Duration(milliseconds: 120))
           .listen((amp) {
-        final v = ((amp.current + 60) / 60).clamp(0.05, 1.0);
-        setState(() {
-          _waves.add(v);
-          if (_waves.length > 40) _waves.removeAt(0);
-        });
-      });
+            final v = ((amp.current + 60) / 60).clamp(0.05, 1.0);
+            setState(() {
+              _waves.add(v);
+              if (_waves.length > 40) _waves.removeAt(0);
+            });
+          });
     } catch (e, s) {
       debugPrint("🔥 Recording error: $e");
       debugPrint("$s");
@@ -116,7 +116,11 @@ class _RealTimeRecordingBubbleState extends State<RealTimeRecordingBubble> {
         children: [
           GestureDetector(
             onTap: _cancel,
-            child: const Icon(Icons.delete_outline, color: Colors.red, size: 28),
+            child: const Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+              size: 28,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -141,7 +145,9 @@ class _RealTimeRecordingBubbleState extends State<RealTimeRecordingBubble> {
                   Text(
                     _formatTime(_seconds),
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
@@ -161,6 +167,7 @@ class _RealTimeRecordingBubbleState extends State<RealTimeRecordingBubble> {
     );
   }
 }
+
 class _WavePainter extends CustomPainter {
   final List<double> waves;
   final Color color;
@@ -169,10 +176,11 @@ class _WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round;
+    final paint =
+        Paint()
+          ..color = color
+          ..strokeWidth = 3
+          ..strokeCap = StrokeCap.round;
 
     final centerY = size.height / 2;
     final spacing = size.width / 40;

@@ -35,6 +35,9 @@ dependencies:
   audio_waveforms:
   file_picker:
   record:
+  dio: ^5.9.1
+  pinput: ^6.0.2
+  shared_preferences: ^2.5.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
