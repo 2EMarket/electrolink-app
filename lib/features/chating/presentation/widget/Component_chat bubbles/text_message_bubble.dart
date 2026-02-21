@@ -4,6 +4,8 @@ import 'package:second_hand_electronics_marketplace/features/chating/presentatio
 class TextMessageBubble extends ChatBubbleBase {
   TextMessageBubble({
     super.key,
+        required int id,
+
     required super.isSender,
     required String message,
     required String time,

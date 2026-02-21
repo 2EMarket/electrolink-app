@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
+// تم نقل ReplyMessage لملف منفصل لتسهيل الاستخدام
 class ReplyMessage {
   final String id;
   final String senderName;
@@ -21,7 +23,7 @@ class ReplyMessage {
 
 enum MessageType { text, image, audio, file }
 
-class ChatInputBarFinal extends StatefulWidget {
+class ChatInputBarFinal1 extends StatefulWidget {
   final bool showSuggestions;
   final Function(String)? onSend;
   final Function(XFile)? onImageSelected;
@@ -33,12 +35,13 @@ class ChatInputBarFinal extends StatefulWidget {
   final Function(String)? onVoiceMessage;
   final Function(ReplyMessage)? onReply;
   final ReplyMessage? replyingTo;
+  final VoidCallback? onCancelReply;
   final int maxLines;
   final int minLines;
   final String hintText;
   final bool enableAnimations;
 
-  const ChatInputBarFinal({
+  const ChatInputBarFinal1({
     super.key,
     this.showSuggestions = true,
     this.onSend,
@@ -51,17 +54,18 @@ class ChatInputBarFinal extends StatefulWidget {
     this.onVoiceMessage,
     this.onReply,
     this.replyingTo,
+    this.onCancelReply,
     this.maxLines = 4,
     this.minLines = 1,
     this.hintText = "Write a message...",
-    this.enableAnimations = true, required void Function() onCancelReply,
+    this.enableAnimations = true,
   });
 
   @override
-  State<ChatInputBarFinal> createState() => _ChatInputBarFinalState();
+  State<ChatInputBarFinal1> createState() => _ChatInputBarFinal1State();
 }
 
-class _ChatInputBarFinalState extends State<ChatInputBarFinal>
+class _ChatInputBarFinal1State extends State<ChatInputBarFinal1>
     with SingleTickerProviderStateMixin {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -72,6 +76,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
   bool _isRecording = false;
   bool _isFocused = false;
   bool _showEmojiPicker = false;
+  bool _suggestionsShownOnce = false; // للتحكم في ظهور الاقتراحات أول مرة فقط
 
   Timer? _timer;
   int _seconds = 0;
@@ -101,6 +106,14 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
   void _onTextChanged() {
     if (!mounted) return;
     final newHasText = _controller.text.trim().isNotEmpty;
+    
+    // إذا بدأ المستخدم بالكتابة لأول مرة، نحدد أن الاقتراحات ظهرت ولن تظهر ثانية
+    if (newHasText && !_suggestionsShownOnce) {
+      setState(() {
+        _suggestionsShownOnce = true;
+      });
+    }
+
     if (newHasText != _hasText) {
       setState(() => _hasText = newHasText);
       if (widget.enableAnimations) {
@@ -179,7 +192,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
     }
   }
 
-  void _startRecording() {
+  Future<void> _startRecording() async {
     if (_hasText) return;
     setState(() {
       _isRecording = true;
@@ -193,6 +206,11 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
     });
     debugPrint('🎙️ بدء التسجيل الصوتي');
     
+    // ملاحظة: لتسجيل الصوت فعلياً تحتاج لمكتبة مثل record أو flutter_sound
+    // المسار المقترح لحفظ الملفات الصوتية:
+    final directory = await getApplicationDocumentsDirectory();
+    final path = '${directory.path}/voice_record_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    debugPrint('📂 سيتم حفظ الملف في: $path');
   }
 
   void _stopRecording() {
@@ -261,21 +279,25 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
                 _buildAttachmentOption(
                   icon: Icons.camera_alt,
                   label: 'Camera',
+                  color: Colors.purple,
                   onTap: _openCamera,
                 ),
                 _buildAttachmentOption(
                   icon: Icons.image,
                   label: 'Gallery',
+                  color: Colors.blue,
                   onTap: _pickImage,
                 ),
                 _buildAttachmentOption(
                   icon: Icons.insert_drive_file,
                   label: 'Document',
+                  color: Colors.orange,
                   onTap: _pickFile,
                 ),
                 _buildAttachmentOption(
                   icon: Icons.location_on,
                   label: 'Location',
+                  color: Colors.green,
                   onTap: () {
                     debugPrint('📍 اختيار الموقع');
                     Navigator.pop(context);
@@ -293,6 +315,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
   Widget _buildAttachmentOption({
     required IconData icon,
     required String label,
+    required Color color,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
@@ -304,10 +327,10 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: Colors.blue, size: 28),
+            child: Icon(icon, color: color, size: 28),
           ),
           const SizedBox(height: 8),
           Text(
@@ -325,6 +348,10 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // إظهار الاقتراحات فقط إذا لم تظهر من قبل ولم يبدأ المستخدم بالكتابة
+        if (widget.showSuggestions && !_suggestionsShownOnce && !_hasText)
+          _buildSuggestions(),
+          
         if (widget.replyingTo != null) _buildReplyPreview(),
 
         Container(
@@ -351,12 +378,47 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
     );
   }
 
+  Widget _buildSuggestions() {
+    // هنا يمكنك وضع الودجت الخاص بالاقتراحات
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            _buildSuggestionChip("Is it available?"),
+            _buildSuggestionChip("What is the price?"),
+            _buildSuggestionChip("Where are you located?"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSuggestionChip(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: ActionChip(
+        label: Text(text, style: const TextStyle(fontSize: 12)),
+        onPressed: () {
+          _controller.text = text;
+          _onTextChanged();
+        },
+        backgroundColor: Colors.blue.withOpacity(0.05),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+    );
+  }
+
   Widget _buildReplyPreview() {
     return Container(
       padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.grey[100],
-        border: Border(left: BorderSide(color: Colors.blue, width: 4)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+        border: const Border(left: BorderSide(color: Colors.blue, width: 4)),
       ),
       child: Row(
         children: [
@@ -375,17 +437,16 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
                 const SizedBox(height: 4),
                 Text(
                   widget.replyingTo!.content,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close, size: 20),
-            onPressed: () {
-            },
+            icon: const Icon(Icons.close, size: 20, color: Colors.grey),
+            onPressed: widget.onCancelReply,
           ),
         ],
       ),
@@ -406,6 +467,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
           icon: Icon(
             _showEmojiPicker ? Icons.keyboard : Icons.emoji_emotions_outlined,
             size: 24,
+            color: Colors.grey[600],
           ),
         ),
 
@@ -418,7 +480,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
               border: Border.all(
                 color: _isFocused
                     ? Colors.blue.withOpacity(0.3)
-                    : Colors.grey.withOpacity(0.3),
+                    : Colors.grey.withOpacity(0.1),
               ),
             ),
             child: Row(
@@ -440,18 +502,13 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
                     ),
                   ),
                 ),
-                if (!_hasText)
-                  IconButton(
-                    icon: const Icon(Icons.attach_file, size: 20),
-                    onPressed: _showAttachmentMenu,
-                    tooltip: 'Attach file',
-                  ),
-                if (_hasText)
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 18),
-                    onPressed: _clearText,
-                    tooltip: 'Clear',
-                  ),
+                // زر الملفات يظهر دائماً أو عند عدم وجود نص حسب رغبتك
+                // هنا جعلته يظهر بلون أزرق بدلاً من الأحمر
+                IconButton(
+                  icon: const Icon(Icons.attach_file, size: 20, color: Colors.blue),
+                  onPressed: _showAttachmentMenu,
+                  tooltip: 'Attach file',
+                ),
               ],
             ),
           ),
@@ -473,29 +530,13 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-          color: _hasText ? Colors.blue : Colors.grey[300],
+          color: _hasText ? Colors.blue : Colors.grey[200],
           shape: BoxShape.circle,
-          boxShadow: _hasText
-              ? [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [],
         ),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          transitionBuilder: (child, animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          child: Icon(
-            _hasText ? Icons.send_rounded : Icons.mic_rounded,
-            key: ValueKey<bool>(_hasText),
-            color: _hasText ? Colors.white : Colors.grey[600],
-            size: 24,
-          ),
+        child: Icon(
+          _hasText ? Icons.send_rounded : Icons.mic_rounded,
+          color: _hasText ? Colors.white : Colors.grey[600],
+          size: 24,
         ),
       ),
     );
@@ -506,7 +547,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
       height: 200,
       margin: const EdgeInsets.only(top: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.grey[50],
         borderRadius: BorderRadius.circular(12),
       ),
       child: GridView.builder(
@@ -524,6 +565,7 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
               _controller.selection = TextSelection.fromPosition(
                 TextPosition(offset: _controller.text.length),
               );
+              _onTextChanged();
             },
             child: Center(
               child: Text(
@@ -536,74 +578,4 @@ class _ChatInputBarFinalState extends State<ChatInputBarFinal>
       ),
     );
   }
-}
-
-class RecordingBubble extends StatelessWidget {
-  final int seconds;
-  final VoidCallback onCancel;
-  final VoidCallback onSend;
-
-  const RecordingBubble({
-    super.key,
-    required this.seconds,
-    required this.onCancel,
-    required this.onSend,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.mic, color: Colors.red, size: 20),
-          const SizedBox(width: 12),
-          Text(
-            _formatDuration(seconds),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: onCancel,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.close, color: Colors.red, size: 20),
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: onSend,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.check, color: Colors.white, size: 20),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  static String _formatDuration(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
-  }
-
 }

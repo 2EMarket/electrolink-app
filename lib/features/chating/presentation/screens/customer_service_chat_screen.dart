@@ -3,16 +3,16 @@ import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dar
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Voice/voice_message_bubble_fixed.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/text_message_bubble.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat%20bubbles/voice_message_chat_1bubble.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_typing bar/chat_input_bar.dart';
+import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_typing%20bar/chat_input_bar_final.dart';
 
 class CustomerServiceChatScreen extends StatelessWidget {
   const CustomerServiceChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.greyFillButton,
+   return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(      backgroundColor: AppColors.greyFillButton,
       resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
@@ -67,11 +67,11 @@ class CustomerServiceChatScreen extends StatelessWidget {
                       isSender: false,
                       message: "Hi How are you?",
                       time: "9:24",
-                      isRead: false,
+                      isRead: false, id: 1,
                     ),
                     const SizedBox(height: 12),
 
-                    TextMessageBubble(
+                    TextMessageBubble(id: 1,
                       isSender: true,
                       message: "Hi, Can you help me?",
                       time: "9:24",
@@ -79,7 +79,7 @@ class CustomerServiceChatScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    TextMessageBubble(
+                    TextMessageBubble(id: 1,
                       isSender: false,
                       message: "Hi How are you?",
                       time: "9:24",
@@ -94,13 +94,20 @@ class CustomerServiceChatScreen extends StatelessWidget {
   isRead: true,
  ),
                     const SizedBox(height: 12),
-VoiceMessageBuble1(
-                      isSender: true,
-                      audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
-                      duration: '0:10',
-                      time: '09:20',
-                      isRead: true,
-)
+                                      VoiceMessageBubble1(
+  isSender: true,
+  audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
+  duration: '0:10',
+  time: '09:20',
+  isRead: true,
+ )
+// VoiceMessageBuble1(
+//                       isSender: true,
+//                       audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
+//                       duration: '0:10',
+//                       time: '09:20',
+//                       isRead: true,
+// )
                     // VoiceMessageBuble1(
                     //   isSender: true,
                     //   audioUrl:
@@ -113,17 +120,18 @@ VoiceMessageBuble1(
                 ),
               ),
             ),
+            ChatInputBarFinal(onCancelReply: () {  },),
 
-            ChatInputBar(
-              showSuggestions: false,
-              onSend: (text) => debugPrint('Send: $text'),
-              onAttach: () => debugPrint('Attach file'),
-              onCamera: () => debugPrint('Open camera'),
-              onEmoji: () => debugPrint('Open emoji'),
-            ),
+            // ChatInputBar(
+            //   showSuggestions: false,
+            //   onSend: (text) => debugPrint('Send: $text'),
+            //   onAttach: () => debugPrint('Attach file'),
+            //   onCamera: () => debugPrint('Open camera'),
+            //   onEmoji: () => debugPrint('Open emoji'),
+            // ),
           ],
         ),
       ),
-    );
+    ) );
   }
 }

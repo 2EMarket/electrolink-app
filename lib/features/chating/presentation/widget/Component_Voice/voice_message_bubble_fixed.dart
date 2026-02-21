@@ -254,8 +254,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                       height: 30,
                       alignment: Alignment.center,
                       child: Text(
-                        'خطأ في التحميل',
-                        style: TextStyle(
+"Download error",                        style: TextStyle(
                           fontSize: 12,
                           color: widget.themeColor,
                         ),
