@@ -7,7 +7,10 @@ class AppRoutes {
   // Auth
   static const signIn = 'sign-in';
   static const String register = 'register';
-
+  static const String login = 'login';
+  static const String forgotPassword = 'forgot-password';
+  static const String otp = 'otp';
+  static const String changePassword = 'change-password';
   // Home
   static const home = 'home';
   static const mainLayout = 'main-layout';

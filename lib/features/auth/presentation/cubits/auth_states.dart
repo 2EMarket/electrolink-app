@@ -8,6 +8,8 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
+class AuthPasswordResetSuccess extends AuthState {}
+
 class AuthSuccess extends AuthState {
   final AuthResponseModel response;
   AuthSuccess(this.response);

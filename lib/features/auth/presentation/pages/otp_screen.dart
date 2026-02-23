@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
-import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/top_in_registration.dart';
-import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_states.dart';
-import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../configs/theme/theme_exports.dart';
+import '../../../../core/constants/constants_exports.dart';
+import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/notification_toast.dart';
+import '../cubits/auth_cubit.dart';
+import '../cubits/auth_states.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
   final String phoneNumber;
+  final bool isForPasswordReset;
 
-  const OtpScreen({super.key, required this.email, required this.phoneNumber});
+  const OtpScreen({
+    super.key,
+    required this.email,
+    required this.phoneNumber,
+    this.isForPasswordReset = false,
+  });
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -22,28 +28,34 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _pinController = TextEditingController();
-
   bool _isEmailVerification = false;
 
   @override
   void initState() {
     super.initState();
+    _isEmailVerification = widget.email.isNotEmpty;
+  }
+
+  @override
+  void dispose() {
+    _pinController.dispose();
+    super.dispose();
   }
 
   void _verify() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_pinController.text.length == 4) {
       context.read<AuthCubit>().verifyCode(
         code: _pinController.text,
-
         email: _isEmailVerification ? widget.email : null,
-
         phone: _isEmailVerification ? null : widget.phoneNumber,
+        type: widget.isForPasswordReset ? "password_reset" : null,
       );
     } else {
       NotificationToast.show(
         context,
-        "Invalid Code",
-        "Please enter the 4-digit code",
+        AppStrings.invalidCode,
+        AppStrings.enter4DigitCode,
         ToastType.warning,
       );
     }
@@ -54,36 +66,16 @@ class _OtpScreenState extends State<OtpScreen> {
       _isEmailVerification = !_isEmailVerification;
       _pinController.clear();
     });
-
     context.read<AuthCubit>().resendCode(isEmail: _isEmailVerification);
-  }
-
-  String _maskData(String data) {
-    if (data.contains('@')) {
-      final parts = data.split('@');
-      final username = parts[0];
-      final domain = parts[1];
-
-      if (username.length > 2) {
-        return '${username.substring(0, 2)}****@$domain';
-      }
-      return data;
-    } else {
-      if (data.length > 8) {
-        String start = data.substring(0, 4);
-        String end = data.substring(data.length - 3);
-        return '$start *** ** $end';
-      }
-      return data;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final String destination =
         _isEmailVerification
-            ? _maskData(widget.email)
-            : _maskData(widget.phoneNumber);
+            ? StringUtils.maskData(widget.email)
+            : StringUtils.maskData(widget.phoneNumber);
+
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -100,32 +92,40 @@ class _OtpScreenState extends State<OtpScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify Code')),
+      appBar: AppBar(title: const Text(AppStrings.verifyCodeTitle)),
       body: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen:
+            (previous, current) => ModalRoute.of(context)?.isCurrent == true,
         listener: (context, state) {
           if (state is AuthSuccess) {
             NotificationToast.show(
               context,
-              "Verified!",
-              "Account verified successfully",
+              AppStrings.verified,
+              AppStrings.accountVerifiedSuccess,
               ToastType.success,
             );
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (_) => const MainLayoutScreen()),
-              (route) => false,
-            );
+
+            if (widget.isForPasswordReset) {
+              final token = state.response.token;
+
+              context.pushReplacementNamed(
+                AppRoutes.changePassword,
+                extra: token,
+              );
+            } else {
+              context.goNamed(AppRoutes.mainLayout);
+            }
           } else if (state is AuthCodeSent) {
             NotificationToast.show(
               context,
-              "Sent",
-              "Code sent to $destination",
+              AppStrings.sent,
+              "${AppStrings.codeSentTo}$destination",
               ToastType.success,
             );
           } else if (state is AuthFailure) {
             NotificationToast.show(
               context,
-              "Error",
+              AppStrings.error,
               state.message,
               ToastType.error,
             );
@@ -138,7 +138,7 @@ class _OtpScreenState extends State<OtpScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Enter the 4-digit code we sent to\n$destination',
+                  '${AppStrings.enterCodeWeSentTo}$destination',
                   textAlign: TextAlign.center,
                   style: AppTypography.h3_18Regular.copyWith(
                     color: context.colors.text,
@@ -155,7 +155,6 @@ class _OtpScreenState extends State<OtpScreen> {
                   showCursor: true,
                   onCompleted: (pin) => _verify(),
                 ),
-
                 const SizedBox(height: 40),
 
                 SizedBox(
@@ -167,17 +166,16 @@ class _OtpScreenState extends State<OtpScreen> {
                             ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                            : const Text("Verify"),
+                            : const Text(AppStrings.verify),
                   ),
                 ),
-
                 const SizedBox(height: AppSizes.paddingL),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Didn't receive the code? ",
+                      AppStrings.didntReceiveCode,
                       style: AppTypography.body16Regular.copyWith(
                         color: context.colors.text,
                       ),
@@ -188,7 +186,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             isEmail: _isEmailVerification,
                           ),
                       child: Text(
-                        "Resend",
+                        AppStrings.resend,
                         style: AppTypography.body16Medium.copyWith(
                           color: context.colors.text,
                         ),
@@ -196,14 +194,14 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: AppSizes.paddingM),
 
-                SizedBox(height: AppSizes.paddingM),
                 GestureDetector(
                   onTap: _switchVerificationMethod,
                   child: Text(
                     _isEmailVerification
-                        ? "Send code via phone number"
-                        : "Send code via email",
+                        ? AppStrings.sendCodeViaPhone
+                        : AppStrings.sendCodeViaEmail,
                     style: AppTypography.body14Regular.copyWith(
                       color: context.colors.hint,
                     ),
