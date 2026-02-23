@@ -182,4 +182,43 @@ class AppStrings {
   static const String resend = "Resend";
   static const String sendCodeViaPhone = "Send code via phone number";
   static const String sendCodeViaEmail = "Send code via email";
+
+  // ==========================================
+  // Validation Messages
+  // ==========================================
+  static const String valEnterEmailOrPhone =
+      'Please enter your email or phone number';
+  static const String valInvalidPhone = 'The number is wrong';
+  static const String valPhoneLength = 'Phone number must be 9-10 digits';
+  static const String valPhoneDigitsOnly = 'Phone must be digits only';
+  static const String valInvalidEmail = 'Please enter a valid email address';
+  static const String valEnterPassword = 'Please enter your password';
+  static const String valPasswordLength =
+      'Password must be at least 8 characters';
+  static const String valPasswordComplexity =
+      'Must contain Uppercase, Lowercase, and Number';
+  static const String valNewPasswordComplexity =
+      'Password must include letters and numbers';
+  static const String valEnterFullName = 'Please enter your full name';
+  static const String valNameNoNumbers = 'Name cannot contain numbers';
+  static const String valConfirmPassword = 'Please confirm your new password';
+  static const String valPasswordsNotMatch = 'Passwords do not match.';
+
+  // ==========================================
+  // Error Messages (Cubit)
+  // ==========================================
+  static const String errEmailExists =
+      'This email is already registered. Please sign in.';
+  static const String errPhoneExists =
+      'This phone number is already registered. Please sign in.';
+  static const String errAccountExists = 'This account already exists.';
+  static const String errUserNotFound =
+      'User not found. Please check your email or phone number.';
+  static const String errInvalidFormat =
+      'Invalid email or phone number format.';
+  static const String errSessionExpired =
+      'Session expired or invalid token. Please try again.';
+  static const String errValidationFailed =
+      'Validation failed. Please check your passwords.';
+  static const String errGeneric = 'An error occurred. Please try again.';
 }

@@ -1,76 +1,70 @@
+import '../../../core/constants/constants_exports.dart';
+
 class AuthValidators {
   static String? validateIdentifier(String? value, bool isPhoneMode) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Please enter your email or phone number';
-    }
+    if (value == null || value.trim().isEmpty)
+      return AppStrings.valEnterEmailOrPhone;
 
     if (isPhoneMode) {
       String cleanPhone = value.trim();
-      if (cleanPhone.length < 9 || cleanPhone.length > 10) {
-        return 'The number is wrong';
-      }
-      if (!RegExp(r'^[0-9]+$').hasMatch(cleanPhone)) {
-        return 'The number is wrong';
-      }
+      if (cleanPhone.length < 9 || cleanPhone.length > 10)
+        return AppStrings.valInvalidPhone;
+      if (!RegExp(r'^[0-9]+$').hasMatch(cleanPhone))
+        return AppStrings.valInvalidPhone;
     } else {
       final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-      if (!emailRegex.hasMatch(value)) {
-        return 'Please enter a valid email address.';
-      }
+      if (!emailRegex.hasMatch(value)) return AppStrings.valInvalidEmail;
     }
     return null;
   }
 
   static String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your password';
-    // في شاشة اللوجن لا نحتاج لفحص قوة كلمة المرور، فقط التأكد من إدخالها
+    if (value == null || value.isEmpty) return AppStrings.valEnterPassword;
     return null;
   }
 
   static String? validateName(String? value) {
     if (value == null || value.trim().isEmpty)
-      return 'Please enter your full name';
-    if (RegExp(r'[0-9]').hasMatch(value)) return 'Name cannot contain numbers';
+      return AppStrings.valEnterFullName;
+    if (RegExp(r'[0-9]').hasMatch(value)) return AppStrings.valNameNoNumbers;
     return null;
   }
 
   static String? validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Please enter your email';
+    if (value == null || value.trim().isEmpty)
+      return AppStrings.valEnterEmailOrPhone;
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value))
-      return 'Please enter a valid email address';
+    if (!emailRegex.hasMatch(value)) return AppStrings.valInvalidEmail;
     return null;
   }
 
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty)
-      return 'Please enter your phone number';
+      return AppStrings.valEnterEmailOrPhone;
     String cleanPhone = value.trim();
     if (cleanPhone.length < 9 || cleanPhone.length > 10)
-      return 'Phone number must be 9-10 digits';
+      return AppStrings.valPhoneLength;
     if (!RegExp(r'^[0-9]+$').hasMatch(cleanPhone))
-      return 'Phone must be digits only';
+      return AppStrings.valPhoneDigitsOnly;
     return null;
   }
 
   static String? validateStrongPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your password';
-    if (value.length < 8) return 'Password must be at least 8 characters';
+    if (value == null || value.isEmpty) return AppStrings.valEnterPassword;
+    if (value.length < 8) return AppStrings.valPasswordLength;
     bool hasUppercase = value.contains(RegExp(r'[A-Z]'));
     bool hasLowercase = value.contains(RegExp(r'[a-z]'));
     bool hasDigits = value.contains(RegExp(r'[0-9]'));
-    if (!hasUppercase || !hasLowercase || !hasDigits) {
-      return 'Must contain Uppercase, Lowercase, and Number';
-    }
+    if (!hasUppercase || !hasLowercase || !hasDigits)
+      return AppStrings.valPasswordComplexity;
     return null;
   }
 
   static String? validateNewPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your new password';
-    if (value.length < 8) return 'Password must be at least 8 characters';
-    if (!RegExp(r'(?=.*[a-zA-Z])(?=.*[0-9])').hasMatch(value)) {
-      return 'Password must include letters and numbers';
-    }
+    if (value == null || value.isEmpty) return AppStrings.valEnterPassword;
+    if (value.length < 8) return AppStrings.valPasswordLength;
+    if (!RegExp(r'(?=.*[a-zA-Z])(?=.*[0-9])').hasMatch(value))
+      return AppStrings.valNewPasswordComplexity;
     return null;
   }
 
@@ -78,9 +72,8 @@ class AuthValidators {
     String? value,
     String originalPassword,
   ) {
-    if (value == null || value.isEmpty)
-      return 'Please confirm your new password';
-    if (value != originalPassword) return 'Passwords do not match.';
+    if (value == null || value.isEmpty) return AppStrings.valConfirmPassword;
+    if (value != originalPassword) return AppStrings.valPasswordsNotMatch;
     return null;
   }
 }

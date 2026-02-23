@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-
 import '../models/auth_models.dart';
+import '../../../../core/constants/api_constants.dart';
 
 class AuthService {
   final Dio _dio;
@@ -10,7 +10,7 @@ class AuthService {
   Future<AuthResponseModel> register(RegisterRequestModel request) async {
     try {
       final response = await _dio.post(
-        '/auth/register',
+        ApiEndpoints.register,
         data: request.toJson(),
       );
 
@@ -18,20 +18,20 @@ class AuthService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return AuthResponseModel.fromJson(response.data);
       } else {
-        throw Exception(response.data['message'] ?? 'Registration failed');
+        throw Exception(
+          response.data[ApiKeys.message] ?? 'Registration failed',
+        );
       }
     } on DioException catch (e) {
       print("🚨 Server Error Data: ${e.response?.data}");
-
       final errorMessage =
-          e.response?.data['message'] ?? 'Network error occurred';
+          e.response?.data[ApiKeys.message] ?? 'Network error occurred';
       throw Exception(errorMessage);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  // تعيين كلمة المرور الجديدة
   Future<dynamic> resetPassword({
     required String newPassword,
     required String confirmPassword,
@@ -39,11 +39,14 @@ class AuthService {
   }) async {
     try {
       final response = await _dio.post(
-        // أو apiService.post حسب طريقتك
-        '/auth/reset-password',
-        data: {"newPassword": newPassword, "confirmPassword": confirmPassword},
-        // ✅ إضافة التوكن في الهيدر ضروري جداً زي ما طلب السواجر
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        ApiEndpoints.resetPassword,
+        data: {
+          ApiKeys.newPassword: newPassword,
+          ApiKeys.confirmPassword: confirmPassword,
+        },
+        options: Options(
+          headers: {ApiKeys.authorization: '${ApiKeys.bearer}$token'},
+        ),
       );
       return response;
     } catch (e) {
@@ -51,13 +54,12 @@ class AuthService {
     }
   }
 
-  // إرسال كود إعادة تعيين كلمة المرور
   Future<dynamic> sendResetPasswordCode({
     required Map<String, dynamic> data,
   }) async {
     try {
       final response = await _dio.post(
-        '/auth/send-reset-password-code',
+        ApiEndpoints.sendResetPasswordCode,
         data: data,
       );
       return response;
@@ -69,18 +71,18 @@ class AuthService {
   Future<AuthResponseModel> login(String email, String password) async {
     try {
       final response = await _dio.post(
-        '/auth/login',
-        data: {"email": email, "password": password},
+        ApiEndpoints.login,
+        data: {ApiKeys.email: email, ApiKeys.password: password},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return AuthResponseModel.fromJson(response.data);
       } else {
-        throw Exception(response.data['message'] ?? 'Login failed');
+        throw Exception(response.data[ApiKeys.message] ?? 'Login failed');
       }
     } on DioException catch (e) {
       final errorMessage =
-          e.response?.data['message'] ?? 'Network error occurred';
+          e.response?.data[ApiKeys.message] ?? 'Network error occurred';
       throw Exception(errorMessage);
     } catch (e) {
       throw Exception(e.toString());
@@ -94,23 +96,22 @@ class AuthService {
     String? type,
   }) async {
     try {
-      final Map<String, dynamic> data = {"code": code};
+      final Map<String, dynamic> data = {ApiKeys.code: code};
 
       if (email != null) {
-        data["email"] = email;
-        // ✅ إذا إجانا type (زي password_reset) استخدمه، وإلا استخدم email_verification
-        data["type"] = type ?? "email_verification";
+        data[ApiKeys.email] = email;
+        data[ApiKeys.type] = type ?? ApiKeys.emailVerification;
       } else if (phone != null) {
-        data["phoneNumber"] = phone;
-        // ✅ نفس الإشي هنا للرقم
-        data["type"] = type ?? "phone_verification";
+        data[ApiKeys.phoneNumber] = phone;
+        data[ApiKeys.type] = type ?? ApiKeys.phoneVerification;
       }
-      if (type != null) data['type'] = type;
+      if (type != null) data[ApiKeys.type] = type;
 
-      final response = await _dio.post('/auth/verify-code', data: data);
+      final response = await _dio.post(ApiEndpoints.verifyCode, data: data);
       return response;
     } on DioException catch (e) {
-      final errorMessage = e.response?.data['message'] ?? 'Verification failed';
+      final errorMessage =
+          e.response?.data[ApiKeys.message] ?? 'Verification failed';
       throw Exception(errorMessage);
     }
   }
@@ -118,19 +119,20 @@ class AuthService {
   Future<void> resendCode({bool isEmail = true}) async {
     try {
       await _dio.post(
-        '/auth/send-verification-code',
+        ApiEndpoints.resendVerificationCode,
         data: {
-          "otpType": isEmail ? "email_verification" : "phone_verification",
+          ApiKeys.otpType:
+              isEmail ? ApiKeys.emailVerification : ApiKeys.phoneVerification,
         },
       );
     } on DioException catch (e) {
       final errorMessage =
-          e.response?.data['message'] ?? 'Failed to resend code';
+          e.response?.data[ApiKeys.message] ?? 'Failed to resend code';
       throw Exception(errorMessage);
     }
   }
 
   void updateHeader(String token) {
-    _dio.options.headers['Authorization'] = 'Bearer $token';
+    _dio.options.headers[ApiKeys.authorization] = '${ApiKeys.bearer}$token';
   }
 }

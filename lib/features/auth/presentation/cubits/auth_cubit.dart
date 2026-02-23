@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/cache_keys.dart';
 import '../../data/models/auth_models.dart';
 import '../../data/services/auth_service.dart';
 import '../../../../core/helpers/cache_helper.dart';
+import '../../../../core/constants/constants_exports.dart';
 import 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -27,25 +29,21 @@ class AuthCubit extends Cubit<AuthState> {
       final response = await _authService.register(request);
 
       if (response.token.isNotEmpty) {
-        await CacheHelper.saveData(key: 'token', value: response.token);
-
+        await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
         _authService.updateHeader(response.token);
-
-        print("🔐 Token saved & Header updated: ${response.token}");
       }
 
       emit(AuthSuccess(response));
     } catch (e) {
-      print("❌ Register Error: $e");
       String errorMsg = e.toString().replaceAll('Exception: ', '');
 
       if (errorMsg.contains('Unique constraint failed')) {
-        if (errorMsg.contains('email')) {
-          errorMsg = 'This email is already registered. Please sign in.';
-        } else if (errorMsg.contains('phoneNumber')) {
-          errorMsg = 'This phone number is already registered. Please sign in.';
+        if (errorMsg.contains(ApiKeys.email)) {
+          errorMsg = AppStrings.errEmailExists;
+        } else if (errorMsg.contains(ApiKeys.phoneNumber)) {
+          errorMsg = AppStrings.errPhoneExists;
         } else {
-          errorMsg = 'This account already exists.';
+          errorMsg = AppStrings.errAccountExists;
         }
       }
 
@@ -53,38 +51,30 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // إرسال كود إعادة تعيين كلمة المرور
   Future<void> sendResetPasswordCode({
     required String identifier,
     required bool isPhone,
   }) async {
     emit(AuthLoading());
     try {
-      // تجهيز البيانات حسب نوع الإدخال
       final Map<String, dynamic> data = {};
       if (isPhone) {
-        data['phoneNumber'] = identifier;
+        data[ApiKeys.phoneNumber] = identifier;
       } else {
-        data['email'] = identifier;
+        data[ApiKeys.email] = identifier;
       }
 
-      // ✅ استدعاء الدالة من الـ AuthService
-      final response = await _authService.sendResetPasswordCode(data: data);
-
-      // إذا نجحت العملية، بنبعث حالة إن الكود انبعث
+      await _authService.sendResetPasswordCode(data: data);
       emit(AuthCodeSent());
-      print("✅ Reset Code sent successfully");
     } catch (e) {
-      print("❌ Send Reset Code Error: $e");
       String errorMsg = e.toString();
 
-      // هندلة رسائل الخطأ
       if (errorMsg.contains('404') || errorMsg.contains('User not found')) {
-        errorMsg = 'User not found. Please check your email or phone number.';
+        errorMsg = AppStrings.errUserNotFound;
       } else if (errorMsg.contains('400')) {
-        errorMsg = 'Invalid email or phone number format.';
+        errorMsg = AppStrings.errInvalidFormat;
       } else {
-        errorMsg = 'An error occurred. Please try again.';
+        errorMsg = AppStrings.errGeneric;
       }
 
       emit(AuthFailure(errorMsg));
@@ -97,11 +87,8 @@ class AuthCubit extends Cubit<AuthState> {
       final response = await _authService.login(email, password);
 
       if (response.token.isNotEmpty) {
-        await CacheHelper.saveData(key: 'token', value: response.token);
-
+        await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
         _authService.updateHeader(response.token);
-
-        print("🔐 Login Token saved: ${response.token}");
       }
 
       emit(AuthSuccess(response));
@@ -127,7 +114,6 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final model = AuthResponseModel.fromJson(response.data);
-
       emit(AuthSuccess(model));
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');
@@ -138,18 +124,13 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> resendCode({bool isEmail = true}) async {
     try {
       await _authService.resendCode(isEmail: isEmail);
-
       emit(AuthCodeSent());
-      print("✅ Code resent successfully");
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');
-      print("❌ Resend error: $errorMsg");
-
       emit(AuthFailure(errorMsg));
     }
   }
 
-  // تعيين كلمة المرور الجديدة
   Future<void> resetPassword({
     required String newPassword,
     required String confirmPassword,
@@ -157,8 +138,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      // ✅ استدعاء الدالة من السيرفس
-      final response = await _authService.resetPassword(
+      await _authService.resetPassword(
         newPassword: newPassword,
         confirmPassword: confirmPassword,
         token: token,
@@ -166,16 +146,14 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthPasswordResetSuccess());
     } catch (e) {
-      print("❌ Reset Password Error: $e");
       String errorMsg = e.toString().replaceAll('Exception: ', '');
 
-      // هندلة الأخطاء الخاصة بهاي الشاشة
       if (errorMsg.contains('401') || errorMsg.contains('Unauthorized')) {
-        errorMsg = 'Session expired or invalid token. Please try again.';
+        errorMsg = AppStrings.errSessionExpired;
       } else if (errorMsg.contains('400')) {
-        errorMsg = 'Validation failed. Please check your passwords.';
+        errorMsg = AppStrings.errValidationFailed;
       } else {
-        errorMsg = 'An error occurred. Please try again.';
+        errorMsg = AppStrings.errGeneric;
       }
 
       emit(AuthFailure(errorMsg));
