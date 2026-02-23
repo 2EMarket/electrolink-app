@@ -31,6 +31,41 @@ class AuthService {
     }
   }
 
+  // تعيين كلمة المرور الجديدة
+  Future<dynamic> resetPassword({
+    required String newPassword,
+    required String confirmPassword,
+    required String token,
+  }) async {
+    try {
+      final response = await _dio.post(
+        // أو apiService.post حسب طريقتك
+        '/auth/reset-password',
+        data: {"newPassword": newPassword, "confirmPassword": confirmPassword},
+        // ✅ إضافة التوكن في الهيدر ضروري جداً زي ما طلب السواجر
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // إرسال كود إعادة تعيين كلمة المرور
+  Future<dynamic> sendResetPasswordCode({
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/auth/send-reset-password-code',
+        data: data,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AuthResponseModel> login(String email, String password) async {
     try {
       final response = await _dio.post(
@@ -56,17 +91,21 @@ class AuthService {
     required String code,
     String? email,
     String? phone,
+    String? type,
   }) async {
     try {
       final Map<String, dynamic> data = {"code": code};
 
       if (email != null) {
         data["email"] = email;
-        data["type"] = "email_verification";
+        // ✅ إذا إجانا type (زي password_reset) استخدمه، وإلا استخدم email_verification
+        data["type"] = type ?? "email_verification";
       } else if (phone != null) {
         data["phoneNumber"] = phone;
-        data["type"] = "phone_verification";
+        // ✅ نفس الإشي هنا للرقم
+        data["type"] = type ?? "phone_verification";
       }
+      if (type != null) data['type'] = type;
 
       final response = await _dio.post('/auth/verify-code', data: data);
       return response;

@@ -40,8 +40,6 @@ class AppStrings {
   static const String location = "Location";
   static const String favorite = 'Favorite';
   static const String identityVerification = 'Identity Verification';
-  //login
-  static const String login = 'Login';
 
   //choose country
   static const String chooseYourCountry = 'Choose your country';
@@ -105,4 +103,83 @@ class AppStrings {
   static const String takePhoto = "Take Photo";
   static const String pleaseEnsureIdClear =
       "Please ensure the ID is clear and well-lit.";
+
+  // Auth General
+  static const String missingInfo = "Missing Info";
+  static const String checkRedFields = "Please check the fields marked in red";
+  static const String orContinueWith = "Or Continue With";
+  static const String password = "Password";
+  static const String enterPassword = "Enter your password";
+
+  // Login
+  static const String signIn = 'Login';
+  static const String welcomeBackSubtitle = "Please log in to continue.";
+  static const String loggedInSuccess = "Logged in successfully";
+  static const String loginFailed = "Login Failed";
+  static const String emailOrPhone = "Email or Phone number";
+  static const String enterEmailOrPhone = "Enter your email or phone number";
+  static const String rememberMe = "Remember me";
+  static const String forgotPassword = "Forgot password?";
+  static const String dontHaveAccount = "Don't have an account? ";
+  static const String signUp = "Sign up";
+
+  static const String welcome = "Welcome!";
+  static const String createAccountSubtitle =
+      "Create your account to buy or sell electronics.";
+  static const String fullName = "Full Name";
+  static const String enterFullName = "Enter your full name";
+  static const String email = "Email";
+  static const String enterEmail = "Enter your email";
+  static const String phoneNumber = "Phone number";
+  static const String enterPhoneNumber = "Enter your phone number";
+  static const String termsRequired = "Terms Required";
+  static const String agreeToTerms = "You must agree to the Terms of Service";
+  static const String success = "Success";
+  static const String registerSuccessOTP = "Registration Successful! Check OTP";
+  static const String registerFailed = "Registration Failed";
+  static const String register = "Register";
+  static const String alreadyHaveAccount = "Already have an account? ";
+  static const String iAgreeTo = "I agree to the ";
+  static const String termsAndPrivacy = "Terms of Service and Privacy Policy.";
+
+  // Country Code Picker Defaults
+  static const String palestineDialCode = '+970';
+  static const String palestineIsoCode = 'PS';
+
+  // Forgot Password Screen
+  static const String forgetPasswordTitle = "Forget Password";
+  static const String enterPhoneToReceiveCode =
+      "Enter your phone number to receive a\nverification code.";
+  static const String enterEmailToReceiveCode =
+      "Enter your email to receive a\nverification code.";
+  static const String sendCode = "Send code";
+  static const String resetViaEmail = "Reset password via email";
+  static const String resetViaPhone = "Reset password via phone number";
+  static const String codeSentSuccess = "Verification code sent successfully";
+
+  // Change Password Screen
+  static const String changePasswordTitle = "Change Password";
+  static const String createNewPasswordDescription =
+      "Create a new password for your\naccount.";
+  static const String newPassword = "New Password";
+  static const String enterNewPassword = "Enter your new password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String enterConfirmNewPassword = "Confirm your new password";
+  static const String updatePassword = "Update password";
+  static const String passwordResetSuccess = "Password reset successfully";
+
+  // OTP Screen
+  static const String verifyCodeTitle = 'Verify Code';
+  static const String invalidCode = "Invalid Code";
+  static const String enter4DigitCode = "Please enter the 4-digit code";
+  static const String verified = "Verified!";
+  static const String accountVerifiedSuccess = "Account verified successfully";
+  static const String sent = "Sent";
+  static const String codeSentTo = "Code sent to ";
+  static const String enterCodeWeSentTo = "Enter the 4-digit code we sent to\n";
+  static const String verify = "Verify";
+  static const String didntReceiveCode = "Didn't receive the code? ";
+  static const String resend = "Resend";
+  static const String sendCodeViaPhone = "Send code via phone number";
+  static const String sendCodeViaEmail = "Send code via email";
 }

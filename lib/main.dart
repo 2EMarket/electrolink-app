@@ -3,7 +3,6 @@ import 'core/helpers/cache_helper.dart';
 import 'imports.dart';
 
 void main() async {
-  //test
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   runApp(

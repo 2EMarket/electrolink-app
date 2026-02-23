@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
+import 'package:second_hand_electronics_marketplace/features/auth/presentation/pages/login_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
@@ -15,6 +16,9 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/notification/presentation/pages/notifications_list_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
+import '../../features/auth/presentation/pages/change_password_screen.dart';
+import '../../features/auth/presentation/pages/forgot_password_screen.dart';
+import '../../features/auth/presentation/pages/otp_screen.dart';
 import '../../features/auth/presentation/pages/register_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
@@ -228,16 +232,40 @@ class AppRouter {
         builder: (context, state) => const NoInternetScreen(),
       ),
 
-      // // Auth routes
-      // GoRoute(
-      //   path: '/${AppRoutes.signIn}',
-      //   name: AppRoutes.signIn,
-      //   builder: (context, state) => SignInPage(),
-      // ),
+      GoRoute(
+        path: '/${AppRoutes.login}',
+        name: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
       GoRoute(
         path: '/${AppRoutes.register}',
-        name: AppRoutes.register, // أو استخدمي AppRoutes.register
+        name: AppRoutes.register,
         builder: (context, state) => const RegisterScreen(),
+      ),
+
+      GoRoute(
+        path: '/${AppRoutes.forgotPassword}',
+        name: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.otp}',
+        name: AppRoutes.otp,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return OtpScreen(
+            email: extra['email'] as String,
+            phoneNumber: extra['phoneNumber'] as String,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/${AppRoutes.changePassword}', // أو القيمة من AppRoutes
+        name: AppRoutes.changePassword,
+        builder: (context, state) {
+          final token = state.extra as String;
+          return ChangePasswordScreen(token: token);
+        },
       ),
       GoRoute(
         path: '/${AppRoutes.notification}',
