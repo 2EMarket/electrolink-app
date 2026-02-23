@@ -1,3 +1,5 @@
+import '../../../../core/constants/api_constants.dart';
+
 class RegisterRequestModel {
   final String fullName;
   final String email;
@@ -13,10 +15,10 @@ class RegisterRequestModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "fullName": fullName,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "password": password,
+      ApiKeys.fullName: fullName,
+      ApiKeys.email: email,
+      ApiKeys.phoneNumber: phoneNumber,
+      ApiKeys.password: password,
     };
   }
 }
@@ -40,12 +42,12 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id']?.toString() ?? '',
-      fullName: json['fullName'] ?? '',
-      email: json['email'] ?? '',
-      phoneNumber: json['phoneNumber'] ?? '',
-      role: json['role'] ?? 'buyer',
-      isEmailVerified: json['isEmailVerified'] ?? false,
+      id: json[ApiKeys.id]?.toString() ?? '',
+      fullName: json[ApiKeys.fullName] ?? '',
+      email: json[ApiKeys.email] ?? '',
+      phoneNumber: json[ApiKeys.phoneNumber] ?? '',
+      role: json[ApiKeys.role] ?? ApiKeys.defaultRoleBuyer,
+      isEmailVerified: json[ApiKeys.isEmailVerified] ?? false,
     );
   }
 }
@@ -66,16 +68,17 @@ class AuthResponseModel {
   });
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
-    final data = json['data'] ?? {};
+    final data = json[ApiKeys.data] ?? {};
 
     return AuthResponseModel(
-      success: json['success'] ?? false,
-      message: json['message'] ?? '',
-
-      token: data['token'] ?? '',
-
-      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-      otpSentMessage: data['otpSent'],
+      success: json[ApiKeys.success] ?? false,
+      message: json[ApiKeys.message] ?? '',
+      token: data[ApiKeys.token] ?? '',
+      user:
+          data[ApiKeys.user] != null
+              ? UserModel.fromJson(data[ApiKeys.user])
+              : null,
+      otpSentMessage: data[ApiKeys.otpSent],
     );
   }
 }
