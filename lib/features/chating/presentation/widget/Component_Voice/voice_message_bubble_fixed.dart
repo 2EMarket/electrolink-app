@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -90,12 +92,12 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
         return;
       }
 
-      final file = await DefaultCacheManager().getSingleFile(widget.audioUrl);
+      final path = await _resolveAudioPath(widget.audioUrl);
 
       if (!mounted) return;
 
       await _waveController.preparePlayer(
-        path: file.path,
+        path: path,
         shouldExtractWaveform: true,
         noOfSamples: 35,
         volume: 1.0,
@@ -138,6 +140,28 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
       debugPrint('❌ خطأ في تحميل الملف الصوتي: $e');
       _setError('فشل تحميل الملف الصوتي');
     }
+  }
+
+  Future<String> _resolveAudioPath(String source) async {
+    final trimmed = source.trim();
+    final uri = Uri.tryParse(trimmed);
+    final isRemote = uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https');
+
+    if (isRemote) {
+      final file = await DefaultCacheManager().getSingleFile(trimmed);
+      return file.path;
+    }
+
+    if (trimmed.startsWith('file://')) {
+      return Uri.parse(trimmed).toFilePath();
+    }
+
+    if (await File(trimmed).exists()) {
+      return trimmed;
+    }
+
+    throw Exception('Audio file not found: $trimmed');
   }
 
   void _setError(String message) {

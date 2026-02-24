@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
@@ -11,11 +12,12 @@ enum ReplyBubbleContentType {
   text,
   image,
   audio,
+  file,
 }
 
 class ReplyMessageBubble3 extends StatelessWidget {
   // ── بيانات الرسالة المردود عليها ──────────────────────────
-  final ReplyMessageModel replyTo;
+  final ReplyMessageModel? replyTo;
 
   // ── نوع ومحتوى الرد ───────────────────────────────────────
   final ReplyBubbleContentType contentType;
@@ -28,12 +30,19 @@ class ReplyMessageBubble3 extends StatelessWidget {
   final String? imageLocalPath;
   final String? imageCaption;
 
+  // حالة الرفع
+  final double? uploadProgress; // 0.0 -> 1.0, null يعني لا يوجد رفع
+
   // صوت
   final String? audioUrl;
   final Duration? audioDuration;
   final bool isAudioPlaying;
   final double audioProgress; // 0.0 → 1.0
   final VoidCallback? onAudioPlayPause;
+
+  // ملف
+  final String? fileName;
+  final String? fileSize;
 
   // ── بيانات الرسالة العامة ─────────────────────────────────
   final bool isSender;
@@ -47,7 +56,7 @@ class ReplyMessageBubble3 extends StatelessWidget {
   const ReplyMessageBubble3({
     super.key,
     required this.isSender,
-    required this.replyTo,
+    this.replyTo,
     required this.contentType,
     required this.time,
     required this.isRead,
@@ -56,11 +65,14 @@ class ReplyMessageBubble3 extends StatelessWidget {
     this.imageUrl,
     this.imageLocalPath,
     this.imageCaption,
+    this.uploadProgress,
     this.audioUrl,
     this.audioDuration,
     this.isAudioPlaying = false,
     this.audioProgress = 0.0,
     this.onAudioPlayPause,
+    this.fileName,
+    this.fileSize,
     this.onReplyTap,
   });
 
@@ -73,17 +85,18 @@ class ReplyMessageBubble3 extends StatelessWidget {
             isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: onReplyTap,
-            child: ReplyPreviewWidget(
-              reply: replyTo,
-              isSender: isSender,
+          if (replyTo != null) ...[
+            GestureDetector(
+              onTap: onReplyTap,
+              child: ReplyPreviewWidget(
+                reply: replyTo!,
+                isSender: isSender,
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+          ],
 
-          const SizedBox(height: 8),
-
-          _buildContent(),
+          _buildContent(context),
 
           const SizedBox(height: 6),
 
@@ -95,14 +108,16 @@ class ReplyMessageBubble3 extends StatelessWidget {
 
   // محتوى الرد
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     switch (contentType) {
       case ReplyBubbleContentType.text:
         return _buildTextContent();
       case ReplyBubbleContentType.image:
-        return _buildImageContent();
+        return _buildImageContent(context);
       case ReplyBubbleContentType.audio:
         return _buildAudioContent();
+      case ReplyBubbleContentType.file:
+        return _buildFileContent();
     }
   }
 
@@ -117,25 +132,63 @@ class ReplyMessageBubble3 extends StatelessWidget {
   }
 
   // ── صورة ─────────────────────────────────────────────────
-  Widget _buildImageContent() {
-    final url = imageUrl ?? imageLocalPath;
+  Widget _buildImageContent(BuildContext context) {
+    final isLocal = imageLocalPath != null && imageLocalPath!.isNotEmpty;
+    final path = isLocal ? imageLocalPath : imageUrl;
+
+    if (path == null) return _imagePlaceholder();
+
+    final ImageProvider imageProvider =
+        isLocal ? FileImage(File(path)) : NetworkImage(path);
+
     return Column(
       crossAxisAlignment:
           isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
-            constraints: const BoxConstraints(maxHeight: 300), // تحديد أقصى ارتفاع للصورة
-            child: url != null
-                ? Image.network(
-                    url,
+        GestureDetector(
+          onTap: () => _showFullScreenImage(context, imageProvider),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  constraints: const BoxConstraints(
+                      maxHeight: 300), // تحديد أقصى ارتفاع للصورة
+                  child: Image(
+                    image: imageProvider,
                     width: 220,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => _imagePlaceholder(),
-                  )
-                : _imagePlaceholder(),
+                  ),
+                ),
+              ),
+              // طبقة التحميل
+              if (uploadProgress != null && uploadProgress! < 1.0) ...[
+                Container(
+                  width: 220,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                        value: uploadProgress, color: Colors.white),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${(uploadProgress! * 100).toInt()}%',
+                      style: AppTypography.label12Medium
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ]
+            ],
           ),
         ),
         if (imageCaption?.isNotEmpty == true) ...[
@@ -147,6 +200,26 @@ class ReplyMessageBubble3 extends StatelessWidget {
         ],
       ],
     );
+  }
+
+  void _showFullScreenImage(BuildContext context, ImageProvider imageProvider) {
+    // لا تسمح بفتح الصورة أثناء الرفع
+    if (uploadProgress != null && uploadProgress! < 1.0) return;
+
+    Navigator.of(context).push(PageRouteBuilder(
+      opaque: false,
+      pageBuilder: (context, _, __) => Scaffold(
+        backgroundColor: Colors.black.withOpacity(0.85),
+        body: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Center(
+            child: InteractiveViewer(
+              child: Image(image: imageProvider),
+            ),
+          ),
+        ),
+      ),
+    ));
   }
 
   Widget _imagePlaceholder() {
@@ -216,6 +289,64 @@ class ReplyMessageBubble3 extends StatelessWidget {
           const SizedBox(width: 6),
           // أيقونة الميكروفون
           Icon(Icons.mic, size: 14, color: AppColors.hint),
+        ],
+      ),
+    );
+  }
+
+  // ── ملف ──────────────────────────────────────────────────
+  Widget _buildFileContent() {
+    final accentColor =
+        isSender ? AppColors.mainColor : AppColors.secondaryColor;
+
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 250),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: accentColor.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // أيقونة الملف
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: accentColor.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.insert_drive_file_outlined,
+                color: accentColor, size: 22),
+          ),
+          const SizedBox(width: 10),
+          // اسم وحجم الملف
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  fileName ?? 'File',
+                  style: AppTypography.body14Medium.copyWith(
+                    color: AppColors.text,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (fileSize != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    fileSize!,
+                    style: AppTypography.label12Regular.copyWith(
+                      color: AppColors.hint,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ],
       ),
     );

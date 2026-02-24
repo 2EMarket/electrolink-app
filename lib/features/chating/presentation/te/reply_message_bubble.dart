@@ -1,4 +1,4 @@
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
@@ -75,7 +75,7 @@ class ReplyMessageBubble4 extends StatelessWidget {
         children: [
           _buildReplyPreview(),
           const SizedBox(height: 8),
-          _buildContent(),
+          _buildContent(context),
           const SizedBox(height: 6),
           _buildFooter(),
         ],
@@ -176,7 +176,7 @@ class ReplyMessageBubble4 extends StatelessWidget {
   }
 
   // محتوى الرد (نص / صورة)
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     switch (contentType) {
       case ReplyBubbleContentType4.text:
         return Text(
@@ -184,29 +184,37 @@ class ReplyMessageBubble4 extends StatelessWidget {
           style: AppTypography.body14Regular.copyWith(color: AppColors.text),
         );
       case ReplyBubbleContentType4.image:
-        return _buildImageContent();
+        return _buildImageContent(context);
       case ReplyBubbleContentType4.audio:
         return const SizedBox.shrink(); 
     }
   }
 
-  Widget _buildImageContent() {
-    final url = imageUrl ?? imageLocalPath;
+  Widget _buildImageContent(BuildContext context) {
+    final isLocal = imageLocalPath != null && imageLocalPath!.isNotEmpty;
+    final path = isLocal ? imageLocalPath : imageUrl;
+
+    if (path == null) return _imagePlaceholder();
+
+    final ImageProvider imageProvider =
+        isLocal ? FileImage(File(path)) : NetworkImage(path);
+
     return Column(
       crossAxisAlignment:
           isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: url != null
-              ? Image.network(
-                  url,
-                  width: 220,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => _imagePlaceholder(),
-                )
-              : _imagePlaceholder(),
+        GestureDetector(
+          onTap: () => _showFullScreenImage(context, imageProvider),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image(
+              image: imageProvider,
+              width: 220,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => _imagePlaceholder(),
+            ),
+          ),
         ),
         if (imageCaption?.isNotEmpty == true) ...[
           const SizedBox(height: 4),
@@ -217,6 +225,23 @@ class ReplyMessageBubble4 extends StatelessWidget {
         ],
       ],
     );
+  }
+
+  void _showFullScreenImage(BuildContext context, ImageProvider imageProvider) {
+    Navigator.of(context).push(PageRouteBuilder(
+      opaque: false,
+      pageBuilder: (context, _, __) => Scaffold(
+        backgroundColor: Colors.black.withOpacity(0.85),
+        body: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Center(
+            child: InteractiveViewer(
+              child: Image(image: imageProvider),
+            ),
+          ),
+        ),
+      ),
+    ));
   }
 
   Widget _imagePlaceholder() {

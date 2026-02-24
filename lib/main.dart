@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/screens/chating_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/chating_screen_fixed.dart';
 import 'imports.dart';
 void main() {

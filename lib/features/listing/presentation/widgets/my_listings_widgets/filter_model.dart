@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/categories_chip.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/slider_view.dart';
 

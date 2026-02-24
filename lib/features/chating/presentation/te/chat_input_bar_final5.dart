@@ -1,26 +1,34 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/reply_message_model.dart';
+import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/reply_preview_widget.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 
-
-class ChatInputBarFinal4 extends StatefulWidget {
+class ChatInputBarFinal5 extends StatefulWidget {
   final bool showSuggestions;
   final Function(String)? onSend;
   final Function(XFile)? onImageSelected;
   final Function(XFile)? onCameraCapture;
   final Function(PlatformFile)? onFileSelected;
-  final Function(int secondsDuration)? onVoiceMessage;
-  final VoidCallback? onCancelReply;                  
+
+  /// ✅ يُرسَل مسار الملف الصوتي الحقيقي + مدته بالثواني
+  final Function(String filePath, int durationSeconds)? onVoiceMessage;
+
+  final VoidCallback? onCancelReply;
   final ReplyMessageModel? replyingTo;
   final int maxLines;
   final int minLines;
   final String hintText;
   final bool enableAnimations;
 
-  const ChatInputBarFinal4({
+  const ChatInputBarFinal5({
     super.key,
     this.showSuggestions = true,
     this.onSend,
@@ -37,29 +45,30 @@ class ChatInputBarFinal4 extends StatefulWidget {
   });
 
   @override
-  State<ChatInputBarFinal4> createState() => _ChatInputBarFinal4State();
+  State<ChatInputBarFinal5> createState() => _ChatInputBarFinal5State();
 }
 
-class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
+class _ChatInputBarFinal5State extends State<ChatInputBarFinal5>
     with SingleTickerProviderStateMixin {
   // ── Controllers ───────────────────────────────────────────
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final ImagePicker _imagePicker = ImagePicker();
   late AnimationController _animController;
-  late Animation<double> _sendBtnAnim;
+
+  // ── تسجيل صوتي حقيقي ──────────────────────────────────────
+  final AudioRecorder _audioRecorder = AudioRecorder();
+  Timer? _recordTimer;
+  int _recordSeconds = 0;
+  String? _recordingPath; // مسار الملف المؤقت
 
   // ── State ─────────────────────────────────────────────────
   bool _hasText = false;
   bool _isRecording = false;
   bool _isFocused = false;
   bool _showEmojiPicker = false;
+  bool _micPermissionDenied = false;
 
-  // ── تسجيل صوتي ────────────────────────────────────────────
-  Timer? _recordTimer;
-  int _recordSeconds = 0;
-
-  // ── إيموجي ────────────────────────────────────────────────
   final List<String> _emojis = [
     '😀','😃','😄','😁','😆','😅','🤣','😂',
     '❤️','🧡','💛','💚','💙','💜','🖤','🤍',
@@ -79,10 +88,6 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
       vsync: this,
       duration: const Duration(milliseconds: 250),
     );
-    _sendBtnAnim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeInOut,
-    );
     _controller.addListener(_onTextChanged);
     _focusNode.addListener(_onFocusChanged);
   }
@@ -90,6 +95,7 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
   @override
   void dispose() {
     _recordTimer?.cancel();
+    _audioRecorder.dispose();
     _controller.removeListener(_onTextChanged);
     _controller.dispose();
     _focusNode.removeListener(_onFocusChanged);
@@ -119,44 +125,143 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
     });
   }
 
- 
-  void _startRecording() {
-    if (_hasText || _isRecording) return;
-    HapticFeedback.mediumImpact();
-    setState(() {
-      _isRecording = true;
-      _recordSeconds = 0;
-    });
-    _recordTimer?.cancel();
-    _recordTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) setState(() => _recordSeconds++);
-    });
-    debugPrint("Recording started 🎙️");
+  // ════════════════════════════════════════════════════════
+  // ✅ تسجيل صوتي حقيقي
+  // ════════════════════════════════════════════════════════
+
+  Future<bool> _requestMicPermission() async {
+    final status = await Permission.microphone.request();
+    if (status.isDenied || status.isPermanentlyDenied) {
+      setState(() => _micPermissionDenied = true);
+      if (status.isPermanentlyDenied) openAppSettings();
+      return false;
+    }
+    setState(() => _micPermissionDenied = false);
+    return true;
   }
 
-  void _stopAndSendRecording() {
+  Future<void> _startRecording() async {
+    if (_hasText || _isRecording) return;
+
+    // طلب الصلاحية
+    final granted = await _requestMicPermission();
+    if (!granted) {
+      _showPermissionSnackbar();
+      return;
+    }
+
+    try {
+      // مسار الملف المؤقت
+      final dir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      _recordingPath = '${dir.path}/voice_$timestamp.m4a';
+
+      // بدء التسجيل الحقيقي
+      await _audioRecorder.start(
+        const RecordConfig(
+          encoder: AudioEncoder.aacLc,
+          bitRate: 128000,
+          sampleRate: 44100,
+        ),
+        path: _recordingPath!,
+      );
+
+      HapticFeedback.mediumImpact();
+      setState(() {
+        _isRecording = true;
+        _recordSeconds = 0;
+      });
+
+      // عداد الوقت
+      _recordTimer?.cancel();
+      _recordTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (mounted) setState(() => _recordSeconds++);
+      });
+
+      debugPrint('🎙️ Recording started → $_recordingPath');
+    } catch (e) {
+      debugPrint('❌ Recording error: $e');
+      _showErrorSnackbar('Failed to start recording');
+    }
+  }
+
+  Future<void> _stopAndSendRecording() async {
+    if (!_isRecording) return;
+
+    try {
+      _recordTimer?.cancel();
+      final duration = _recordSeconds;
+
+      // إيقاف التسجيل الحقيقي والحصول على المسار
+      final path = await _audioRecorder.stop();
+
+      HapticFeedback.lightImpact();
+      setState(() {
+        _isRecording = false;
+        _recordSeconds = 0;
+      });
+
+      if (path != null && duration > 0) {
+        widget.onVoiceMessage?.call(path, duration);
+        debugPrint('✅ Voice sent → $path (${duration}s)');
+      } else if (duration == 0) {
+        // تسجيل قصير جداً — احذف الملف
+        if (path != null) File(path).deleteSync();
+        debugPrint('⚠️ Recording too short, discarded');
+      }
+    } catch (e) {
+      debugPrint('❌ Stop recording error: $e');
+      setState(() => _isRecording = false);
+    }
+  }
+
+  Future<void> _cancelRecording() async {
     if (!_isRecording) return;
     _recordTimer?.cancel();
-    final duration = _recordSeconds;
-    HapticFeedback.lightImpact();
-    setState(() {
-      _isRecording = false;
-      _recordSeconds = 0;
-    });
-    widget.onVoiceMessage?.call(duration);
-    debugPrint("✅ Voice message sent — Duration: ${duration} seconds");
-  }
 
-  void _cancelRecording() {
-    _recordTimer?.cancel();
+    try {
+      final path = await _audioRecorder.stop();
+      // احذف الملف المؤقت
+      if (path != null && File(path).existsSync()) {
+        File(path).deleteSync();
+      }
+    } catch (_) {}
+
     HapticFeedback.selectionClick();
     setState(() {
       _isRecording = false;
       _recordSeconds = 0;
+      _recordingPath = null;
     });
-    debugPrint("❌ Recording cancelled");
+    debugPrint('❌ Recording cancelled & file deleted');
   }
 
+  void _showPermissionSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Microphone permission is required'),
+        action: SnackBarAction(
+          label: 'Settings',
+          onPressed: openAppSettings,
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  void _showErrorSnackbar(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  // ════════════════════════════════════════════════════════
+  // إرسال نص
+  // ════════════════════════════════════════════════════════
 
   void _sendMessage() {
     final text = _controller.text.trim();
@@ -166,7 +271,10 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
     _controller.clear();
   }
 
-  
+  // ════════════════════════════════════════════════════════
+  // مرفقات
+  // ════════════════════════════════════════════════════════
+
   Future<void> _openCamera() async {
     try {
       final XFile? photo = await _imagePicker.pickImage(
@@ -221,13 +329,16 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
         onGallery: _pickImage,
         onFile: _pickFile,
         onLocation: () {
-          debugPrint('📍Select location');
+          debugPrint('📍 Select location');
           Navigator.pop(context);
         },
       ),
     );
   }
 
+  // ════════════════════════════════════════════════════════
+  // Build
+  // ════════════════════════════════════════════════════════
 
   @override
   Widget build(BuildContext context) {
@@ -253,12 +364,13 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
+                transitionBuilder: (child, anim) =>
+                    FadeTransition(opacity: anim, child: child),
                 child: _isRecording
                     ? _buildRecordingRow()
                     : _buildNormalInputRow(),
               ),
-              if (_showEmojiPicker && !_isRecording)
-                _buildEmojiPicker(),
+              if (_showEmojiPicker && !_isRecording) _buildEmojiPicker(),
             ],
           ),
         ),
@@ -266,86 +378,35 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
     );
   }
 
+  // ── شريط معاينة الرد ──────────────────────────────────────
   Widget _buildReplyPreview() {
-    final reply = widget.replyingTo!;
-    
-    String displayContent = '';
-    if (reply.type == ReplyMessageType.text) {
-      displayContent = reply.text ?? '';
-    } else if (reply.type == ReplyMessageType.image) {
-      displayContent = reply.imageCaption ?? 'Image message';
-    } else if (reply.type == ReplyMessageType.audio) {
-      displayContent = 'Voice message';
-    }
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade200),
-          left: const BorderSide(color: Colors.blue, width: 4),
-        ),
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
       ),
       child: Row(
         children: [
-          // أيقونة الرد
-          const Icon(Icons.reply, size: 18, color: Colors.blue),
-          const SizedBox(width: 10),
-          // محتوى الرد
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  reply.senderName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: Colors.blue,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    if (reply.type == ReplyMessageType.image)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.image_outlined,
-                            size: 13, color: Colors.grey),
-                      ),
-                    if (reply.type == ReplyMessageType.audio)
-                      const Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Icon(Icons.mic_outlined,
-                            size: 13, color: Colors.grey),
-                      ),
-                    Flexible(
-                      child: Text(
-                        displayContent,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            // استخدام نفس ودجت المعاينة للحصول على تصميم متناسق
+            child: ReplyPreviewWidget(
+              reply: widget.replyingTo!,
+              // المستخدم هو دائمًا مرسل الرد الجديد
+              isSender: true,
             ),
           ),
+          const SizedBox(width: 8),
+          // زر الإلغاء
           GestureDetector(
             onTap: widget.onCancelReply,
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: AppColors.hint.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.close, size: 16, color: Colors.grey),
+              child: Icon(Icons.close, size: 16, color: AppColors.hint),
             ),
           ),
         ],
@@ -353,13 +414,11 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
     );
   }
 
-  // ── صف الإدخال العادي ─────────────────────────────────────
   Widget _buildNormalInputRow() {
     return Row(
       key: const ValueKey('normal'),
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // زر الإيموجي
         _IconBtn(
           icon: _showEmojiPicker
               ? Icons.keyboard_alt_outlined
@@ -369,12 +428,9 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             if (_showEmojiPicker) _focusNode.unfocus();
           },
         ),
-
-        // حقل الإدخال
         Expanded(
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
             decoration: BoxDecoration(
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(26),
@@ -432,9 +488,7 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             ),
           ),
         ),
-
         const SizedBox(width: 8),
-
         _buildSendMicButton(),
       ],
     );
@@ -459,17 +513,37 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             : [],
       ),
       child: _hasText
+          // ── إرسال نص ──
           ? GestureDetector(
               onTap: _sendMessage,
               child: const Icon(Icons.send_rounded,
                   color: Colors.white, size: 22),
             )
+          // ── تسجيل صوت ── اضغط مطولاً
           : GestureDetector(
               onLongPressStart: (_) => _startRecording(),
               onLongPressEnd: (_) => _stopAndSendRecording(),
               onLongPressCancel: _cancelRecording,
-              child: Icon(Icons.mic_rounded,
-                  color: Colors.grey.shade700, size: 24),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(Icons.mic_rounded,
+                      color: Colors.grey.shade700, size: 24),
+                  if (_micPermissionDenied)
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
     );
   }
@@ -478,6 +552,7 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
     return Row(
       key: const ValueKey('recording'),
       children: [
+        // زر الإلغاء
         GestureDetector(
           onTap: _cancelRecording,
           child: Container(
@@ -487,17 +562,15 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
               color: Colors.red.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child:
-                const Icon(Icons.delete_outline, color: Colors.red, size: 22),
+            child: const Icon(Icons.delete_outline,
+                color: Colors.red, size: 22),
           ),
         ),
-
         const SizedBox(width: 12),
-
+        // شريط التسجيل
         Expanded(
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: Colors.red.withOpacity(0.06),
               borderRadius: BorderRadius.circular(26),
@@ -505,7 +578,7 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             ),
             child: Row(
               children: [
-                _PulsingDot(),
+                const _PulsingDot(),
                 const SizedBox(width: 10),
                 Text(
                   _formatDuration(_recordSeconds),
@@ -518,7 +591,8 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
                 ),
                 const Spacer(),
                 Text(
-"← Slide to send",                  style: TextStyle(
+                  'Release to send',
+                  style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey.shade500,
                   ),
@@ -527,10 +601,7 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
             ),
           ),
         ),
-
         const SizedBox(width: 12),
-
-        // زر الإرسال
         GestureDetector(
           onTap: _stopAndSendRecording,
           child: Container(
@@ -568,16 +639,13 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
           onTap: () {
             final text = _controller.text;
             final sel = _controller.selection;
-            final newText = text.replaceRange(
-              sel.start < 0 ? text.length : sel.start,
-              sel.end < 0 ? text.length : sel.end,
-              _emojis[i],
-            );
+            final start = sel.start < 0 ? text.length : sel.start;
+            final end = sel.end < 0 ? text.length : sel.end;
+            final newText = text.replaceRange(start, end, _emojis[i]);
             _controller.value = TextEditingValue(
               text: newText,
               selection: TextSelection.collapsed(
-                offset: (sel.start < 0 ? text.length : sel.start) + 2,
-              ),
+                  offset: start + _emojis[i].length),
             );
           },
           child: Center(
@@ -599,7 +667,6 @@ class _ChatInputBarFinal4State extends State<ChatInputBarFinal4>
 class _IconBtn extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
-
   const _IconBtn({required this.icon, required this.onTap});
 
   @override
@@ -615,14 +682,16 @@ class _IconBtn extends StatelessWidget {
 }
 
 class _PulsingDot extends StatefulWidget {
+  const _PulsingDot();
+
   @override
   State<_PulsingDot> createState() => _PulsingDotState();
 }
 
 class _PulsingDotState extends State<_PulsingDot>
     with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  late Animation<double> _anim;
+  late final AnimationController _ctrl;
+  late final Animation<double> _anim;
 
   @override
   void initState() {
@@ -631,7 +700,7 @@ class _PulsingDotState extends State<_PulsingDot>
       vsync: this,
       duration: const Duration(milliseconds: 700),
     )..repeat(reverse: true);
-    _anim = Tween(begin: 0.4, end: 1.0).animate(_ctrl);
+    _anim = Tween(begin: 0.3, end: 1.0).animate(_ctrl);
   }
 
   @override
@@ -655,7 +724,6 @@ class _PulsingDotState extends State<_PulsingDot>
     );
   }
 }
-
 
 class _AttachmentMenu extends StatelessWidget {
   final VoidCallback onCamera;
@@ -695,30 +763,14 @@ class _AttachmentMenu extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _AttachOption(
-                  icon: Icons.camera_alt_outlined,
-                  label: 'camera',
-                  color: Colors.purple,
-                  onTap: onCamera,
-                ),
-                _AttachOption(
-                  icon: Icons.image_outlined,
-                  label: 'Gallery',
-                  color: Colors.blue,
-                  onTap: onGallery,
-                ),
-                _AttachOption(
-                  icon: Icons.insert_drive_file_outlined,
-                  label: 'Files',
-                  color: Colors.orange,
-                  onTap: onFile,
-                ),
-                _AttachOption(
-                  icon: Icons.location_on_outlined,
-                  label: 'Location',
-                  color: Colors.green,
-                  onTap: onLocation,
-                ),
+                _AttachOption(icon: Icons.camera_alt_outlined,
+                    label: 'Camera', color: Colors.purple, onTap: onCamera),
+                _AttachOption(icon: Icons.image_outlined,
+                    label: 'Gallery', color: Colors.blue, onTap: onGallery),
+                _AttachOption(icon: Icons.insert_drive_file_outlined,
+                    label: 'Files', color: Colors.orange, onTap: onFile),
+                _AttachOption(icon: Icons.location_on_outlined,
+                    label: 'Location', color: Colors.green, onTap: onLocation),
               ],
             ),
           ),
@@ -759,13 +811,8 @@ class _AttachOption extends StatelessWidget {
             child: Icon(icon, color: color, size: 28),
           ),
           const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade700,
-            ),
-          ),
+          Text(label,
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade700)),
         ],
       ),
     );

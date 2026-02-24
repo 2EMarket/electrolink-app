@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_content_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_image_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
-import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/more_vert_button.dart';
 
