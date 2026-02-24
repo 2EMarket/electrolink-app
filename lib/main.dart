@@ -3,13 +3,12 @@ import 'package:second_hand_electronics_marketplace/features/chating/presentatio
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/chating_screen_fixed.dart';
 import 'imports.dart';
 void main() {
- runApp( DevicePreview( enabled: true, builder: (context) => MaterialApp( useInheritedMediaQuery: true, debugShowCheckedModeBanner: false, locale: DevicePreview.locale(context), builder: DevicePreview.appBuilder,
-// ChatScreen()  
+runApp( DevicePreview( enabled: true, builder: (context) => ChatingScreen1(),// ChatScreen()  
   // ChatingScreen()
-home:  ChatingScreen1(), 
+// home:  ChatingScreen1(), 
 
     // ListingsScreen(title: 'Listings', listings: []),
   //  CustomerServiceChatScreen() 
- )),
+ ),
   );
 }

@@ -13,6 +13,7 @@ import 'package:second_hand_electronics_marketplace/features/chating/presentatio
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/image_message_bubble.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/text_message_bubble.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/typing_indicator_bubble.dart';
+import 'package:second_hand_electronics_marketplace/imports.dart';
 
 class ChatingScreen1 extends StatefulWidget {
   const ChatingScreen1({super.key});
@@ -45,8 +46,7 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
+return MaterialApp( useInheritedMediaQuery: true, debugShowCheckedModeBanner: false, locale: DevicePreview.locale(context), builder: DevicePreview.appBuilder, home: Scaffold(      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.greyFillButton,
       body:
        SafeArea(
@@ -237,7 +237,7 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
           ],
         ),
       ),
-       );
+ ) );
   }
 
   Widget _buildDateDivider(String date) {
