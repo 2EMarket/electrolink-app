@@ -6,6 +6,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   runApp(
-    DevicePreview(enabled: false, builder: (context) => const ElectroLinkApp()),
+    DevicePreview(enabled: true, builder: (context) => const ElectroLinkApp()),
   );
 }

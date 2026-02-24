@@ -1,6 +1,6 @@
 class ApiEndpoints {
   // يمكنك وضع رابط السيرفر الحقيقي هنا لاستخدامه في إعدادات الـ Dio
-  static const String baseUrl = 'https://api.example.com';
+  static const String  baseUrl= 'https://gsg-project-group-6.onrender.com';
 
   // ==========================================
   // Auth Endpoints
@@ -13,6 +13,12 @@ class ApiEndpoints {
   static const String resetPassword = '/auth/reset-password';
 
   // ==========================================
+  // ==========================================
+  // Profile Endpoints
+  // ==========================================
+  static const String getProfile = '/profile'; // GET
+  static const String updateProfile = '/profile'; // PATCH
+
 }
 
 class ApiKeys {
@@ -35,6 +41,17 @@ class ApiKeys {
   static const String code = 'code';
   static const String type = 'type';
   static const String otpType = 'otpType';
+  static const String bio = 'bio';
+  static const String location = 'location';
+  static const String countryId = 'countryId';
+  static const String avatarAssetId = 'avatarAssetId';
+  static const String createdAt = 'createdAt';
+  static const String updatedAt = 'updatedAt';
+  static const String lastLogin = 'lastLogin';
+  static const String responseTimeMinutes = 'responseTimeMinutes';
+  static const String isPhoneVerified = 'isPhoneVerified';
+  static const String isIdentityVerified = 'isIdentityVerified';
+  static const String userId = 'userId';
 
   // Specific API Values (Enums/Types)
   static const String emailVerification = 'email_verification';
@@ -45,4 +62,7 @@ class ApiKeys {
   // Headers
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer ';
+
+
+
 }

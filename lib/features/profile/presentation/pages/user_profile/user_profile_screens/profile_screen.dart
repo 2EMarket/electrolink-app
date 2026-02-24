@@ -2,47 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../../../../core/constants/constants_exports.dart';
+import '../../../../../auth/data/models/auth_models.dart';
 import '../../../../../listing/data/listing_model.dart';
+import '../../../../data/services/profile_service.dart';
 import '../../../../profile_exports.dart';
 import '../../../widgets/profile_widgets_exports.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isMe;
-  final String userId;
+  final UserModel authUser; // بدل userId نمرر authUser مباشرة
 
-  const ProfileScreen({super.key, required this.userId, required this.isMe});
+  const ProfileScreen({super.key, required this.authUser, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (_) => ProfileRepository(dataSource: ProfileMockDataSource()),
-      child: BlocProvider(
-        create:
-            (context) =>
-                ProfileBloc(repository: context.read<ProfileRepository>())
-                  ..add(LoadProfile(userId: userId, isMe: isMe)),
-        child: BlocListener<ProfileBloc, ProfileState>(
-          listener: (context, state) {
-            if (state is ProfileLoading) {
-              EasyLoading.show(status: 'Loading...');
-            } else {
-              EasyLoading.dismiss();
-            }
-          },
-          child: BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, state) {
-              if (state is ProfileError) return ProfileErrorScreen();
-              if (state is ProfileLoaded) {
-                final profileData = ProfileViewData.fromUser(
-                  state.profile,
-                  type: state.isMe ? ProfileType.private : ProfileType.public,
-                );
-                final verificationProgress = 0.3; // mock progress
-                final userListings =
-                    dummyListings
-                        .where((l) => l.ownerId == state.profile.id)
-                        .toList();
-                return Scaffold(
+
+    return BlocProvider(
+      create: (context) => ProfileBloc(
+        context.read<ProfileService>(), // ProfileService موجود في MultiBlocProvider بالمين
+        authUser,
+      )..add(FetchProfileEvent(isMe: isMe)), // مباشرةً نجيب البروفايل من API
+      child: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoading) {
+            EasyLoading.show(status: 'Loading...');
+          } else {
+            EasyLoading.dismiss();
+          }
+        },
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileError) return ProfileErrorScreen();
+            if (state is ProfileLoaded) {
+              final profileData = ProfileViewData.fromAppUser(
+                state.appUser, // أو state.appUser.profile حسب احتياجك
+                type: state.isMe ? ProfileType.private : ProfileType.public,
+              );
+
+              final verificationProgress = state.appUser.user.verificationPercentage / 100;
+                // final userListings =
+                //     dummyListings
+                //         .where((l) => l.ownerId == state.profile.id)
+                //         .toList();
+                //
+              final userListings = dummyListings
+                  .where((l) => l.ownerId == state.appUser.user.id.toString()) // إذا ownerId String
+                  .toList();
+               return Scaffold(
                   appBar: AppBar(
                     title: Text(profileData.name),
                     actions: [ProfileAppBarActions(isMe: state.isMe)],
@@ -77,8 +83,8 @@ class ProfileScreen extends StatelessWidget {
                                   : AppSizes.paddingXXS,
                         ),
                         state.isMe
-                            ? PrivateProfileWidget(userListings: userListings)
-                            : PublicProfileWidget(userListings: userListings),
+                            ? PrivateProfileWidget(userListings: userListings,user:authUser ,)
+                            : PublicProfileWidget(userListings: userListings,user: authUser,),
                       ],
                     ),
                   ),
@@ -88,7 +94,6 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
         ),
-      ),
     );
   }
 }

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_sizes.dart';
+import '../../../../auth/data/models/auth_models.dart';
 import 'trust_indicator_card.dart';
 
 class TrustIndicatorsSection extends StatelessWidget {
-  const TrustIndicatorsSection();
-
+  const TrustIndicatorsSection({super.key, required this.user});
+  final UserModel user;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -18,19 +19,19 @@ class TrustIndicatorsSection extends StatelessWidget {
             TrustIndicatorCard(
               label: "Verified Phone",
               iconSvgPath: AppAssets.verifiedPhoneSvg,
-              verified: true,
+              verified: user.isPhoneVerified,
             ),
             SizedBox(width: AppSizes.paddingXS),
             TrustIndicatorCard(
               label: "Verified Identity",
               iconSvgPath: AppAssets.verifiedIdentityCardSvg,
-              verified: false,
+              verified: user.isIdentityVerified,
             ),
             SizedBox(width: AppSizes.paddingXS),
             TrustIndicatorCard(
               label: "Verified Email",
               iconSvgPath: AppAssets.verifiedMessageSvg,
-              verified: false,
+              verified: user.isEmailVerified,
             ),
           ],
         ),

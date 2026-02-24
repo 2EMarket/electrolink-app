@@ -88,7 +88,6 @@ class AuthService {
       throw Exception(e.toString());
     }
   }
-
   Future<Response> verifyCode({
     required String code,
     String? email,

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/cache_keys.dart';
+import '../../../profile/data/models/user_model.dart';
 import '../../data/models/auth_models.dart';
 import '../../data/services/auth_service.dart';
 import '../../../../core/helpers/cache_helper.dart';
@@ -31,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (response.token.isNotEmpty) {
         await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
         _authService.updateHeader(response.token);
-      }
+     }
 
       emit(AuthSuccess(response));
     } catch (e) {
@@ -85,12 +86,10 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final response = await _authService.login(email, password);
-
       if (response.token.isNotEmpty) {
         await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
         _authService.updateHeader(response.token);
       }
-
       emit(AuthSuccess(response));
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');

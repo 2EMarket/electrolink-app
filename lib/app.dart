@@ -10,10 +10,15 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/location/data/repos/countries_service.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/countries_cubit.dart';
 import 'configs/routes/router.dart';
+import 'core/constants/cache_keys.dart';
+import 'core/helpers/cache_helper.dart';
 import 'features/auth/data/services/auth_service.dart';
+import 'features/auth/presentation/cubits/auth_states.dart';
 import 'features/home/presentation/pages/splash_screen.dart';
 import 'features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
+import 'features/profile/data/services/profile_service.dart';
+import 'features/profile/presentation/bloc/profile_screen_bloc/profile_bloc.dart';
 import 'imports.dart';
 
 class ElectroLinkApp extends StatelessWidget {
@@ -44,32 +49,41 @@ class ElectroLinkApp extends StatelessWidget {
     );
 
     final myDio = Dio(dioOptions);
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CountriesCubit>(
-          create:
-              (context) =>
-                  CountriesCubit(CountriesService(myDio))..fetchCountries(),
+
+    String? token = CacheHelper.getData(key: CacheKeys.token);
+    print("🔑 Saved Token: $token");
+    if (token != null) {
+      myDio.options.headers['Authorization'] = 'Bearer $token';
+    }
+    return MultiRepositoryProvider(
+      providers: [RepositoryProvider(create: (_) => ProfileService(myDio))],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<CountriesCubit>(
+            create:
+                (context) =>
+                    CountriesCubit(CountriesService(myDio))..fetchCountries(),
+          ),
+          BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
+          BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
+          BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(AuthService(myDio)),
+          ),
+        ],
+        child: MaterialApp.router(
+          routerConfig: AppRouter.router,
+          locale: DevicePreview.locale(context),
+          builder: EasyLoading.init(
+            builder: (context, widget) {
+              return DevicePreview.appBuilder(context, widget!);
+            },
+          ),
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
         ),
-        BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
-        BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
-        BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
-        BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(AuthService(myDio)),
-        ),
-      ],
-      child: MaterialApp.router(
-        routerConfig: AppRouter.router,
-        locale: DevicePreview.locale(context),
-        builder: EasyLoading.init(
-          builder: (context, widget) {
-            return DevicePreview.appBuilder(context, widget!);
-          },
-        ),
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
       ),
     );
   }

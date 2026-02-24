@@ -44,11 +44,14 @@ class ProfileHeader extends StatelessWidget {
     Widget avatar = Stack(
       clipBehavior: Clip.none,
       children: [
-        Image.asset(
-          profile.avatar,
-          width: avatarSize,
-          height: avatarSize,
-          fit: BoxFit.cover,
+        CircleAvatar(
+          radius: avatarSize / 2, // خلي نصف الحجم
+          backgroundImage: NetworkImage(
+            profile.avatar,
+            // width: avatarSize,
+            // height: avatarSize,
+            // fit: BoxFit.cover,
+          ),
         ),
         if (profile.isOnline && type == ProfileType.public)
           Positioned(
@@ -93,7 +96,7 @@ class ProfileHeader extends StatelessWidget {
                 const SizedBox(height: AppSizes.paddingXS),
                 PublicProfileInfoRow(
                   icon: AppAssets.locationOutlinedIcon,
-                  text: profile.location,
+                  text: profile.location?? 'Gaza',
                   textStyle: textStyle,
                 ),
                 PublicProfileInfoRow(
@@ -134,7 +137,7 @@ class ProfileHeader extends StatelessWidget {
           _centeredRow(
             PublicProfileInfoRow(
               icon: AppAssets.locationOutlinedIcon,
-              text: profile.location,
+              text: profile.location?? 'Gaza',
               textStyle: privateTextStyle,
             ),
           ),

@@ -4,10 +4,12 @@ import 'package:second_hand_electronics_marketplace/features/profile/presentatio
 import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_sizes.dart';
+import '../../../../auth/data/models/auth_models.dart';
 import '../../../../listing/data/listing_model.dart';
 
 class PublicProfileWidget extends StatelessWidget {
-  const PublicProfileWidget({super.key, required this.userListings});
+   PublicProfileWidget({super.key, required this.userListings, required this.user});
+  final UserModel user; // ← نمرر الـ UserModel
 
   final List<ListingModel> userListings;
 
@@ -18,7 +20,7 @@ class PublicProfileWidget extends StatelessWidget {
       children: [
         const Text('Trust Indicators', style: AppTypography.body16Medium),
         const SizedBox(height: AppSizes.paddingXS),
-        const TrustIndicatorsSection(),
+         TrustIndicatorsSection(user: user,),
         // const SizedBox(height: AppSizes.paddingS),
         Text(
           'Active Listings',

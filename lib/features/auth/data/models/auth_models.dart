@@ -30,6 +30,10 @@ class UserModel {
   final String phoneNumber;
   final String role;
   final bool isEmailVerified;
+  final bool isPhoneVerified;
+  final bool isIdentityVerified;
+  final DateTime? lastLogin;
+  final DateTime? createdAt; // optional, لو حابب تعرض Member since
 
   UserModel({
     required this.id,
@@ -38,6 +42,10 @@ class UserModel {
     required this.phoneNumber,
     required this.role,
     required this.isEmailVerified,
+    required this.isPhoneVerified,
+    required this.isIdentityVerified,
+    this.lastLogin,
+    this.createdAt,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -48,10 +56,41 @@ class UserModel {
       phoneNumber: json[ApiKeys.phoneNumber] ?? '',
       role: json[ApiKeys.role] ?? ApiKeys.defaultRoleBuyer,
       isEmailVerified: json[ApiKeys.isEmailVerified] ?? false,
+      isPhoneVerified: json['isPhoneVerified'] ?? false,
+      isIdentityVerified: json['isIdentityVerified'] ?? false,
+      lastLogin:
+          json['lastLogin'] != null ? DateTime.parse(json['lastLogin']) : null,
+      createdAt:
+          json['createdAt'] != null
+              ? DateTime.tryParse(json['createdAt'])
+              : null,
     );
   }
-}
 
+  @override
+  String toString() {
+    return 'UserModel(id: $id, fullName: $fullName, email: $email, phoneNumber: $phoneNumber, role: $role, isEmailVerified: $isEmailVerified, isPhoneVerified: $isPhoneVerified, isIdentityVerified: $isIdentityVerified, lastLogin: $lastLogin, createdAt: $createdAt)';
+  }
+}
+extension UserVerification on UserModel {
+  /// نسبة التحقق: من 0 إلى 100
+  double get verificationPercentage {
+    int verifiedCount = 0;
+    if (isEmailVerified) verifiedCount++;
+    if (isPhoneVerified) verifiedCount++;
+    if (isIdentityVerified) verifiedCount++;
+
+    return (verifiedCount / 3) * 100;
+  }
+
+  /// حالة عامة: Fully / Partially / Not Verified
+  String get verificationStatus {
+    final percent = verificationPercentage;
+    if (percent == 100) return 'Fully Verified';
+    if (percent >= 50) return 'Partially Verified';
+    return 'Not Verified';
+  }
+}
 class AuthResponseModel {
   final bool success;
   final String message;

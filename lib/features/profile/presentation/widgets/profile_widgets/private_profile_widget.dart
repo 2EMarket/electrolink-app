@@ -4,15 +4,24 @@ import 'package:second_hand_electronics_marketplace/features/profile/presentatio
 import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_sizes.dart';
+import '../../../../auth/data/models/auth_models.dart';
 import '../../../../listing/data/listing_model.dart';
 
 class PrivateProfileWidget extends StatelessWidget {
-  const PrivateProfileWidget({super.key, required this.userListings});
+  const PrivateProfileWidget({
+    super.key,
+    required this.userListings,
+    required this.user,
+  });
 
+  final UserModel user;
   final List<ListingModel> userListings;
 
   @override
   Widget build(BuildContext context) {
+    final isFullyVerified =
+        user.isEmailVerified && user.isPhoneVerified && user.isIdentityVerified;
+
     return Column(
       children: [
         Container(
@@ -40,15 +49,17 @@ class PrivateProfileWidget extends StatelessWidget {
                     color: context.colors.titles,
                   ),
                 ),
-                const SizedBox(height: AppSizes.paddingXS),
-                Text(
-                  'Verify your identity, mobile and email to get “Verified” badge. Tap to verify missing items',
-                  style: AppTypography.body14Regular.copyWith(
-                    color: context.colors.neutral,
+                if (!isFullyVerified) ...[
+                  const SizedBox(height: AppSizes.paddingXS),
+                  Text(
+                    'Verify your identity, mobile and email to get “Verified” badge. Tap to verify missing items',
+                    style: AppTypography.body14Regular.copyWith(
+                      color: context.colors.neutral,
+                    ),
                   ),
-                ),
+                ],
                 const SizedBox(height: AppSizes.paddingXS),
-                const TrustIndicatorsSection(),
+                TrustIndicatorsSection(user: user),
               ],
             ),
           ),

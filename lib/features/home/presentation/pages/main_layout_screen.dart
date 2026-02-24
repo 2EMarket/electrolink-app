@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_navbar.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
+
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/widgets/notification_toast.dart';
+import '../../../auth/presentation/cubits/auth_cubit.dart';
+import '../../../auth/presentation/cubits/auth_states.dart';
 
 class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
@@ -14,30 +20,64 @@ class MainLayoutScreen extends StatefulWidget {
 
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeTab(),
-    HomeTab(),
-    HomeTab(),
-    ProfileScreen(userId: '1', isMe: true),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_currentIndex],
+    return BlocConsumer<AuthCubit, AuthState>(
+        listenWhen:
+            (previous, current) =>
+        ModalRoute
+            .of(context)
+            ?.isCurrent == true,
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            NotificationToast.show(
+              context,
+              AppStrings.welcomeBack,
+              AppStrings.loggedInSuccess,
+              ToastType.success,
+            );
+            context.goNamed(AppRoutes.mainLayout);
+          } else if (state is AuthFailure) {
+            NotificationToast.show(
+              context,
+              AppStrings.loginFailed,
+              state.message,
+              ToastType.error,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is! AuthSuccess) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-      bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          final authUser = state.response.user!;
+
+          final screens = [
+            HomeTab(),
+            HomeTab(),
+            HomeTab(),
+            ProfileScreen(authUser: authUser, isMe: true),
+          ];
+
+          return Scaffold(
+            body: screens[_currentIndex],
+
+            bottomNavigationBar: CustomBottomNavBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              onAddTap: () {
+                context.pushNamed(AppRoutes.addListing);
+              },
+            ),
+          );
         },
-        onAddTap: () {
-          context.pushNamed(AppRoutes.addListing);
-        },
-      ),
     );
   }
 }
