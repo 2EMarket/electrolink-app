@@ -60,7 +60,7 @@ class _LocationScreenState extends State<LocationScreen> {
     } catch (_) {
       formatedAddress = 'error getting address';
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -93,14 +93,25 @@ class _LocationScreenState extends State<LocationScreen> {
                       onMapCreated: (controller) => mapController = controller,
                       onCameraMove: (pos) => cameraPosition = pos,
                       onCameraIdle: _updateAddress,
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
                     ),
                   ),
-                  Center(child: SvgPicture.asset(AppAssets.mapDetectorSvg)),
+                  Center(
+                    child: SvgPicture.asset(
+                      AppAssets.mapDetectorSvg,
+                      width: 84,
+                      height: 84,
+                    ),
+                  ),
                   Positioned(
                     bottom: 115,
                     left: 15,
                     right: 15,
-                    child: AddressInfoWindow(address: formatedAddress),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AddressInfoWindow(address: formatedAddress),
+                    ),
                   ),
                 ],
               ),
