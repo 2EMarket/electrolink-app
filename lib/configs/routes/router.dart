@@ -15,6 +15,7 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/add_listing/add_listing_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
+import '../../features/auth/data/models/auth_models.dart';
 import '../../features/auth/presentation/pages/change_password_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
 import '../../features/auth/presentation/pages/otp_screen.dart';
@@ -142,66 +143,65 @@ class AppRouter {
           ),
         ],
       ),
-      // GoRoute(
-      //   path: '/${AppRoutes.userProfile}',
-      //   name: AppRoutes.userProfile,
-      //   builder:
-      //       (context, state) => ProfileScreen(
-      //         userId: state.uri.queryParameters['userId'] ?? '1',
-      //         isMe: state.uri.queryParameters['isMe'] == 'true',
-      //       ),
-      //   routes: [
-      //     // Edit User Profile
-      //     GoRoute(
-      //       path: '/${AppRoutes.editUserProfile}',
-      //       name: AppRoutes.editUserProfile,
-      //       builder:
-      //           (context, state) => EditUserProfile(
-      //             userId: state.uri.queryParameters['userId'] ?? '1',
-      //             isMe: state.uri.queryParameters['isMe'] == 'true',
-      //           ),
-      //     ),
-      //     GoRoute(
-      //       path: '/${AppRoutes.reportUser}',
-      //       name: AppRoutes.reportUser,
-      //       builder: (context, state) => SendReportScreen(),
-      //     ),
-      //     GoRoute(
-      //       path: '/${AppRoutes.settingsScreen}',
-      //       name: AppRoutes.settingsScreen,
-      //       builder: (context, state) => SettingsScreen(),
-      //       routes: [
-      //         GoRoute(
-      //           path: '/${AppRoutes.notificationSettings}',
-      //           name: AppRoutes.notificationSettings,
-      //           builder: (context, state) => NotificationSettingsScreen(),
-      //         ),
-      //         GoRoute(
-      //           path: '/${AppRoutes.languageCurrency}',
-      //           name: AppRoutes.languageCurrency,
-      //           builder: (context, state) => const LanguageCurrencyScreen(),
-      //           routes: [
-      //             GoRoute(
-      //               path: '/${AppRoutes.language}',
-      //               name: AppRoutes.language,
-      //               builder: (context, state) => const LanguageScreen(),
-      //             ),
-      //             GoRoute(
-      //               path: '/${AppRoutes.currency}',
-      //               name: AppRoutes.currency,
-      //               builder: (context, state) => const CurrencyScreen(),
-      //             ),
-      //           ],
-      //         ),
-      //         GoRoute(
-      //           path: '/${AppRoutes.helpCenter}',
-      //           name: AppRoutes.helpCenter,
-      //           builder: (context, state) => HelpCenterScreen(),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
+      GoRoute(
+        path: '/${AppRoutes.userProfile}',
+        name: AppRoutes.userProfile,
+        builder: (context, state) {
+          final user = state.extra as UserModel;
+          return ProfileScreen(authUser: user, isMe: true);
+        },
+        routes: [
+          // Edit User Profile
+          // GoRoute(
+          //   path: '/${AppRoutes.editUserProfile}',
+          //   name: AppRoutes.editUserProfile,
+          //   builder:
+          //       (context, state) => EditUserProfile(
+          //         userId: state.uri.queryParameters['userId'] ?? '1',
+          //         isMe: state.uri.queryParameters['isMe'] == 'true',
+          //       ),
+          // ),
+          GoRoute(
+            path: '/${AppRoutes.reportUser}',
+            name: AppRoutes.reportUser,
+            builder: (context, state) => SendReportScreen(),
+          ),
+          GoRoute(
+            path: '/${AppRoutes.settingsScreen}',
+            name: AppRoutes.settingsScreen,
+            builder: (context, state) => SettingsScreen(),
+            routes: [
+              GoRoute(
+                path: '/${AppRoutes.notificationSettings}',
+                name: AppRoutes.notificationSettings,
+                builder: (context, state) => NotificationSettingsScreen(),
+              ),
+              GoRoute(
+                path: '/${AppRoutes.languageCurrency}',
+                name: AppRoutes.languageCurrency,
+                builder: (context, state) => const LanguageCurrencyScreen(),
+                routes: [
+                  GoRoute(
+                    path: '/${AppRoutes.language}',
+                    name: AppRoutes.language,
+                    builder: (context, state) => const LanguageScreen(),
+                  ),
+                  GoRoute(
+                    path: '/${AppRoutes.currency}',
+                    name: AppRoutes.currency,
+                    builder: (context, state) => const CurrencyScreen(),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: '/${AppRoutes.helpCenter}',
+                name: AppRoutes.helpCenter,
+                builder: (context, state) => HelpCenterScreen(),
+              ),
+            ],
+          ),
+        ],
+      ),
       GoRoute(
         path: '/${AppRoutes.addListing}',
         name: AppRoutes.addListing,

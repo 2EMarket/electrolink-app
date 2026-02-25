@@ -5,7 +5,6 @@ import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_n
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
-
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/notification_toast.dart';
 import '../../../auth/presentation/cubits/auth_cubit.dart';
