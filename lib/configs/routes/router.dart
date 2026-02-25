@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
+import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_states.dart';
 import 'package:second_hand_electronics_marketplace/features/auth/presentation/pages/login_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/country_selection_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/main_layout_screen.dart';
@@ -16,6 +17,7 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
 import '../../features/auth/data/models/auth_models.dart';
+import '../../features/auth/presentation/cubits/auth_cubit.dart';
 import '../../features/auth/presentation/pages/change_password_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
 import '../../features/auth/presentation/pages/otp_screen.dart';
@@ -24,11 +26,13 @@ import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/home/presentation/pages/splash_screen.dart';
 import '../../features/listing/data/listing_model.dart';
+import '../../features/profile/data/services/profile_service.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/language_currency_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/language_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/notification_settings_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/user_profile_screens/edit_user_profile.dart';
+import '../../features/profile/presentation/widgets/profile_widgets/profile_error_screen.dart';
 import '../../features/profile/profile_exports.dart';
 import '../../features/verification/presentation/pages/verification_screen.dart';
 
@@ -147,20 +151,40 @@ class AppRouter {
         path: '/${AppRoutes.userProfile}',
         name: AppRoutes.userProfile,
         builder: (context, state) {
-          final user = state.extra as UserModel;
-          return ProfileScreen(authUser: user, isMe: true);
+          final authState = context.read<AuthCubit>().state;
+
+          if (authState is AuthSuccess) {
+            return ProfileScreen(
+              authUser: authState.response.user!,
+              isMe: true,
+            );
+          }
+
+          return const ProfileErrorScreen();
         },
         routes: [
-          // Edit User Profile
-          // GoRoute(
-          //   path: '/${AppRoutes.editUserProfile}',
-          //   name: AppRoutes.editUserProfile,
-          //   builder:
-          //       (context, state) => EditUserProfile(
-          //         userId: state.uri.queryParameters['userId'] ?? '1',
-          //         isMe: state.uri.queryParameters['isMe'] == 'true',
-          //       ),
-          // ),
+          GoRoute(
+            path: '/${AppRoutes.editUserProfile}',
+            name: AppRoutes.editUserProfile,
+            builder: (context, state) {
+              final authState = context.read<AuthCubit>().state;
+
+              if (authState is AuthSuccess) {
+                return BlocProvider(
+                  create: (context) => ProfileBloc(
+                    context.read<ProfileService>(), // تأكدي ProfileService موجود في MultiRepositoryProvider
+                    authState.response.user!,
+                  )..add(FetchProfileEvent(isMe: true)),
+                  child: EditUserProfile(
+                    authUser: authState.response.user!,
+                    isMe: true,
+                  ),
+                );
+              }
+
+              return const ProfileErrorScreen();
+            },
+          ),
           GoRoute(
             path: '/${AppRoutes.reportUser}',
             name: AppRoutes.reportUser,

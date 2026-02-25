@@ -100,6 +100,11 @@ class ProfileHeader extends StatelessWidget {
                   textStyle: textStyle,
                 ),
                 PublicProfileInfoRow(
+                  icon: AppAssets.profileOutlineIcon,
+                  text: profile.bio?? 'I love Electronics',
+                  textStyle: textStyle,
+                ),
+                PublicProfileInfoRow(
                   icon: AppAssets.calendarIcon,
                   text: 'Member Since ${profile.memberSince}',
                   textStyle: textStyle,
@@ -138,6 +143,14 @@ class ProfileHeader extends StatelessWidget {
             PublicProfileInfoRow(
               icon: AppAssets.locationOutlinedIcon,
               text: profile.location?? 'Gaza',
+              textStyle: privateTextStyle,
+            ),
+          ),
+          // const SizedBox(height: AppSizes.paddingXS),
+          _centeredRow(
+            PublicProfileInfoRow(
+              icon: AppAssets.profileOutlineIcon,
+              text: profile.bio?? 'I love Electronics',
               textStyle: privateTextStyle,
             ),
           ),

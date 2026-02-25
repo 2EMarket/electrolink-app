@@ -66,8 +66,8 @@ class PrivateProfileCompletion extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    context.goNamed(AppRoutes.editUserProfile);
-                  },
+                        context.pushNamed(AppRoutes.editUserProfile);
+                        },
                   child: Icon(
                     Icons.arrow_forward_ios,
                     size: AppSizes.paddingM,

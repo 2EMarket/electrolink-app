@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final Widget? suffix;
   final TextInputAction textInputAction;
+  final bool readOnly;
   const CustomTextField({
     super.key,
     this.label,
@@ -34,6 +35,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.suffix,
     this.textInputAction = TextInputAction.next,
+    this.readOnly = false,
+
   });
 
   @override
@@ -104,6 +107,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   vertical: 16,
                 ),
               ),
+              readOnly:  widget.readOnly,
             ),
 
             if (widget.maxLength != null)

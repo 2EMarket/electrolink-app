@@ -14,6 +14,7 @@ class ProfileViewData {
   // private-only
   final String? email;
   final String? phone;
+  final String?  bio;
 
   ProfileViewData({
     required this.name,
@@ -25,6 +26,7 @@ class ProfileViewData {
     this.responseTime,
     this.email,
     this.phone,
+    this.bio
   });
 
   factory ProfileViewData.fromAppUser(
@@ -52,6 +54,7 @@ class ProfileViewData {
           type == ProfileType.private ? 'Replies within 30 min' : null,
       email: type == ProfileType.private ? user.email : null,
       phone: type == ProfileType.private ? user.phoneNumber : null,
+    bio:type == ProfileType.private ? profile!.bio : ' ',
     );
   }
 }

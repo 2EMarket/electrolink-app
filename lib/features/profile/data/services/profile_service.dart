@@ -44,21 +44,41 @@ class ProfileService {
   }
 
   /// تحديث بيانات البروفايل
-  Future<ProfileModel> updateProfile({required Map<String, dynamic> updates}) async {
+  Future<ProfileModel> updateProfile({required FormData formData}) async {
     try {
-      final response = await _dio.put(ApiEndpoints.updateProfile, data: updates);
+      final response = await _dio.patch(
+        ApiEndpoints.updateProfile,
+        data: formData,
+      );
 
       if (response.statusCode == 200) {
-        print("✅ Profile updated successfully");
         return ProfileModel.fromJson(response.data['data']);
       } else {
-        final msg = response.data[ApiKeys.message] ?? 'Failed to update profile';
+        final msg =
+            response.data[ApiKeys.message] ?? 'Failed to update profile';
         throw Exception(msg);
       }
     } on DioException catch (e) {
-      print("🚨 Dio Error: ${e.response?.data}");
-      final errorMessage = e.response?.data[ApiKeys.message] ?? 'Network error occurred';
+      final errorMessage =
+          e.response?.data[ApiKeys.message] ?? 'Network error occurred';
       throw Exception(errorMessage);
     }
   }
+  // Future<ProfileModel> updateProfile({required Map<String, dynamic> updates}) async {
+  //   try {
+  //     final response = await _dio.patch(ApiEndpoints.updateProfile, data: updates);
+  //
+  //     if (response.statusCode == 200) {
+  //       print("✅ Profile updated successfully");
+  //       return ProfileModel.fromJson(response.data['data']);
+  //     } else {
+  //       final msg = response.data[ApiKeys.message] ?? 'Failed to update profile';
+  //       throw Exception(msg);
+  //     }
+  //   } on DioException catch (e) {
+  //     print("🚨 Dio Error: ${e.response?.data}");
+  //     final errorMessage = e.response?.data[ApiKeys.message] ?? 'Network error occurred';
+  //     throw Exception(errorMessage);
+  //   }
+  // }
 }

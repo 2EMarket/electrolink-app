@@ -15,8 +15,14 @@ class FetchProfileEvent extends ProfileEvent {
 
   FetchProfileEvent({required this.isMe});
 }
+// class UpdateProfileEvent extends ProfileEvent {
+//   final Map<String, dynamic> updates;
+//
+//   UpdateProfileEvent({required this.updates});
+// }
 class UpdateProfileEvent extends ProfileEvent {
   final Map<String, dynamic> updates;
+  final File? avatar;
 
-  UpdateProfileEvent({required this.updates});
+  UpdateProfileEvent({required this.updates, this.avatar});
 }

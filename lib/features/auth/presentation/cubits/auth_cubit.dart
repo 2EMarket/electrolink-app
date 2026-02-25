@@ -32,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (response.token.isNotEmpty) {
         await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
         _authService.updateHeader(response.token);
-     }
+      }
 
       emit(AuthSuccess(response));
     } catch (e) {
@@ -157,5 +157,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthFailure(errorMsg));
     }
+  }
+
+  Future<void> logout() async {
+    await CacheHelper.removeData(key: CacheKeys.token);
+    emit(AuthLogOut());
   }
 }

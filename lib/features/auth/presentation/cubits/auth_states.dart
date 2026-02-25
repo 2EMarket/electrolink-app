@@ -14,6 +14,8 @@ class AuthSuccess extends AuthState {
   final AuthResponseModel response;
   AuthSuccess(this.response);
 }
+class AuthLogOut extends AuthState {}
+
 
 class AuthFailure extends AuthState {
   final String message;

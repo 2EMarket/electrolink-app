@@ -10,8 +10,7 @@ import '../../../widgets/profile_widgets_exports.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isMe;
-  final UserModel authUser; // بدل userId نمرر authUser مباشرة
-
+  final UserModel authUser;
   const ProfileScreen({super.key, required this.authUser, required this.isMe});
 
   @override
@@ -40,11 +39,6 @@ class ProfileScreen extends StatelessWidget {
               );
 
               final verificationProgress = state.appUser.user.verificationPercentage / 100;
-                // final userListings =
-                //     dummyListings
-                //         .where((l) => l.ownerId == state.profile.id)
-                //         .toList();
-                //
               final userListings = dummyListings
                   .where((l) => l.ownerId == state.appUser.user.id.toString()) // إذا ownerId String
                   .toList();
