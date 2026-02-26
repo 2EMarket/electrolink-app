@@ -1,6 +1,5 @@
 class ApiEndpoints {
-  // يمكنك وضع رابط السيرفر الحقيقي هنا لاستخدامه في إعدادات الـ Dio
-  static const String  baseUrl= 'https://gsg-project-group-6.onrender.com';
+  static const String baseUrl = 'https://gsg-project-group-6.onrender.com';
 
   // ==========================================
   // Auth Endpoints
@@ -18,7 +17,6 @@ class ApiEndpoints {
   // ==========================================
   static const String getProfile = '/profile'; // GET
   static const String updateProfile = '/profile'; // PATCH
-
 }
 
 class ApiKeys {
@@ -62,7 +60,4 @@ class ApiKeys {
   // Headers
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer ';
-
-
-
 }
