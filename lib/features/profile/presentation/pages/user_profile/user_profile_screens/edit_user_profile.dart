@@ -121,10 +121,11 @@ class _EditUserProfileState extends State<EditUserProfile> {
       'location': controllers['Location']?.text,
       'countryId': 1,
     };
+
     context.read<ProfileBloc>().add(
       UpdateProfileEvent(updates: updates, avatar: _selectedAvatar),
     );
-    context.pop();
+    // context.pop();
   }
 
   bool _hasShownError = false;
@@ -193,7 +194,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
             };
           }
           return Scaffold(
-            appBar: AppBar(title: const Text('Edit Profile')),
+            appBar: AppBar(
+              title: const Text('Edit Profile'),
+              leading: const BackButton(),
+            ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
                 AppSizes.paddingM,
