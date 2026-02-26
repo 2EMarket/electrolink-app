@@ -25,7 +25,6 @@ class ProfileAppBarActions extends StatelessWidget {
         if (isMe) {
           context.goNamed(AppRoutes.settingsScreen);
         } else {
-          // فعل الـ BottomSheet
           showProfileOptionsSheet(context, type: ProfileOptionType.report);
         }
       },

@@ -62,7 +62,7 @@ class LanguageScreen extends StatelessWidget {
       onTap: () {
         bloc.add(SelectLanguage(value));
         Future.delayed(const Duration(milliseconds: 600), () {
-          context.pop(value); // ترجع القيمة بعد 0.6 ثانية
+          context.pop(value);
         });
       },
     );

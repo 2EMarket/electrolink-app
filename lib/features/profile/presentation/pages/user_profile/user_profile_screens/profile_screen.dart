@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
             if (state is ProfileError) return ProfileErrorScreen();
             if (state is ProfileLoaded) {
               final profileData = ProfileViewData.fromAppUser(
-                state.appUser, // أو state.appUser.profile حسب احتياجك
+                state.appUser,
                 type: state.isMe ? ProfileType.private : ProfileType.public,
               );
 

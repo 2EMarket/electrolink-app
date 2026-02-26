@@ -9,8 +9,7 @@ import '../../../../listing/data/listing_model.dart';
 
 class PublicProfileWidget extends StatelessWidget {
    PublicProfileWidget({super.key, required this.userListings, required this.user});
-  final UserModel user; // ← نمرر الـ UserModel
-
+  final UserModel user;
   final List<ListingModel> userListings;
 
   @override
@@ -29,7 +28,6 @@ class PublicProfileWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSizes.paddingS),
-        //   const EmptyListingsSection(),
         ProfileListingsSection(listings: userListings),
       ],
     );

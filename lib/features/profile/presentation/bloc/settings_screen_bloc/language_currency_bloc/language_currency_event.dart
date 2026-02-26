@@ -1,4 +1,3 @@
-// language_currency_event.dart
 import 'package:equatable/equatable.dart';
 
 abstract class LanguageCurrencyEvent extends Equatable {

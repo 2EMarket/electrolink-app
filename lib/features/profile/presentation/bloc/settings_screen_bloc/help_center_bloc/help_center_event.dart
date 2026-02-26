@@ -1,4 +1,3 @@
-// help_center_event.dart
 import 'package:equatable/equatable.dart';
 
 abstract class HelpCenterEvent extends Equatable {

@@ -45,7 +45,7 @@ class ProfileHeader extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         CircleAvatar(
-          radius: avatarSize / 2, // خلي نصف الحجم
+          radius: avatarSize / 2,
           backgroundImage: NetworkImage(
             profile.avatar,
             // width: avatarSize,
@@ -127,7 +127,6 @@ class ProfileHeader extends StatelessWidget {
         ),
       );
     } else {
-      // private layout: avatar + name + centered rows
       return Column(
         children: [
           avatar,
@@ -146,7 +145,6 @@ class ProfileHeader extends StatelessWidget {
               textStyle: privateTextStyle,
             ),
           ),
-          // const SizedBox(height: AppSizes.paddingXS),
           _centeredRow(
             PublicProfileInfoRow(
               icon: AppAssets.profileOutlineIcon,

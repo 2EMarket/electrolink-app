@@ -1,4 +1,3 @@
-// currency_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'currency_event.dart';
 import 'currency_state.dart';

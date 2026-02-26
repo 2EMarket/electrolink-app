@@ -1,4 +1,3 @@
-// notification_settings_state.dart
 import 'package:equatable/equatable.dart';
 
 class NotificationSettingsState extends Equatable {

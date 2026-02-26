@@ -34,21 +34,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileError(message: e.toString()));
     }
   }
-
-  // Future<void> _onUpdateProfile(
-  //     UpdateProfileEvent event, Emitter<ProfileState> emit) async {
-  //   emit(ProfileLoading());
-  //   try {
-  //     final updatedProfile = await _profileService.updateProfile(updates: event.updates);
-  //
-  //     // إعادة بناء AppUserModel كامل بعد التحديث
-  //  final appUser = AppUserModel.fromAuthAndProfile(authUser, updatedProfile);
-  //
-  //     emit(ProfileLoaded(appUser: appUser, isMe: true)); // تحديث دائمًا للمستخدم نفسه
-  //   } catch (e) {
-  //     emit(ProfileError(message: e.toString()));
-  //   }
-  // }}
   Future<void> _onUpdateProfile(
     UpdateProfileEvent event,
     Emitter<ProfileState> emit,

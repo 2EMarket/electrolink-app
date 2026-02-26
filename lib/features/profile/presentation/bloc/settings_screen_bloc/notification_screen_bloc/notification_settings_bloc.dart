@@ -1,4 +1,3 @@
-// notification_settings_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'notification_settings_event.dart';
 import 'notification_settings_state.dart';

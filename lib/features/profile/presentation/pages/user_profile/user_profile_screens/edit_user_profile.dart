@@ -117,13 +117,14 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
   void _updateProfile(ProfileViewData profile) {
     final updates = {
-       'bio': controllers['Bio']?.text,
+      'bio': controllers['Bio']?.text,
       'location': controllers['Location']?.text,
       'countryId': 1,
     };
-    context.read<ProfileBloc>().add(UpdateProfileEvent(updates: updates));
-   context.pop();
-
+    context.read<ProfileBloc>().add(
+      UpdateProfileEvent(updates: updates, avatar: _selectedAvatar),
+    );
+    context.pop();
   }
 
   bool _hasShownError = false;
@@ -144,7 +145,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
               context: context,
               icon: _warningIcon,
               title: 'Error',
-              description: state.message ?? 'Something went wrong',
+              description: state.message,
               primaryText: 'Try again',
               onPrimary: () {
                 _hasShownError = false;
@@ -239,7 +240,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
           );
         }
         return const SizedBox.shrink();
-
       },
     );
   }
