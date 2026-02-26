@@ -10,6 +10,7 @@ import 'package:second_hand_electronics_marketplace/features/listing/presentatio
 import 'package:second_hand_electronics_marketplace/features/location/data/repos/countries_service.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/countries_cubit.dart';
 import 'configs/routes/router.dart';
+import 'core/constants/api_constants.dart';
 import 'core/constants/cache_keys.dart';
 import 'core/helpers/cache_helper.dart';
 import 'features/auth/data/services/auth_service.dart';
@@ -43,7 +44,7 @@ class ElectroLinkApp extends StatelessWidget {
       ..dismissOnTap = false
       ..boxShadow = [];
     final dioOptions = BaseOptions(
-      baseUrl: 'https://gsg-project-group-6.onrender.com',
+      baseUrl: ApiEndpoints.baseUrl,
       receiveDataWhenStatusError: true,
       connectTimeout: const Duration(seconds: 10),
     );
