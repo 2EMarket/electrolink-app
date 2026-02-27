@@ -36,45 +36,20 @@ import '../../features/profile/presentation/pages/user_profile/user_profile_scre
 import '../../features/profile/presentation/widgets/profile_widgets/profile_error_screen.dart';
 import '../../features/profile/profile_exports.dart';
 import '../../features/verification/presentation/pages/verification_screen.dart';
+import '../../core/constants/cache_keys.dart';
+import '../../core/helpers/cache_helper.dart';
 
 class AppRouter {
+  static final bool isFirstTime =
+      CacheHelper.getData(key: CacheKeys.isFirstTime) ?? true;
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.addListing}',
+
+    initialLocation:
+        isFirstTime ? '/${AppRoutes.splash}' : '/${AppRoutes.mainLayout}',
+
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       return null;
-
-      // Check onboarding status first
-      // final isOnboardingCompleted =
-      //     await OnboardingService.isOnboardingCompleted();
-      // final isOnboardingPage = state.fullPath == '/${AppRoutes.onboarding}';
-
-      // if (!isOnboardingCompleted && !isOnboardingPage) {
-      //   return '/${AppRoutes.onboarding}';
-      // }
-
-      // if (isOnboardingCompleted && isOnboardingPage) {
-      //   return '/${AppRoutes.signIn}';
-      // }
-
-      // if (isOnboardingCompleted) {
-      //   final authState = context
-      //       .read<AuthCubit>()
-      //       .state; //you can store this in shared pref
-      //   final loggingIn =
-      //       state.fullPath == '/${AppRoutes.signIn}' ||
-      //       state.fullPath == '/${AppRoutes.signUp}';
-
-      //   if (authState is AuthSignedIn && loggingIn) {
-      //     return '/${AppRoutes.home}';
-      //   }
-
-      //   if (authState is AuthSignedOut && !loggingIn && !isOnboardingPage) {
-      //     return '/${AppRoutes.signIn}';
-      //   }
-      // }
-
-      // return null;
     },
     routes: [
       GoRoute(

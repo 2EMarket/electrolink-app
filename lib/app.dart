@@ -48,7 +48,6 @@ class ElectroLinkApp extends StatelessWidget {
     final myDio = Dio(dioOptions);
 
     String? token = CacheHelper.getData(key: CacheKeys.token);
-    print("🔑 Saved Token: $token");
     if (token != null) {
       myDio.options.headers['Authorization'] = 'Bearer $token';
     }

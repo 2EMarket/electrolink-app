@@ -1,12 +1,29 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
+import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
 import 'package:second_hand_electronics_marketplace/features/location/data/models/location_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_states.dart';
 
 class LocationCubit extends Cubit<LocationStates> {
-  LocationCubit() : super(LocationInitial());
+  LocationCubit() : super(LocationInitial()) {
+    _loadSavedLocation();
+  }
+
+  void _loadSavedLocation() {
+    try {
+      String? locationData = CacheHelper.getData(key: CacheKeys.location);
+      if (locationData != null) {
+        final map = jsonDecode(locationData);
+        emit(LocationLoaded(LocationModel.fromMap(map)));
+      }
+    } catch (e) {
+      // Handle or ignore parsing error
+    }
+  }
 
   Position? currentPosition;
   double? celsius;
@@ -79,6 +96,10 @@ class LocationCubit extends Cubit<LocationStates> {
         address.country,
         address.city,
       );
+      await CacheHelper.saveData(
+        key: CacheKeys.location,
+        value: jsonEncode(selectedLocation.toMap()),
+      );
       emit(LocationLoaded(selectedLocation));
     } catch (e) {
       emit(LocationError('Error updating location: $e'));
@@ -112,20 +133,23 @@ class LocationCubit extends Cubit<LocationStates> {
     emit(LocationInitial());
   }
 
-  formattedAdderss(Placemark p) {
+  ({String address, String country, String city}) formattedAdderss(
+    Placemark p,
+  ) {
     return (
-      [
-        if (p.subLocality?.isNotEmpty ?? false) p.subLocality,
-        if (p.thoroughfare?.isNotEmpty ?? false) p.thoroughfare,
-        if (p.subThoroughfare?.isNotEmpty ?? false) p.subThoroughfare,
-        if (p.postalCode?.isNotEmpty ?? false) p.postalCode,
-        if (p.subAdministrativeArea?.isNotEmpty ?? false)
-          p.subAdministrativeArea,
-        if (p.administrativeArea?.isNotEmpty ?? false) p.administrativeArea,
-        if (p.country?.isNotEmpty ?? false) p.country,
-      ].join(', ').trim(),
-      p.country,
-      p.administrativeArea,
+      address:
+          [
+            if (p.subLocality?.isNotEmpty ?? false) p.subLocality,
+            if (p.thoroughfare?.isNotEmpty ?? false) p.thoroughfare,
+            if (p.subThoroughfare?.isNotEmpty ?? false) p.subThoroughfare,
+            if (p.postalCode?.isNotEmpty ?? false) p.postalCode,
+            if (p.subAdministrativeArea?.isNotEmpty ?? false)
+              p.subAdministrativeArea,
+            if (p.administrativeArea?.isNotEmpty ?? false) p.administrativeArea,
+            if (p.country?.isNotEmpty ?? false) p.country,
+          ].join(', ').trim(),
+      country: p.country ?? '',
+      city: p.administrativeArea ?? '',
     );
   }
 
@@ -144,6 +168,10 @@ class LocationCubit extends Cubit<LocationStates> {
         address ?? '$city, $country', // لو ما في عنوان، بنحط المدينة والدولة
         country,
         city,
+      );
+      await CacheHelper.saveData(
+        key: CacheKeys.location,
+        value: jsonEncode(selectedLocation.toMap()),
       );
       emit(LocationLoaded(selectedLocation));
     } catch (e) {
