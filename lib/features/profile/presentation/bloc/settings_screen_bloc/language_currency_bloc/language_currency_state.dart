@@ -1,4 +1,3 @@
-// language_currency_state.dart
 import 'package:equatable/equatable.dart';
 
 class LanguageCurrencyState extends Equatable {

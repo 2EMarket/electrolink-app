@@ -261,7 +261,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/${AppRoutes.changePassword}', // أو القيمة من AppRoutes
+        path: '/${AppRoutes.changePassword}',
         name: AppRoutes.changePassword,
         builder: (context, state) {
           final token = state.extra as String;

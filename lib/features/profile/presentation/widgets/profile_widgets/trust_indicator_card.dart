@@ -33,7 +33,6 @@ class TrustIndicatorCard extends StatelessWidget {
     final colors = context.colors;
 
     Widget cardContent = Container(
-      //padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
         color: colors.surface,
         border: Border.all(color: colors.border, width: 1),

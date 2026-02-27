@@ -1,4 +1,3 @@
-// help_center_state.dart
 import 'package:equatable/equatable.dart';
 
 class HelpCenterState extends Equatable {

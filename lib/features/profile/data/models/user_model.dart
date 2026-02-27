@@ -11,8 +11,8 @@ class ProfileModel {
   final double? longitude;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final CountryModel? country; // ← جديد
-  final AvatarAssetModel? avatarAsset; // ← جديد
+  final CountryModel? country;
+  final AvatarAssetModel? avatarAsset;
   ProfileModel({
     required this.id,
     required this.userId,
@@ -24,8 +24,8 @@ class ProfileModel {
     this.longitude,
     this.createdAt,
     this.updatedAt,
-    this.avatarAsset, // ←
-    this.country, // ← جديد
+    this.avatarAsset,
+    this.country,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -197,30 +197,3 @@ class CountryModel {
     return 'CountryModel(id: $id, nameEn: $nameEn, nameAr: $nameAr, isoCode: $isoCode, currencySymbolEn: $currencySymbolEn, currencySymbolAr: $currencySymbolAr, isActive: $isActive, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
-
-// class UserModel {
-//   final String id;
-//   final String name;
-//   final String avatar;
-//   final String location;
-//   final DateTime createdAt;
-//   final DateTime lastSeen;
-//   final int responseTimeMinutes;
-//   final bool isOnline;
-//   final String? email;
-//   final String? phone;
-//
-//   const UserModel({
-//     required this.id,
-//     required this.name,
-//     required this.avatar,
-//
-//     required this.location,
-//     required this.createdAt,
-//     required this.lastSeen,
-//     required this.responseTimeMinutes,
-//     this.isOnline = false,
-//     this.email = 'james.monroe@example.com',
-//     this.phone = '059788464',
-//   });
-// }

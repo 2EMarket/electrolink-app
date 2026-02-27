@@ -1,4 +1,3 @@
-// notification_settings_event.dart
 import 'package:equatable/equatable.dart';
 
 abstract class NotificationSettingsEvent extends Equatable {
