@@ -41,7 +41,6 @@ import '../../core/helpers/cache_helper.dart';
 class AppRouter {
   static final bool isFirstTime =
       CacheHelper.getData(key: CacheKeys.isFirstTime) ?? true;
-
   static final GoRouter _router = GoRouter(
     initialLocation:
         isFirstTime ? '/${AppRoutes.splash}' : '/${AppRoutes.mainLayout}',

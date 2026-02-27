@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_navbar.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/profile_error_screen.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/helpers/cache_helper.dart';
 import '../../../../core/widgets/notification_toast.dart';
 import '../../../auth/presentation/cubits/auth_cubit.dart';
 import '../../../auth/presentation/cubits/auth_states.dart';
@@ -59,7 +61,21 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 
         final screens = [
           HomeTab(), // Home
-          HomeTab(), // Search/Listings - Replace when built
+          Scaffold(
+            body: Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  await CacheHelper.saveData(
+                    key: CacheKeys.isFirstTime,
+                    value: true,
+                  );
+                  //logout
+                  // context.read<AuthCubit>().logout();
+                },
+                child: Text('Save'),
+              ),
+            ),
+          ), // Search/Listings - Replace when built
           HomeTab(), // Favorites - Replace when built
           authUser != null
               ? ProfileScreen(authUser: authUser, isMe: true)
