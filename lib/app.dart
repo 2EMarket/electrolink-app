@@ -16,6 +16,10 @@ import 'core/helpers/cache_helper.dart';
 import 'features/auth/data/services/auth_service.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
 import 'features/profile/data/services/profile_service.dart';
+import 'features/profile/presentation/bloc/profile_screen_bloc/profile_bloc.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/data/services/category_service.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+
 import 'imports.dart';
 
 class ElectroLinkApp extends StatelessWidget {
@@ -55,6 +59,7 @@ class ElectroLinkApp extends StatelessWidget {
       providers: [
         RepositoryProvider<Dio>.value(value: myDio),
         RepositoryProvider(create: (_) => ProfileService(myDio)),
+        RepositoryProvider(create: (_) => CategoryService(dio: myDio)),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -67,7 +72,13 @@ class ElectroLinkApp extends StatelessWidget {
           BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
           BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
           BlocProvider<AuthCubit>(
-            create: (context) => AuthCubit(AuthService(myDio)),
+            create: (context) => AuthCubit(AuthService(myDio))..checkAuth(),
+          ),
+          BlocProvider<CategoryCubit>(
+            create:
+                (context) => CategoryCubit(
+                  categoryService: context.read<CategoryService>(),
+                )..fetchCategories(),
           ),
         ],
         child: MaterialApp.router(

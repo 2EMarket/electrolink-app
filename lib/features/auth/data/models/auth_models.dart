@@ -67,11 +67,27 @@ class UserModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      ApiKeys.id: id,
+      ApiKeys.fullName: fullName,
+      ApiKeys.email: email,
+      ApiKeys.phoneNumber: phoneNumber,
+      ApiKeys.role: role,
+      ApiKeys.isEmailVerified: isEmailVerified,
+      'isPhoneVerified': isPhoneVerified,
+      'isIdentityVerified': isIdentityVerified,
+      'lastLogin': lastLogin?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+    };
+  }
+
   @override
   String toString() {
     return 'UserModel(id: $id, fullName: $fullName, email: $email, phoneNumber: $phoneNumber, role: $role, isEmailVerified: $isEmailVerified, isPhoneVerified: $isPhoneVerified, isIdentityVerified: $isIdentityVerified, lastLogin: $lastLogin, createdAt: $createdAt)';
   }
 }
+
 extension UserVerification on UserModel {
   /// نسبة التحقق: من 0 إلى 100
   double get verificationPercentage {
@@ -91,6 +107,7 @@ extension UserVerification on UserModel {
     return 'Not Verified';
   }
 }
+
 class AuthResponseModel {
   final bool success;
   final String message;

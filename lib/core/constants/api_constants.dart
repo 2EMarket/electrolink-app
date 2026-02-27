@@ -19,7 +19,7 @@ class ApiEndpoints {
   static const String updateProfile = '/profile'; // PATCH
 
   // ==========================================
-  // Catalog Endpoints
+  // categories Endpoints
   // ==========================================
   static const String categories = '/categories'; // GET
   static String categoryById(String id) => '/categories/$id'; // GET
@@ -28,6 +28,7 @@ class ApiEndpoints {
   // Product Endpoints
   // ==========================================
   static const String createPendingProduct = '/products/pending'; // POST
+
 }
 
 class ApiKeys {
@@ -47,6 +48,16 @@ class ApiKeys {
   static const String token = 'token';
   static const String user = 'user';
   static const String otpSent = 'otpSent';
+  static const String name = 'name';
+  static const String isActive = 'isActive';
+  static const String icon = 'icon';
+  static const String url = 'url';
+  static const String fileName = 'fileName';
+  static const String meta = 'meta';
+  static const String total = 'total';
+  static const String page = 'page';
+  static const String lastPage = 'lastPage';
+  static const String limit = 'limit';
   static const String code = 'code';
   static const String type = 'type';
   static const String otpType = 'otpType';

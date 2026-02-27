@@ -38,10 +38,22 @@ class CategoryItem extends StatelessWidget {
                 color: backgroundColor,
                 shape: BoxShape.circle,
               ),
-              child: SvgPicture.asset(
-                iconPath,
-                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-              ),
+              child:
+                  iconPath.startsWith('http')
+                      ? SvgPicture.network(
+                        iconPath,
+                        colorFilter: ColorFilter.mode(
+                          iconColor,
+                          BlendMode.srcIn,
+                        ),
+                      )
+                      : SvgPicture.asset(
+                        iconPath,
+                        colorFilter: ColorFilter.mode(
+                          iconColor,
+                          BlendMode.srcIn,
+                        ),
+                      ),
             ),
             const SizedBox(height: AppSizes.paddingXS),
             Text(

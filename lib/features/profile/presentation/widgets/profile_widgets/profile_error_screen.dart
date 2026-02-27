@@ -6,7 +6,8 @@ import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_sizes.dart';
 
 class ProfileErrorScreen extends StatelessWidget {
-  const ProfileErrorScreen({super.key});
+  final String? message;
+  const ProfileErrorScreen({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,10 @@ class ProfileErrorScreen extends StatelessWidget {
                 color: context.colors.titles,
               ),
             ),
-            const SizedBox(height: AppSizes.paddingXS),
             Text(
-              'We couldn’t load your profile information. Please check your internet connection and try again.',
+              message != null
+                  ? message!
+                  : 'We couldn’t load your profile information. Please check your internet connection and try again.',
               textAlign: TextAlign.center,
               style: AppTypography.body16Regular.copyWith(
                 color: context.colors.titles,

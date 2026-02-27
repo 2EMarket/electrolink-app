@@ -69,8 +69,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                     key: CacheKeys.isFirstTime,
                     value: true,
                   );
-                  //logout
-                  // context.read<AuthCubit>().logout();
+                  //just in case we want to test something
                 },
                 child: Text('Save'),
               ),
@@ -79,7 +78,27 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           HomeTab(), // Favorites - Replace when built
           authUser != null
               ? ProfileScreen(authUser: authUser, isMe: true)
-              : const ProfileErrorScreen(), // Profile tab for Guest
+              : Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        textAlign: TextAlign.center,
+                        'You need to be logged in to view\n your profile',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushNamed(AppRoutes.login);
+                        },
+                        child: const Text('Login'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
         ];
 
         return Scaffold(
