@@ -31,7 +31,8 @@ class ProfileScreen extends StatelessWidget {
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is ProfileError) return ProfileErrorScreen();
+            if (state is ProfileError)
+              return ProfileErrorScreen(message: state.message);
             if (state is ProfileLoaded) {
               final profileData = ProfileViewData.fromAppUser(
                 state.appUser,
