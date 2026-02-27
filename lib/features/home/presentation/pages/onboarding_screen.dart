@@ -127,9 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               // في ملف onboarding_screen.dart
                               onPressed: () {
                                 if (_currentPage == _pages.length - 1) {
-                                  context.pushReplacementNamed(
-                                    AppRoutes.countrySelection,
-                                  );
+                                  context.goNamed(AppRoutes.countrySelection);
                                 } else {
                                   _pageController.nextPage(
                                     duration: const Duration(milliseconds: 300),

@@ -5,10 +5,12 @@ import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_n
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/profile_error_screen.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/notification_toast.dart';
 import '../../../auth/presentation/cubits/auth_cubit.dart';
 import '../../../auth/presentation/cubits/auth_states.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
@@ -22,61 +24,64 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-        listenWhen:
-            (previous, current) =>
-        ModalRoute
-            .of(context)
-            ?.isCurrent == true,
-        listener: (context, state) {
-          if (state is AuthSuccess) {
-            NotificationToast.show(
-              context,
-              AppStrings.welcomeBack,
-              AppStrings.loggedInSuccess,
-              ToastType.success,
-            );
-            context.goNamed(AppRoutes.mainLayout);
-          } else if (state is AuthFailure) {
-            NotificationToast.show(
-              context,
-              AppStrings.loginFailed,
-              state.message,
-              ToastType.error,
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is! AuthSuccess) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
+      listenWhen:
+          (previous, current) => ModalRoute.of(context)?.isCurrent == true,
+      listener: (context, state) {
+        if (state is AuthLoading) {
+          EasyLoading.show();
+        } else {
+          EasyLoading.dismiss();
+        }
 
-          final authUser = state.response.user!;
-
-          final screens = [
-            HomeTab(),
-            HomeTab(),
-            HomeTab(),
-            ProfileScreen(authUser: authUser, isMe: true),
-          ];
-
-          return Scaffold(
-            body: screens[_currentIndex],
-
-            bottomNavigationBar: CustomBottomNavBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              onAddTap: () {
-                context.pushNamed(AppRoutes.addListing);
-              },
-            ),
+        if (state is AuthSuccess) {
+          NotificationToast.show(
+            context,
+            AppStrings.welcomeBack,
+            AppStrings.loggedInSuccess,
+            ToastType.success,
           );
-        },
+          context.goNamed(AppRoutes.mainLayout);
+        } else if (state is AuthFailure) {
+          NotificationToast.show(
+            context,
+            AppStrings.loginFailed,
+            state.message,
+            ToastType.error,
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthLoading) {
+          return const Scaffold(body: SizedBox());
+        }
+
+        final authUser = state is AuthSuccess ? state.response.user : null;
+
+        final screens = [
+          HomeTab(), // Home
+          HomeTab(), // Search/Listings - Replace when built
+          HomeTab(), // Favorites - Replace when built
+          authUser != null
+              ? ProfileScreen(authUser: authUser, isMe: true)
+              : const ProfileErrorScreen(), // Profile tab for Guest
+        ];
+
+        return Scaffold(
+          body: screens[_currentIndex],
+
+          bottomNavigationBar: CustomBottomNavBar(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            onAddTap: () {
+              context.pushNamed(AppRoutes.addListing);
+            },
+          ),
+        );
+      },
     );
   }
 }

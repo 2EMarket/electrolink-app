@@ -7,8 +7,11 @@ import 'package:second_hand_electronics_marketplace/core/constants/constants_exp
 import 'package:second_hand_electronics_marketplace/features/location/data/models/city_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/data/models/country_model.dart';
 // تأكدي من مسار المودلز
+import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
+import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_states.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LocationPermissionSheet extends StatelessWidget {
   // ✅ 1. ضفنا هدول عشان نستقبل المدينة من الشاشة السابقة
@@ -70,21 +73,21 @@ class LocationPermissionSheet extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () async {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder:
-                      (_) => const Center(child: CircularProgressIndicator()),
-                );
+                EasyLoading.show();
 
                 await locationCubit.getCurrentLocation();
 
                 if (context.mounted) {
-                  Navigator.pop(context); // إغلاق اللودينج
+                  EasyLoading.dismiss(); // إغلاق اللودينج
+
+                  await CacheHelper.saveData(
+                    key: CacheKeys.isFirstTime,
+                    value: false,
+                  );
 
                   // إذا نجح الـ GPS
                   if (locationCubit.state is LocationLoaded) {
-                    context.pushReplacementNamed(AppRoutes.mainLayout);
+                    context.goNamed(AppRoutes.mainLayout);
                   } else {
                     await locationCubit.setLocationDirectly(
                       lat: selectedCity.latitude,
@@ -92,7 +95,7 @@ class LocationPermissionSheet extends StatelessWidget {
                       country: selectedCountry.nameEn, // English
                       city: selectedCity.nameEn, // English
                     );
-                    context.pushReplacementNamed(AppRoutes.mainLayout);
+                    context.goNamed(AppRoutes.mainLayout);
                   }
                 }
               },
@@ -102,12 +105,7 @@ class LocationPermissionSheet extends StatelessWidget {
 
           TextButton(
             onPressed: () async {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (_) => const Center(child: CircularProgressIndicator()),
-              );
+              EasyLoading.show();
 
               await locationCubit.setLocationDirectly(
                 lat: selectedCity.latitude,
@@ -117,8 +115,12 @@ class LocationPermissionSheet extends StatelessWidget {
               );
 
               if (context.mounted) {
-                Navigator.pop(context);
-                context.pushReplacementNamed(AppRoutes.mainLayout);
+                EasyLoading.dismiss();
+                await CacheHelper.saveData(
+                  key: CacheKeys.isFirstTime,
+                  value: false,
+                );
+                context.goNamed(AppRoutes.mainLayout);
               }
             },
             child: const Text('Skip'),
