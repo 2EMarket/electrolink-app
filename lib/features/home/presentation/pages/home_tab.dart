@@ -8,9 +8,12 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_strings.d
 import 'package:second_hand_electronics_marketplace/core/widgets/category_item.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/vertical_card.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/home_header.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_states.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
-final List<Map<String, dynamic>> categories = [
+final List<Map<String, dynamic>> dummyCategories = [
   {'name': 'Phones', 'icon': AppAssets.smartPhoneCatIcon},
   {'name': 'Laptops', 'icon': AppAssets.laptopCatIcon},
   {'name': 'Tablets', 'icon': AppAssets.tabletCatIcon},
@@ -47,24 +50,84 @@ class HomeTab extends StatelessWidget {
             onSeeAll: () {},
           ),
           const SizedBox(height: AppSizes.paddingS),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingM),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  categories.map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: AppSizes.paddingS),
-                      child: CategoryItem(
-                        title: category['name'],
-                        iconPath: category['icon'],
-                        isSelected: false,
-                        onTap: () {},
-                      ),
-                    );
-                  }).toList(),
-            ),
+          BlocBuilder<CategoryCubit, CategoryState>(
+            builder: (context, state) {
+              if (state is CategoryLoading) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppSizes.paddingM),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              if (state is CategoryFailure) {
+                return Padding(
+                  padding: const EdgeInsets.all(AppSizes.paddingM),
+                  child: Center(
+                    child: Text(
+                      'Failed to load categories: ${state.errorMessage}',
+                      style: TextStyle(color: context.colors.error),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is CategorySuccess) {
+                final categoriesData = state.response.data;
+                if (categoriesData.isEmpty) {
+                  // TEMPORARY: Show dummy categories until backend adds real data
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.paddingM,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          dummyCategories.map((category) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                right: AppSizes.paddingS,
+                              ),
+                              child: CategoryItem(
+                                title: category['name'],
+                                iconPath: category['icon'],
+                                isSelected: false,
+                                onTap: () {},
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  );
+                }
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.paddingM,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        categoriesData.map((category) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              right: AppSizes.paddingS,
+                            ),
+                            child: CategoryItem(
+                              title: category.name,
+                              // Using category icon URL or empty string to fallback avoiding null crashes.
+                              iconPath: category.icon?.url ?? '',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                );
+              }
+
+              return const SizedBox(); // Initial State or Unhandled
+            },
           ),
           const SizedBox(height: AppSizes.paddingL),
           _buildSectionHeader(

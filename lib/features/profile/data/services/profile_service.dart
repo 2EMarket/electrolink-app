@@ -23,7 +23,8 @@ class ProfileService {
         print("✅ Profile fetched successfully");
 
         final profileJson = response.data['data'];
-        final profileModel = ProfileModel.fromJson(profileJson);
+        final profileModel =
+            profileJson != null ? ProfileModel.fromJson(profileJson) : null;
 
         final appUser = AppUserModel.fromAuthAndProfile(authUser, profileModel);
 
@@ -36,8 +37,18 @@ class ProfileService {
     } on DioException catch (e) {
       print("🚨 Dio Error: ${e.response?.data}");
       final errorMessage =
-          e.response?.data[ApiKeys.message] ?? 'Network error occurred';
-      throw Exception(errorMessage);
+          e.response?.data[ApiKeys.message]?.toString().toLowerCase() ?? '';
+
+      if (e.response?.statusCode == 404 ||
+          errorMessage.contains('profile not found') ||
+          errorMessage.contains('not found')) {
+        print("⚠️ Profile not found (New User). Returning basic Auth info.");
+        return AppUserModel.fromAuthAndProfile(authUser, null);
+      }
+
+      throw Exception(
+        e.response?.data[ApiKeys.message] ?? 'Network error occurred',
+      );
     } catch (e) {
       print("❌ Unknown Error: $e");
       throw Exception(e.toString());
