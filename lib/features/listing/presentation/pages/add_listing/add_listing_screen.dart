@@ -92,12 +92,12 @@ class _AddListingScreenState extends State<AddListingScreen> {
       _descriptionController.text = state.draft.description;
     }
 
-    if (state.draft.category != _lastCategory) {
+    if (state.draft.categoryId != _lastCategory) {
       for (final controller in _attributeControllers.values) {
         controller.dispose();
       }
       _attributeControllers.clear();
-      _lastCategory = state.draft.category;
+      _lastCategory = state.draft.categoryId;
     }
 
     state.draft.attributes.forEach((key, value) {
@@ -175,6 +175,9 @@ class _AddListingScreenState extends State<AddListingScreen> {
     AddListingDraftCubit cubit,
     AddListingDraftState state,
   ) {
+    if (state.categories.isEmpty && !state.isLoadingCategories) {
+      cubit.reloadCategories();
+    }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -182,10 +185,20 @@ class _AddListingScreenState extends State<AddListingScreen> {
       builder:
           (_) => FractionallySizedBox(
             heightFactor: 0.9,
-            child: ListingCategorySheet(
-              categories: cubit.categories,
-              selectedValue: state.draft.category,
-              onSelected: cubit.updateCategory,
+            child: BlocProvider.value(
+              value: cubit,
+              child: BlocBuilder<AddListingDraftCubit, AddListingDraftState>(
+                builder: (context, sheetState) {
+                  return ListingCategorySheet(
+                    categories: sheetState.categories,
+                    selectedCategoryId: sheetState.draft.categoryId,
+                    onSelected: cubit.updateCategory,
+                    isLoading: sheetState.isLoadingCategories,
+                    errorMessage: sheetState.categoriesErrorMessage,
+                    onRetry: cubit.reloadCategories,
+                  );
+                },
+              ),
             ),
           ),
     );
@@ -297,7 +310,9 @@ class _AddListingScreenState extends State<AddListingScreen> {
 
             if (state.status == AddListingSubmitStatus.failure) {
               EasyLoading.showError(
-                'Failed to submit listing. Please try again.',
+                state.errorMessage.isEmpty
+                    ? 'Failed to submit listing. Please try again.'
+                    : state.errorMessage,
               );
               context.read<AddListingSubmitCubit>().reset();
             }
@@ -365,15 +380,14 @@ class _AddListingScreenState extends State<AddListingScreen> {
                           Expanded(
                             child: OutlinedButton(
                               onPressed:
-                                  state.canPublish
-                                      ? () {
-                                        context.pushNamed(
-                                          AppRoutes.addListingPreview,
-                                          extra: state.draft,
-                                        );
-                                      }
-                                      : null,
-                              child: const Text('Review'),
+                                  state.draft.isEmpty
+                                      ? null
+                                      : () async {
+                                        await draftCubit.saveDraft();
+                                        if (!mounted) return;
+                                        EasyLoading.showSuccess('Draft saved');
+                                      },
+                              child: const Text('Save Draft'),
                             ),
                           ),
                           const SizedBox(width: AppSizes.paddingS),

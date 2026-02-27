@@ -14,12 +14,8 @@ import 'core/constants/api_constants.dart';
 import 'core/constants/cache_keys.dart';
 import 'core/helpers/cache_helper.dart';
 import 'features/auth/data/services/auth_service.dart';
-import 'features/auth/presentation/cubits/auth_states.dart';
-import 'features/home/presentation/pages/splash_screen.dart';
-import 'features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
 import 'features/profile/data/services/profile_service.dart';
-import 'features/profile/presentation/bloc/profile_screen_bloc/profile_bloc.dart';
 import 'imports.dart';
 
 class ElectroLinkApp extends StatelessWidget {
@@ -57,7 +53,10 @@ class ElectroLinkApp extends StatelessWidget {
       myDio.options.headers['Authorization'] = 'Bearer $token';
     }
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (_) => ProfileService(myDio))],
+      providers: [
+        RepositoryProvider<Dio>.value(value: myDio),
+        RepositoryProvider(create: (_) => ProfileService(myDio)),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<CountriesCubit>(

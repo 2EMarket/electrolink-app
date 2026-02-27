@@ -17,6 +17,17 @@ class ApiEndpoints {
   // ==========================================
   static const String getProfile = '/profile'; // GET
   static const String updateProfile = '/profile'; // PATCH
+
+  // ==========================================
+  // Catalog Endpoints
+  // ==========================================
+  static const String categories = '/categories'; // GET
+  static String categoryById(String id) => '/categories/$id'; // GET
+
+  // ==========================================
+  // Product Endpoints
+  // ==========================================
+  static const String createPendingProduct = '/products/pending'; // POST
 }
 
 class ApiKeys {
@@ -50,6 +61,15 @@ class ApiKeys {
   static const String isPhoneVerified = 'isPhoneVerified';
   static const String isIdentityVerified = 'isIdentityVerified';
   static const String userId = 'userId';
+  static const String title = 'title';
+  static const String categoryId = 'categoryId';
+  static const String condition = 'condition';
+  static const String price = 'price';
+  static const String isNegotiable = 'isNegotiable';
+  static const String images = 'images';
+  static const String attributes = 'attributes';
+  static const String attributeId = 'attributeId';
+  static const String value = 'value';
 
   // Specific API Values (Enums/Types)
   static const String emailVerification = 'email_verification';

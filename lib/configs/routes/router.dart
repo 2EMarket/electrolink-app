@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_states.dart';
 import 'package:second_hand_electronics_marketplace/features/auth/presentation/pages/login_screen.dart';
@@ -9,14 +10,14 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/p
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/onboarding_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/pages/location_page.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/models/add_listing_draft.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_draft_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_media_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/add_listing_submit_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/data/services/listing_catalog_service.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/data/services/listing_submit_service.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/add_listing/add_listing_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/no_internet_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/settings_screen/help_center_screen.dart';
-import '../../features/auth/data/models/auth_models.dart';
 import '../../features/auth/presentation/cubits/auth_cubit.dart';
 import '../../features/auth/presentation/pages/change_password_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
@@ -38,7 +39,7 @@ import '../../features/verification/presentation/pages/verification_screen.dart'
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: '/${AppRoutes.login}',
+    initialLocation: '/${AppRoutes.addListing}',
     debugLogDiagnostics: true,
     redirect: (context, state) async {
       return null;
@@ -171,10 +172,14 @@ class AppRouter {
 
               if (authState is AuthSuccess) {
                 return BlocProvider(
-                  create: (context) => ProfileBloc(
-                    context.read<ProfileService>(), // تأكدي ProfileService موجود في MultiRepositoryProvider
-                    authState.response.user!,
-                  )..add(FetchProfileEvent(isMe: true)),
+                  create:
+                      (context) => ProfileBloc(
+                        context
+                            .read<
+                              ProfileService
+                            >(), // تأكدي ProfileService موجود في MultiRepositoryProvider
+                        authState.response.user!,
+                      )..add(FetchProfileEvent(isMe: true)),
                   child: EditUserProfile(
                     authUser: authState.response.user!,
                     isMe: true,
@@ -229,17 +234,27 @@ class AppRouter {
       GoRoute(
         path: '/${AppRoutes.addListing}',
         name: AppRoutes.addListing,
-        builder:
-            (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => AddListingDraftCubit()..loadDraft(),
-                ),
-                BlocProvider(create: (_) => AddListingMediaCubit()),
-                BlocProvider(create: (_) => AddListingSubmitCubit()),
-              ],
-              child: const AddListingScreen(),
-            ),
+        builder: (context, state) {
+          final dio = context.read<Dio>();
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create:
+                    (_) => AddListingDraftCubit(
+                      catalogService: ListingCatalogService(dio),
+                    )..loadDraft(),
+              ),
+              BlocProvider(create: (_) => AddListingMediaCubit()),
+              BlocProvider(
+                create:
+                    (_) => AddListingSubmitCubit(
+                      submitService: ListingSubmitService(dio),
+                    ),
+              ),
+            ],
+            child: const AddListingScreen(),
+          );
+        },
       ),
       /*GoRoute(
         path: '/${AppRoutes.addListingPreview}',

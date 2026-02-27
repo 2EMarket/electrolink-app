@@ -19,17 +19,78 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
   final ListingCatalogService _catalogService;
   final ListingDraftStorage _draftStorage;
 
-  ListingCategoryConfig? get selectedCategoryConfig {
-    return _catalogService.getCategoryConfig(state.draft.category);
-  }
+  ListingCategoryConfig? get selectedCategoryConfig =>
+      state.selectedCategoryConfig;
 
-  List<ListingCategoryConfig> get categories => _catalogService.getCategories();
+  List<ListingCategoryConfig> get categories => state.categories;
 
   Future<void> loadDraft() async {
-    emit(state.copyWith(isLoadingDraft: true));
-    final draft = await _draftStorage.readDraft();
-    final loadedDraft = draft ?? const AddListingDraft();
-    _emitDraft(loadedDraft, isLoadingDraft: false);
+    emit(
+      state.copyWith(
+        isLoadingDraft: true,
+        isLoadingCategories: true,
+        categoriesErrorMessage: '',
+      ),
+    );
+
+    final draftFuture = _draftStorage.readDraft();
+
+    List<ListingCategoryConfig> loadedCategories = const [];
+    String categoriesError = '';
+    try {
+      loadedCategories = await _catalogService.getCategories();
+    } catch (e) {
+      categoriesError = _cleanErrorMessage(e);
+    }
+
+    final storedDraft = await draftFuture;
+    var draft = storedDraft ?? const AddListingDraft();
+    draft = _normalizeDraftCategory(draft, loadedCategories);
+    final selected = _catalogService.getCategoryConfig(
+      draft.categoryId,
+      loadedCategories,
+    );
+    draft = _migrateLegacyAttributes(draft, selected);
+
+    _emitDraft(
+      draft,
+      categories: loadedCategories,
+      selectedCategoryConfig: selected,
+      isLoadingDraft: false,
+      isLoadingCategories: false,
+      categoriesErrorMessage: categoriesError,
+    );
+  }
+
+  Future<void> reloadCategories() async {
+    emit(state.copyWith(isLoadingCategories: true, categoriesErrorMessage: ''));
+
+    try {
+      final loadedCategories = await _catalogService.getCategories(
+        forceRefresh: true,
+      );
+      var draft = _normalizeDraftCategory(state.draft, loadedCategories);
+      final selected = _catalogService.getCategoryConfig(
+        draft.categoryId,
+        loadedCategories,
+      );
+      draft = _migrateLegacyAttributes(draft, selected);
+
+      _emitDraft(
+        draft,
+        categories: loadedCategories,
+        selectedCategoryConfig: selected,
+        isLoadingCategories: false,
+        categoriesErrorMessage: '',
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoadingCategories: false,
+          categoriesErrorMessage: _cleanErrorMessage(e),
+        ),
+      );
+    }
   }
 
   void setStep(AddListingStep step) {
@@ -49,8 +110,15 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
     _emitDraft(state.draft.copyWith(title: value));
   }
 
-  void updateCategory(String value) {
-    _emitDraft(state.draft.copyWith(category: value, attributes: const {}));
+  void updateCategory(ListingCategoryConfig category) {
+    _emitDraft(
+      state.draft.copyWith(
+        categoryId: category.id,
+        category: category.name,
+        attributes: const {},
+      ),
+      selectedCategoryConfig: category,
+    );
   }
 
   void updateCondition(String value) {
@@ -96,22 +164,52 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
   }
 
   void resetAfterSubmit() {
-    emit(AddListingDraftState.initial());
+    emit(
+      AddListingDraftState.initial().copyWith(
+        categories: state.categories,
+        selectedCategoryConfig: null,
+      ),
+    );
   }
 
-  void _emitDraft(AddListingDraft draft, {bool? isLoadingDraft}) {
-    final computed = _computeFlags(draft);
+  void _emitDraft(
+    AddListingDraft draft, {
+    List<ListingCategoryConfig>? categories,
+    ListingCategoryConfig? selectedCategoryConfig,
+    bool? isLoadingDraft,
+    bool? isLoadingCategories,
+    String? categoriesErrorMessage,
+  }) {
+    final effectiveCategories = categories ?? state.categories;
+    final effectiveCategoryConfig =
+        draft.categoryId.trim().isEmpty
+            ? null
+            : (selectedCategoryConfig ??
+                _catalogService.getCategoryConfig(
+                  draft.categoryId,
+                  effectiveCategories,
+                ));
+
+    final computed = _computeFlags(draft, effectiveCategoryConfig);
     emit(
       state.copyWith(
         draft: draft,
+        categories: effectiveCategories,
+        selectedCategoryConfig: effectiveCategoryConfig,
         isLoadingDraft: isLoadingDraft ?? state.isLoadingDraft,
+        isLoadingCategories: isLoadingCategories ?? state.isLoadingCategories,
+        categoriesErrorMessage:
+            categoriesErrorMessage ?? state.categoriesErrorMessage,
         canProceed: computed.canProceed,
         canPublish: computed.canPublish,
       ),
     );
   }
 
-  ({bool canProceed, bool canPublish}) _computeFlags(AddListingDraft draft) {
+  ({bool canProceed, bool canPublish}) _computeFlags(
+    AddListingDraft draft,
+    ListingCategoryConfig? categoryConfig,
+  ) {
     final hasValidPhoto = draft.photos.any(
       (p) => p.status == ListingPhotoStatus.ready,
     );
@@ -125,13 +223,12 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
         hasValidPhoto &&
         !hasPhotoError &&
         draft.title.trim().isNotEmpty &&
-        draft.category.trim().isNotEmpty &&
+        draft.categoryId.trim().isNotEmpty &&
         draft.condition.trim().isNotEmpty &&
         draft.price.trim().isNotEmpty;
 
-    final config = _catalogService.getCategoryConfig(draft.category);
     final requiredFields =
-        config?.fields.where((f) => f.required).toList() ?? [];
+        categoryConfig?.fields.where((f) => f.required).toList() ?? const [];
 
     final requiredOk = requiredFields.every(
       (f) => (draft.attributes[f.key] ?? '').trim().isNotEmpty,
@@ -139,11 +236,79 @@ class AddListingDraftCubit extends Cubit<AddListingDraftState> {
 
     final moreReady =
         basicReady &&
+        categoryConfig != null &&
         requiredOk &&
         draft.location != null &&
         draft.confirmNotStolen;
 
     return (canProceed: basicReady, canPublish: moreReady);
+  }
+
+  AddListingDraft _normalizeDraftCategory(
+    AddListingDraft draft,
+    List<ListingCategoryConfig> categories,
+  ) {
+    String categoryId = draft.categoryId;
+    String categoryName = draft.category;
+
+    if (categoryId.trim().isEmpty && categoryName.trim().isNotEmpty) {
+      for (final category in categories) {
+        if (category.name.toLowerCase() == categoryName.toLowerCase()) {
+          categoryId = category.id;
+          categoryName = category.name;
+          break;
+        }
+      }
+    }
+
+    if (categoryId.trim().isNotEmpty) {
+      final category = _catalogService.getCategoryConfig(
+        categoryId,
+        categories,
+      );
+      if (category != null) {
+        categoryName = category.name;
+      }
+    }
+
+    return draft.copyWith(categoryId: categoryId, category: categoryName);
+  }
+
+  AddListingDraft _migrateLegacyAttributes(
+    AddListingDraft draft,
+    ListingCategoryConfig? config,
+  ) {
+    if (config == null || draft.attributes.isEmpty) return draft;
+
+    final normalizedCurrent = <String, String>{};
+    final current = Map<String, String>.from(draft.attributes);
+
+    for (final field in config.fields) {
+      final direct = current[field.key];
+      if (direct != null && direct.trim().isNotEmpty) {
+        normalizedCurrent[field.key] = direct;
+        continue;
+      }
+
+      final byLegacy =
+          current[field.legacyKey] ??
+          current[field.label] ??
+          current[field.label.toLowerCase()] ??
+          current[field.label.trim().toLowerCase().replaceAll(
+            RegExp(r'[^a-z0-9]+'),
+            '_',
+          )];
+
+      if (byLegacy != null && byLegacy.trim().isNotEmpty) {
+        normalizedCurrent[field.key] = byLegacy;
+      }
+    }
+
+    return draft.copyWith(attributes: normalizedCurrent);
+  }
+
+  String _cleanErrorMessage(Object error) {
+    return error.toString().replaceAll('Exception: ', '').trim();
   }
 
   bool _samePhotos(List<ListingPhotoItem> a, List<ListingPhotoItem> b) {
