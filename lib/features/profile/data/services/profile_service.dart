@@ -23,7 +23,8 @@ class ProfileService {
         print("✅ Profile fetched successfully");
 
         final profileJson = response.data['data'];
-        final profileModel = ProfileModel.fromJson(profileJson);
+        final profileModel =
+            profileJson != null ? ProfileModel.fromJson(profileJson) : null;
 
         final appUser = AppUserModel.fromAuthAndProfile(authUser, profileModel);
 

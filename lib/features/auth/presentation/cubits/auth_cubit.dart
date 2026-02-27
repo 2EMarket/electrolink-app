@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/cache_keys.dart';
 import '../../../profile/data/models/user_model.dart';
@@ -9,8 +10,52 @@ import 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthService _authService;
+  UserModel? currentUser;
 
   AuthCubit(this._authService) : super(AuthInitial());
+
+  Future<void> _saveToCache(AuthResponseModel response) async {
+    if (response.token.isNotEmpty) {
+      await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
+      _authService.updateHeader(response.token);
+    }
+    if (response.user != null) {
+      currentUser = response.user;
+      final userJson = jsonEncode(response.user!.toJson());
+      await CacheHelper.saveData(key: CacheKeys.user, value: userJson);
+    }
+  }
+
+  Future<void> checkAuth() async {
+    try {
+      final token = await CacheHelper.getData(key: CacheKeys.token);
+      final userStr = await CacheHelper.getData(key: CacheKeys.user);
+
+      if (token != null &&
+          token.isNotEmpty &&
+          userStr != null &&
+          userStr.isNotEmpty) {
+        final userMap = jsonDecode(userStr);
+        final user = UserModel.fromJson(userMap);
+        currentUser = user;
+        _authService.updateHeader(token);
+
+        emit(
+          AuthSuccess(
+            AuthResponseModel(
+              success: true,
+              message: 'Session Restored',
+              token: token,
+              user: user,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error restoring auth session: $e");
+      // Fallback silently if cache is invalid
+    }
+  }
 
   Future<void> register({
     required String fullName,
@@ -28,12 +73,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final response = await _authService.register(request);
-
-      if (response.token.isNotEmpty) {
-        await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
-        _authService.updateHeader(response.token);
-      }
-
+      await _saveToCache(response);
       emit(AuthSuccess(response));
     } catch (e) {
       String errorMsg = e.toString().replaceAll('Exception: ', '');
@@ -86,10 +126,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final response = await _authService.login(email, password);
-      if (response.token.isNotEmpty) {
-        await CacheHelper.saveData(key: CacheKeys.token, value: response.token);
-        _authService.updateHeader(response.token);
-      }
+      await _saveToCache(response);
       emit(AuthSuccess(response));
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');
@@ -113,7 +150,20 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final model = AuthResponseModel.fromJson(response.data);
-      emit(AuthSuccess(model));
+
+      // Merge current User inside if the API verification drops it
+      final completeModel = AuthResponseModel(
+        success: model.success,
+        message: model.message,
+        token:
+            model.token.isNotEmpty
+                ? model.token
+                : (await CacheHelper.getData(key: CacheKeys.token) ?? ''),
+        user: model.user ?? currentUser, // Inject current user
+      );
+
+      await _saveToCache(completeModel);
+      emit(AuthSuccess(completeModel));
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');
       emit(AuthFailure(errorMsg));
@@ -161,6 +211,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     await CacheHelper.removeData(key: CacheKeys.token);
+    await CacheHelper.removeData(key: CacheKeys.user);
+    currentUser = null;
     emit(AuthLogOut());
   }
 }
