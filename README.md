@@ -1,24 +1,57 @@
-# second_hand_electronics_marketplace
+# Electrolink - Second Hand Electronics Marketplace 📱♻️
 
-A new Flutter project.
+## 📖 About The Project
+Electrolink is a comprehensive mobile application designed to facilitate the buying and selling of second-hand electronics. Built with professional software engineering standards, the project emphasizes a seamless user experience (UX), scalable architecture, and robust performance. 
 
-## Getting Started
-## add listing demo 
+This project serves as the **Graduation Project for our Mobile Development Path Training with GSG**.
 
+## 👥 Team Members
+- - **Wafaa** -[Team Leader]
+- **Amal** - [Deputy Team Leader]
+- **Maha** - [Team Member]
+- **Mohammed** - [Team Member]
+- **Israa** - [Team Member]
 
+## 🏗️ Architecture & Technologies
+This application is built using **Flutter** and follows **Simplified Clean Architecture** principles and a **Feature-First** folder structure to ensure maintainability, scalability, and clean code.
 
-https://github.com/user-attachments/assets/b03512e4-9687-4b13-a225-e46a0f21978e
+- **Framework:** Flutter
+- **State Management:** BLoC / Cubit
+- **Routing:** GoRouter
+- **Network/API:** Dio (with structured Interceptors and Error Handling)
+- **Architecture:** Clean Architecture (Core, Features, Data, Presentation)
 
+## ✨ Key Features
+- **Secure Authentication:** Full Auth flow including Register, Login, OTP Verification, and Password Reset.
+- **Product Listings:** Browse, filter, and view details of second-hand electronics.
+- **User Profiles:** Manage personal data, language, currency, and notification settings.
 
+## 🚀 Getting Started
 
+### Prerequisites
+- Flutter SDK (Latest stable version)
+- Dart SDK
+- Android Studio / VS Code
 
-This project is a starting point for a Flutter application.
+### Installation
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone the repository:
+   `https://github.com/2EMarket/electrolink-app.git`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Navigate to the project directory:
+   `cd electrolink`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. Get the dependencies:
+   `flutter pub get`
+
+4. Run the app:
+   `flutter run`
+
+## 📂 Folder Structure
+The project maintains a professional structure:
+- `lib/core/`: Contains shared constants, theme, widgets, and networking base.
+- `lib/features/`: Contains isolated modules (Auth, Home, Profile, Listing, etc.).
+- `lib/configs/`: App configurations and routing setup.
+
+---
+*Built with ❤️ by the Electrolink Flutter Development Team*
