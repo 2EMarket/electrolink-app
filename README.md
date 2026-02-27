@@ -6,7 +6,7 @@ Electrolink is a comprehensive mobile application designed to facilitate the buy
 This project serves as the **Graduation Project for our Mobile Development Path Training with GSG**.
 
 ## 👥 Team Members
-- - **Wafaa** -[Team Leader]
+- **Wafaa** -[Team Leader]
 - **Amal** - [Deputy Team Leader]
 - **Maha** - [Team Member]
 - **Mohammed** - [Team Member]
