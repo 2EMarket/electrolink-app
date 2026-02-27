@@ -53,7 +53,6 @@ class HomeHeader extends StatelessWidget {
                       SizedBox(width: AppSizes.paddingXXS),
                       BlocBuilder<LocationCubit, LocationStates>(
                         builder: (context, state) {
-                          // 1. حالة اللوكيشن جاهز
                           if (state is LocationLoaded) {
                             return Text(
                               // بنعرض المدينة والدولة من المودل

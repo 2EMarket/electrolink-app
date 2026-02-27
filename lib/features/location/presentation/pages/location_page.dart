@@ -10,8 +10,11 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_assets.da
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
+import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
 import 'package:second_hand_electronics_marketplace/features/location/data/models/location_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/widgets/address_info_widget.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -187,12 +190,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   }
 
                   // 3. إذا المسافة تمام، بنكمل عملية الحفظ الطبيعية
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder:
-                        (_) => const Center(child: CircularProgressIndicator()),
-                  );
+                  EasyLoading.show();
 
                   String finalAddress = formatedAddress;
                   if (formatedAddress == 'Address not found' ||
@@ -209,8 +207,14 @@ class _LocationScreenState extends State<LocationScreen> {
                   );
 
                   if (mounted) {
-                    Navigator.pop(context); // إغلاق اللودينج
-                    context.pushReplacementNamed(AppRoutes.mainLayout);
+                    EasyLoading.dismiss(); // إغلاق اللودينج
+                    await CacheHelper.saveData(
+                      key: CacheKeys.isFirstTime,
+                      value: false,
+                    );
+                    context.goNamed(
+                      AppRoutes.mainLayout,
+                    ); // الإنتقال للصفحة الرئيسية بطريقة go عشان نفضي الـ stack
                   }
                 },
                 child: Text('Use this location'),
