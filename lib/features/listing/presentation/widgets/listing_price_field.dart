@@ -28,8 +28,10 @@ class ListingPriceField extends StatelessWidget {
         const SizedBox(height: AppSizes.paddingXS),
         TextFormField(
           controller: controller,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+          ],
           onChanged: onChanged,
           style: AppTypography.body16Regular.copyWith(color: colors.text),
           decoration: InputDecoration(

@@ -18,19 +18,73 @@ class AddListingSubmitCubit extends Cubit<AddListingSubmitState> {
 
   Future<void> submit(AddListingDraft draft, {required bool canPublish}) async {
     if (!canPublish) return;
-    emit(state.copyWith(status: AddListingSubmitStatus.submitting));
+    emit(
+      state.copyWith(
+        status: AddListingSubmitStatus.submitting,
+        errorMessage: '',
+      ),
+    );
+
     final result = await _submitService.submitListing(draft);
-    if (result == ListingSubmitResult.success) {
-      await _draftStorage.clearDraft();
-      emit(state.copyWith(status: AddListingSubmitStatus.success));
-    } else if (result == ListingSubmitResult.offline) {
-      emit(state.copyWith(status: AddListingSubmitStatus.offline));
-    } else {
-      emit(state.copyWith(status: AddListingSubmitStatus.failure));
+
+    switch (result.type) {
+      case ListingSubmitResultType.success:
+        await _draftStorage.clearDraft();
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.success,
+            errorMessage: '',
+          ),
+        );
+        break;
+      case ListingSubmitResultType.offline:
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.offline,
+            errorMessage: result.message ?? '',
+          ),
+        );
+        break;
+      case ListingSubmitResultType.unauthorized:
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.failure,
+            errorMessage: result.message ?? 'You need to log in again.',
+          ),
+        );
+        break;
+      case ListingSubmitResultType.validation:
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.failure,
+            errorMessage:
+                result.message ??
+                'Please check the listing details and try again.',
+          ),
+        );
+        break;
+      case ListingSubmitResultType.uploadError:
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.failure,
+            errorMessage:
+                result.message ??
+                'Image upload failed. Please try again later.',
+          ),
+        );
+        break;
+      case ListingSubmitResultType.failure:
+        emit(
+          state.copyWith(
+            status: AddListingSubmitStatus.failure,
+            errorMessage: result.message ?? 'Failed to submit listing.',
+          ),
+        );
+        break;
     }
   }
 
   void reset() {
-    emit(state.copyWith(status: AddListingSubmitStatus.idle));
+    emit(state.copyWith(status: AddListingSubmitStatus.idle, errorMessage: ''));
   }
 }

@@ -1,210 +1,251 @@
+import 'package:dio/dio.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/models/listing_field_config.dart';
 
 class ListingCatalogService {
-  List<ListingCategoryConfig> getCategories() {
-    return const [
-      ListingCategoryConfig(
-        name: 'Phones',
-        icon: AppAssets.smartPhoneCatIcon,
-        fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            required: true,
-            type: ListingFieldType.selection,
-            options: [
-              'Apple',
-              'Samsung',
-              'Xiaomi',
-              'Huawei',
-              'Nokia',
-              'Google',
-              'OnePlus',
-            ],
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            required: true,
-            hint: 'Enter model',
-            type: ListingFieldType.text,
-          ),
-          ListingFieldConfig(
-            key: 'storage',
-            label: 'Storage',
-            required: true,
-            type: ListingFieldType.selection,
-            options: ['64 GB', '128 GB', '256 GB', '512 GB', '1 TB'],
-          ),
-          ListingFieldConfig(
-            key: 'battery',
-            label: 'Battery Health',
-            hint: 'Enter battery health (e.g. 85%)',
-            type: ListingFieldType.number,
-          ),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Tablets',
-        icon: AppAssets.tabletCatIcon,
-        fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            required: true,
-            type: ListingFieldType.selection,
-            options: ['Apple', 'Samsung', 'Huawei', 'Xiaomi', 'Lenovo'],
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            required: true,
-            hint: 'Enter model',
-          ),
-          ListingFieldConfig(
-            key: 'storage',
-            label: 'Storage',
-            required: true,
-            type: ListingFieldType.selection,
-            options: ['32 GB', '64 GB', '128 GB', '256 GB'],
-          ),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Laptops',
-        icon: AppAssets.laptopCatIcon,
-        fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            required: true,
-            type: ListingFieldType.selection,
-            options: ['Apple', 'Dell', 'HP', 'Lenovo', 'Asus', 'Acer'],
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            required: true,
-            hint: 'Enter model',
-          ),
-          ListingFieldConfig(key: 'cpu', label: 'CPU', hint: 'Enter CPU model'),
-          ListingFieldConfig(
-            key: 'ram',
-            label: 'RAM',
-            type: ListingFieldType.selection,
-            options: ['4 GB', '8 GB', '16 GB', '32 GB', '64 GB'],
-          ),
-          ListingFieldConfig(
-            key: 'storage',
-            label: 'Storage',
-            type: ListingFieldType.selection,
-            options: ['128 GB', '256 GB', '512 GB', '1 TB', '2 TB'],
-          ),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'PC Parts',
-        icon: AppAssets.aiChipCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Gaming',
-        icon: AppAssets.gameCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Audio',
-        icon: AppAssets.headphoneCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Smartwatches',
-        icon: AppAssets.smartWatchCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Cameras',
-        icon: AppAssets.cameraCatIcon,
-        fields: [
-          ListingFieldConfig(
-            key: 'brand',
-            label: 'Brand',
-            required: true,
-            type: ListingFieldType.selection,
-            options: ['Canon', 'Nikon', 'Sony', 'Fujifilm', 'Panasonic'],
-          ),
-          ListingFieldConfig(
-            key: 'model',
-            label: 'Model',
-            required: true,
-            hint: 'Enter model',
-          ),
-          ListingFieldConfig(
-            key: 'lens',
-            label: 'Lens',
-            hint: 'Enter lens info',
-          ),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Smart Home',
-        icon: AppAssets.plugCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'TV & Monitors',
-        icon: AppAssets.tvCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-          ListingFieldConfig(
-            key: 'size',
-            label: 'Screen Size',
-            hint: 'Enter size (e.g. 55 in)',
-          ),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Accessories',
-        icon: AppAssets.headphoneCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-      ListingCategoryConfig(
-        name: 'Networking',
-        icon: AppAssets.routerCatIcon,
-        fields: [
-          ListingFieldConfig(key: 'brand', label: 'Brand', hint: 'Enter brand'),
-          ListingFieldConfig(key: 'model', label: 'Model', hint: 'Enter model'),
-        ],
-      ),
-    ];
+  ListingCatalogService([Dio? dio])
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: ApiEndpoints.baseUrl,
+              receiveDataWhenStatusError: true,
+              connectTimeout: const Duration(seconds: 10),
+            ),
+          );
+
+  final Dio _dio;
+  List<ListingCategoryConfig>? _categoriesCache;
+
+  Future<List<ListingCategoryConfig>> getCategories({
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh && _categoriesCache != null) {
+      return _categoriesCache!;
+    }
+
+    try {
+      final response = await _dio.get(ApiEndpoints.categories);
+      final rawCategories = _extractCategoryList(response.data);
+      final activeCategories =
+          rawCategories
+              .where((category) => _isCategoryActive(category))
+              .toList();
+
+      final categories = await Future.wait(
+        activeCategories.map(_buildCategoryConfig),
+      );
+
+      _categoriesCache = categories;
+      return categories;
+    } on DioException catch (e) {
+      final message =
+          (e.response?.data is Map<String, dynamic>)
+              ? (e.response?.data[ApiKeys.message]?.toString() ??
+                  'Failed to load categories')
+              : 'Failed to load categories';
+      throw Exception(message);
+    } catch (_) {
+      throw Exception('Failed to load categories');
+    }
   }
 
-  ListingCategoryConfig? getCategoryConfig(String categoryName) {
-    if (categoryName.trim().isEmpty) return null;
-    return getCategories().cast<ListingCategoryConfig?>().firstWhere(
-      (c) => c?.name.toLowerCase() == categoryName.toLowerCase(),
-      orElse: () => null,
-    );
+  ListingCategoryConfig? getCategoryConfig(
+    String categoryId,
+    List<ListingCategoryConfig> categories,
+  ) {
+    if (categoryId.trim().isEmpty) return null;
+    for (final category in categories) {
+      if (category.id == categoryId) return category;
+    }
+    return null;
+  }
+
+  List<Map<String, dynamic>> _extractCategoryList(dynamic payload) {
+    if (payload is! Map<String, dynamic>) return const [];
+    final data = payload[ApiKeys.data];
+
+    if (data is List) {
+      return data
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+    }
+
+    if (data is Map<String, dynamic>) {
+      final nested = data[ApiKeys.data];
+      if (nested is List) {
+        return nested
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+      }
+    }
+
+    return const [];
+  }
+
+  bool _isCategoryActive(Map<String, dynamic> category) {
+    final value = category['isActive'];
+    if (value is bool) return value;
+    return true;
+  }
+
+  Future<ListingCategoryConfig> _buildCategoryConfig(
+    Map<String, dynamic> category,
+  ) async {
+    final id = category[ApiKeys.id]?.toString() ?? '';
+    final name = category['name']?.toString() ?? '';
+    final icon = _resolveCategoryIcon(name);
+
+    if (id.isEmpty) {
+      return ListingCategoryConfig(
+        id: id,
+        name: name,
+        icon: icon,
+        fields: const [],
+      );
+    }
+
+    try {
+      final detailsResponse = await _dio.get(ApiEndpoints.categoryById(id));
+      final detailsPayload = detailsResponse.data;
+      final details =
+          detailsPayload is Map<String, dynamic>
+              ? (detailsPayload[ApiKeys.data] is Map
+                  ? Map<String, dynamic>.from(
+                    detailsPayload[ApiKeys.data] as Map,
+                  )
+                  : null)
+              : null;
+
+      final attributes =
+          details?['attributes'] is List
+              ? details!['attributes'] as List<dynamic>
+              : const <dynamic>[];
+
+      final fields = _mapAttributes(attributes);
+      return ListingCategoryConfig(
+        id: id,
+        name: name,
+        icon: icon,
+        fields: fields,
+      );
+    } catch (_) {
+      return ListingCategoryConfig(
+        id: id,
+        name: name,
+        icon: icon,
+        fields: const [],
+      );
+    }
+  }
+
+  List<ListingFieldConfig> _mapAttributes(List<dynamic> attributes) {
+    return attributes.whereType<Map>().map((raw) {
+      final attribute = Map<String, dynamic>.from(raw);
+      final attributeId = attribute[ApiKeys.id]?.toString() ?? '';
+      final attributeName = attribute['name']?.toString() ?? '';
+      final rawType = attribute[ApiKeys.type]?.toString() ?? 'text';
+      final body =
+          attribute['body'] is Map
+              ? Map<String, dynamic>.from(attribute['body'] as Map)
+              : <String, dynamic>{};
+
+      return ListingFieldConfig(
+        key: attributeId,
+        attributeId: attributeId,
+        label: attributeName,
+        required: attribute['isRequired'] == true,
+        type: _mapFieldType(rawType),
+        options: _mapOptions(rawType, body),
+        hint: _mapHint(rawType, body),
+        legacyKey: _legacyKey(attributeName),
+      );
+    }).toList();
+  }
+
+  ListingFieldType _mapFieldType(String rawType) {
+    switch (rawType) {
+      case 'number':
+        return ListingFieldType.number;
+      case 'select':
+      case 'toggle':
+      case 'checkboxes':
+        return ListingFieldType.selection;
+      default:
+        return ListingFieldType.text;
+    }
+  }
+
+  List<String> _mapOptions(String rawType, Map<String, dynamic> body) {
+    if (rawType == 'select') {
+      final options = body['options'];
+      if (options is List) {
+        return options.map((e) => e.toString()).toList();
+      }
+    }
+
+    if (rawType == 'toggle') {
+      return const ['true', 'false'];
+    }
+
+    if (rawType == 'checkboxes') {
+      final values = body['checkboxes'];
+      if (values is List) {
+        final result = <String>[];
+        for (final item in values.whereType<Map>()) {
+          result.addAll(item.keys.map((k) => k.toString()));
+        }
+        return result;
+      }
+    }
+
+    return const [];
+  }
+
+  String _mapHint(String rawType, Map<String, dynamic> body) {
+    final directHint = body['text']?.toString();
+    if (directHint != null && directHint.trim().isNotEmpty) return directHint;
+
+    if (rawType == 'textarea') {
+      final textareaHint = body['textarea']?.toString();
+      if (textareaHint != null && textareaHint.trim().isNotEmpty) {
+        return textareaHint;
+      }
+    }
+
+    if (rawType == 'datepicker') {
+      return 'Select date';
+    }
+
+    return '';
+  }
+
+  String _legacyKey(String name) {
+    return name
+        .trim()
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
+        .replaceAll(RegExp(r'^_+|_+$'), '');
+  }
+
+  String _resolveCategoryIcon(String name) {
+    final normalized = name.trim().toLowerCase();
+    if (normalized.contains('phone')) return AppAssets.smartPhoneCatIcon;
+    if (normalized.contains('tablet')) return AppAssets.tabletCatIcon;
+    if (normalized.contains('laptop')) return AppAssets.laptopCatIcon;
+    if (normalized.contains('gaming')) return AppAssets.gameCatIcon;
+    if (normalized.contains('camera')) return AppAssets.cameraCatIcon;
+    if (normalized.contains('audio')) return AppAssets.headphoneCatIcon;
+    if (normalized.contains('watch')) return AppAssets.smartWatchCatIcon;
+    if (normalized.contains('network')) return AppAssets.routerCatIcon;
+    if (normalized.contains('tv') || normalized.contains('monitor')) {
+      return AppAssets.tvCatIcon;
+    }
+    if (normalized.contains('home')) return AppAssets.plugCatIcon;
+    return AppAssets.aiChipCatIcon;
   }
 
   List<String> getCountryOptions() {
