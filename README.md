@@ -5,11 +5,11 @@ Electrolink is a professional, trust-based marketplace designed for buying and s
 This project serves as the **Graduation Project for the Mobile Development Path Training with GSG**.
 
 ## 👥 Team Members
-- **Wafaa** - [@WafaaSisalem](https://github.com/WafaaSisalem) [Team Leader & Mobile Developer]
-- **Amal** - [@amalanan](https://github.com/amalanan) [Deputy Team Leader & Mobile Developer]
-- **Maha** - [@maha2001marwan](https://github.com/maha2001marwan) [Mobile Developer]
-- **Mohammed** - [@MOQ2](https://github.com/MOQ2) [Mobile Developer]
-- **Israa** - [@IsraaTomeh](https://github.com/IsraaTomeh) [Mobile Developer]
+- **Wafaa** - [@WafaaSisalem](https://github.com/WafaaSisalem) [Team Leader]
+- **Amal** - [@amalanan](https://github.com/amalanan) [Deputy Team Leader]
+- **Maha** - [@maha2001marwan](https://github.com/maha2001marwan) [Team Member]
+- **Mohammed** - [@MOQ2](https://github.com/MOQ2) [Team Member]
+- **Israa** - [@IsraaTomeh](https://github.com/IsraaTomeh) [Team Member]
 
 ## ✨ Features
 
@@ -37,16 +37,15 @@ To ensure a safe environment, users can verify their profiles through:
 
 ## 🛠️ Tech Stack
 
-**Frontend:** Flutter (Dart), BLoC / Cubit Pattern, GoRouter
-**Networking:** Dio (Structured with Interceptors & Error Handling)
-**Architecture:** Simplified Clean Architecture (Core, Features, Data, Presentation)
+- **Frontend:** Flutter (Dart), BLoC / Cubit Pattern, GoRouter
+- **Networking:** Dio (Structured with Interceptors & Error Handling)
+- **Architecture:** Simplified Clean Architecture (Core, Features, Data, Presentation)
 
 ## 🚀 Getting Started
 
 
 ### Prerequisites
 - Flutter SDK 
-- Firebase & Supabase accounts
 - Google Maps API key
 
 ### Installation
@@ -57,19 +56,14 @@ To ensure a safe environment, users can verify their profiles through:
    cd electrolink-app
    flutter pub get
    ```
-
-2. **Google Maps Setup**
-    - Get a Google Maps API key
-    - Navigate to the `android/` folder
-    - Create a file named `local.properties`.
-
-3. **Google Maps Setup (Android)**
+2. **Google Maps Setup (Android)**
+   - Get a Google Maps API key
    - Navigate to the `android/` folder.
-   - Create a file named `local.properties` (if it doesn't exist).
+   - Create a file named `local.properties`.
    - Add the following line with your Google Maps API Key instead of zero's:
      `MAPS_API_KEY=000000000000000000000000000000000`
      
-4. Run the app
+5. Run the app
    ```bash
    flutter run
    ```
