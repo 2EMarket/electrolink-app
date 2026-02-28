@@ -34,6 +34,7 @@ class PhotoTipsList extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(width: AppSizes.paddingM),
             ],
           ),
           if (i != tips.length - 1) const SizedBox(height: AppSizes.paddingM),
