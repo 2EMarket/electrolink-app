@@ -2,91 +2,101 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../../../../core/constants/constants_exports.dart';
+import '../../../../../auth/data/models/auth_models.dart';
 import '../../../../../listing/data/listing_model.dart';
+import '../../../../data/services/profile_service.dart';
 import '../../../../profile_exports.dart';
 import '../../../widgets/profile_widgets_exports.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isMe;
-  final String userId;
+  final UserModel authUser;
 
-  const ProfileScreen({super.key, required this.userId, required this.isMe});
+  const ProfileScreen({super.key, required this.authUser, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (_) => ProfileRepository(dataSource: ProfileMockDataSource()),
-      child: BlocProvider(
-        create:
-            (context) =>
-                ProfileBloc(repository: context.read<ProfileRepository>())
-                  ..add(LoadProfile(userId: userId, isMe: isMe)),
-        child: BlocListener<ProfileBloc, ProfileState>(
-          listener: (context, state) {
-            if (state is ProfileLoading) {
-              EasyLoading.show(status: 'Loading...');
-            } else {
-              EasyLoading.dismiss();
-            }
-          },
-          child: BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, state) {
-              if (state is ProfileError) return ProfileErrorScreen();
-              if (state is ProfileLoaded) {
-                final profileData = ProfileViewData.fromUser(
-                  state.profile,
-                  type: state.isMe ? ProfileType.private : ProfileType.public,
-                );
-                final verificationProgress = 0.3; // mock progress
-                final userListings =
-                    dummyListings
-                        .where((l) => l.ownerId == state.profile.id)
-                        .toList();
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(profileData.name),
-                    actions: [ProfileAppBarActions(isMe: state.isMe)],
+    return BlocProvider(
+      create:
+          (context) =>
+              ProfileBloc(context.read<ProfileService>(), authUser)
+                ..add(FetchProfileEvent(isMe: isMe)),
+      child: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoading) {
+            EasyLoading.show(status: 'Loading...');
+          } else {
+            EasyLoading.dismiss();
+          }
+        },
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileError)
+              return ProfileErrorScreen(message: state.message);
+            if (state is ProfileLoaded) {
+              final profileData = ProfileViewData.fromAppUser(
+                state.appUser,
+                type: state.isMe ? ProfileType.private : ProfileType.public,
+              );
+
+              final verificationProgress =
+                  state.appUser.user.verificationPercentage / 100;
+              final userListings =
+                  dummyListings
+                      .where(
+                        (l) => l.ownerId == state.appUser.user.id.toString(),
+                      )
+                      .toList();
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(profileData.name),
+                  actions: [ProfileAppBarActions(isMe: state.isMe)],
+                ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSizes.paddingM,
+                    AppSizes.paddingM,
+                    AppSizes.paddingM,
+                    AppSizes.paddingL,
                   ),
-                  body: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSizes.paddingM,
-                      AppSizes.paddingM,
-                      AppSizes.paddingM,
-                      AppSizes.paddingL,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ProfileHeader(
-                          profile: profileData,
-                          type:
-                              state.isMe
-                                  ? ProfileType.private
-                                  : ProfileType.public,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ProfileHeader(
+                        profile: profileData,
+                        type:
+                            state.isMe
+                                ? ProfileType.private
+                                : ProfileType.public,
+                      ),
+                      SizedBox(height: AppSizes.paddingS),
+                      if (state.isMe)
+                        PrivateProfileCompletion(
+                          verificationProgress: verificationProgress,
                         ),
-                        SizedBox(height: AppSizes.paddingS),
-                        if (state.isMe)
-                          PrivateProfileCompletion(
-                            verificationProgress: verificationProgress,
+                      SizedBox(
+                        height:
+                            state.isMe
+                                ? AppSizes.paddingM
+                                : AppSizes.paddingXXS,
+                      ),
+                      state.isMe
+                          ? PrivateProfileWidget(
+                            userListings: userListings,
+                            user: authUser,
+                          )
+                          : PublicProfileWidget(
+                            userListings: userListings,
+                            user: authUser,
                           ),
-                        SizedBox(
-                          height:
-                              state.isMe
-                                  ? AppSizes.paddingM
-                                  : AppSizes.paddingXXS,
-                        ),
-                        state.isMe
-                            ? PrivateProfileWidget(userListings: userListings)
-                            : PublicProfileWidget(userListings: userListings),
-                      ],
-                    ),
+                    ],
                   ),
-                );
-              }
-              return const SizedBox();
-            },
-          ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

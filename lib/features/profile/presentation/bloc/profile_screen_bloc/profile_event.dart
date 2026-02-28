@@ -1,9 +1,15 @@
 
+part of 'profile_bloc.dart';
+
 abstract class ProfileEvent {}
 
-class LoadProfile extends ProfileEvent {
-  final String userId;
+class FetchProfileEvent extends ProfileEvent {
   final bool isMe;
+  FetchProfileEvent({required this.isMe});
+}
+class UpdateProfileEvent extends ProfileEvent {
+  final Map<String, dynamic> updates;
+  final File? avatar;
 
-  LoadProfile({required this.userId, required this.isMe});
+  UpdateProfileEvent({required this.updates, this.avatar});
 }

@@ -1,4 +1,3 @@
-// help_center_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'help_center_event.dart';
 import 'help_center_state.dart';
@@ -12,7 +11,6 @@ class HelpCenterBloc extends Bloc<HelpCenterEvent, HelpCenterState> {
       emit(state.copyWith(isLoading: false));
     });
 
-    on<TapContactItem>((event, emit) {
-    });
+    on<TapContactItem>((event, emit) {});
   }
 }

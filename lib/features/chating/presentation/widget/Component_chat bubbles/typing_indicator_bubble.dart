@@ -3,28 +3,26 @@ import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dar
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/chat_bubble.dart';
 
 class TypingIndicatorBubble extends ChatBubbleBase {
-  TypingIndicatorBubble({
-    super.key,
-    required super.isSender,
-  }) : super(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Text(
-                //   'Typing   ', 
-                //   style: AppTypography.body14Regular.copyWith(
-                //     color: isSender ? AppColors.white : AppColors.text,
-                //   ),
-                // ),
-                _AnimatedTypingDots(
-                  dotColor: isSender ? AppColors.white : AppColors.mainColor,
-                ),
-              ],
-            ),
+  TypingIndicatorBubble({super.key, required super.isSender})
+    : super(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Text(
+              //   'Typing   ',
+              //   style: AppTypography.body14Regular.copyWith(
+              //     color: isSender ? AppColors.white : AppColors.text,
+              //   ),
+              // ),
+              _AnimatedTypingDots(
+                dotColor: isSender ? AppColors.white : AppColors.mainColor,
+              ),
+            ],
           ),
-        );
+        ),
+      );
 }
 
 // النقاط المتحركة مع تأثير بسيط
@@ -65,7 +63,7 @@ class _AnimatedTypingDotsState extends State<_AnimatedTypingDots>
           children: List.generate(3, (index) {
             final delay = index * 0.2;
             final animationValue = (_controller.value - delay).clamp(0.0, 1.0);
-            
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
               child: Transform.translate(

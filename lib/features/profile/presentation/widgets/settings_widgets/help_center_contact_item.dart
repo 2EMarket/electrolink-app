@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 
-
 class HelpCenterContactItem extends StatelessWidget {
   const HelpCenterContactItem({
     super.key,

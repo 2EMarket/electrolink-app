@@ -26,68 +26,69 @@ class _ListingsScreenState extends State<ListingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
- return MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(      appBar: AppBar(title: Text(widget.title)),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.paddingM),
-        child: Column(
-          children: [
-            SearchWithFilterWidget(),
+      home: Scaffold(
+        appBar: AppBar(title: Text(widget.title)),
+        body: Padding(
+          padding: const EdgeInsets.all(AppSizes.paddingM),
+          child: Column(
+            children: [
+              SearchWithFilterWidget(),
 
-            const SizedBox(height: AppSizes.paddingM),
+              const SizedBox(height: AppSizes.paddingM),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(AppAssets.swapIcon),
-                    const SizedBox(width: 4),
-                    Text(
-                      AppStrings.sort,
-                      style: AppTypography.body14Regular.copyWith(
-                        color: context.colors.titles,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(AppAssets.swapIcon),
+                      const SizedBox(width: 4),
+                      Text(
+                        AppStrings.sort,
+                        style: AppTypography.body14Regular.copyWith(
+                          color: context.colors.titles,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => setState(() => isGridView = false),
-                      child: SvgPicture.asset(
-                        !isGridView
-                            ? AppAssets.documentColoredIcon
-                            : AppAssets.documentUnColoredIcon,
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => setState(() => isGridView = false),
+                        child: SvgPicture.asset(
+                          !isGridView
+                              ? AppAssets.documentColoredIcon
+                              : AppAssets.documentUnColoredIcon,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSizes.paddingXS),
-                    GestureDetector(
-                      onTap: () => setState(() => isGridView = true),
-                      child: SvgPicture.asset(
-                        isGridView
-                            ? AppAssets.categoryColoredIcon
-                            : AppAssets.categoryUnColoredIcon,
+                      SizedBox(width: AppSizes.paddingXS),
+                      GestureDetector(
+                        onTap: () => setState(() => isGridView = true),
+                        child: SvgPicture.asset(
+                          isGridView
+                              ? AppAssets.categoryColoredIcon
+                              : AppAssets.categoryUnColoredIcon,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  ),
+                ],
+              ),
 
-            const SizedBox(height: AppSizes.paddingM),
+              const SizedBox(height: AppSizes.paddingM),
 
-            Expanded(
-              child:
-              isGridView
-                  ? ListingsGridView(listings: widget.listings)
-                  : ListingsListView(listings: widget.listings),
-            ),
-          ],
-          )    ),
+              Expanded(
+                child:
+                    isGridView
+                        ? ListingsGridView(listings: widget.listings)
+                        : ListingsListView(listings: widget.listings),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

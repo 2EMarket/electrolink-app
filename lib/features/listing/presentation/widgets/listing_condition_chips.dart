@@ -20,43 +20,41 @@ class ListingConditionChips extends StatelessWidget {
     return Wrap(
       spacing: AppSizes.paddingXS,
       runSpacing: AppSizes.paddingXS,
-      children: conditions.map((condition) {
-        final isSelected = condition == selected;
-        return GestureDetector(
-          onTap: () => onSelected(condition),
-          child: Container(
-            height: 36,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.paddingM,
-            ),
-            decoration: BoxDecoration(
-              color:
-                  isSelected
-                      ? colors.mainColor
-                      : colors.greyFillButton,
-              borderRadius: BorderRadius.circular(AppSizes.borderRadius),
-              border: Border.all(
-                color: isSelected ? colors.mainColor : colors.border,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  condition,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.body14Regular.copyWith(
-                    color: isSelected ? colors.surface : colors.neutral,
+      children:
+          conditions.map((condition) {
+            final isSelected = condition == selected;
+            return GestureDetector(
+              onTap: () => onSelected(condition),
+              child: Container(
+                height: 36,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.paddingM,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected ? colors.mainColor : colors.greyFillButton,
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadius),
+                  border: Border.all(
+                    color: isSelected ? colors.mainColor : colors.border,
                   ),
                 ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      condition,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: AppTypography.body14Regular.copyWith(
+                        color: isSelected ? colors.surface : colors.neutral,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
     );
   }
 }

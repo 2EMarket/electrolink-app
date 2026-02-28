@@ -19,7 +19,11 @@ class NoInternetScreen extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
-              SvgPicture.asset(AppAssets.noInternetSvg, width: 120, height: 120),
+              SvgPicture.asset(
+                AppAssets.noInternetSvg,
+                width: 120,
+                height: 120,
+              ),
               const SizedBox(height: AppSizes.paddingL),
               Text(
                 'No Internet Connection',

@@ -174,14 +174,14 @@ class AppTheme {
 
   static CardThemeData _buildCardTheme(AppColorScheme colors, bool isDark) {
     return CardThemeData(
-       color: AppColors.white,
-  elevation: 0,
-  shadowColor: Colors.black.withOpacity(0.1), // صحح to withOpacity بدل withValues
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-  ),
-  margin: const EdgeInsets.all(8),
-   );
+      color: AppColors.white,
+      elevation: 0,
+      shadowColor: Colors.black.withOpacity(
+        0.1,
+      ), // صحح to withOpacity بدل withValues
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.all(8),
+    );
   }
 
   static OutlinedButtonThemeData _buildOutlinedButtonTheme(

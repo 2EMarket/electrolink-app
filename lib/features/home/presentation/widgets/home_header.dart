@@ -55,15 +55,29 @@ class HomeHeader extends StatelessWidget {
                         builder: (context, state) {
                           if (state is LocationLoaded) {
                             return Text(
-                              'Gaza, Palestine',
+                              // بنعرض المدينة والدولة من المودل
+                              '${state.location.city}, ${state.location.country}',
                               maxLines: 1,
+                              overflow:
+                                  TextOverflow
+                                      .ellipsis, // عشان لو النص طويل ما يضرب الديزاين
                               style: AppTypography.body14Regular.copyWith(
                                 color: context.colors.surface,
                               ),
                             );
                           }
+                          // 2. حالة لسه بيحمل
+                          if (state is LocationLoading) {
+                            return Text(
+                              'جاري التحديد...',
+                              style: AppTypography.body14Regular.copyWith(
+                                color: context.colors.surface,
+                              ),
+                            );
+                          }
+                          // 3. حالة ابتدائية أو إيرور
                           return Text(
-                            'Gaza, Palestine', //TODO: dynamic info
+                            'الموقع غير محدد', // أو أي نص افتراضي بتفضليه
                             style: AppTypography.body14Regular.copyWith(
                               color: context.colors.surface,
                             ),
@@ -88,7 +102,9 @@ class HomeHeader extends StatelessWidget {
                   Stack(
                     children: [
                       CircleButton(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(AppRoutes.notification);
+                        },
                         size: 40,
                         iconPath: AppAssets.notificationIcon,
                       ),

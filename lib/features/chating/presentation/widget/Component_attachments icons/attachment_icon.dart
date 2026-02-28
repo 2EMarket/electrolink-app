@@ -20,11 +20,7 @@ class AttachmentButtons extends StatelessWidget {
           angle: -0.8,
           child: IconButton(
             onPressed: onAttach,
-            icon: Icon(
-              Icons.attach_file,
-              size: 20,
-              color: AppColors.icons, 
-            ),
+            icon: Icon(Icons.attach_file, size: 20, color: AppColors.icons),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),
@@ -36,7 +32,7 @@ class AttachmentButtons extends StatelessWidget {
           icon: Icon(
             Icons.camera_alt_outlined,
             size: 20,
-            color: AppColors.icons, 
+            color: AppColors.icons,
           ),
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),

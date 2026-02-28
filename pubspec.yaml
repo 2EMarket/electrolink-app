@@ -46,9 +46,9 @@ dependencies:
   uuid: ^4.3.0
   iconsax: ^0.0.8
   gap: ^3.0.1
-
-
-
+ 
+  pinput: ^6.0.2
+  shared_preferences: ^2.5.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

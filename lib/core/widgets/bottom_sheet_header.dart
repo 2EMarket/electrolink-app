@@ -31,10 +31,9 @@ class BottomSheetHeader extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: titleStyle ??
-                AppTypography.h3_18Medium.copyWith(
-                  color: colors.titles,
-                ),
+            style:
+                titleStyle ??
+                AppTypography.h3_18Medium.copyWith(color: colors.titles),
           ),
         ),
         IconButton(

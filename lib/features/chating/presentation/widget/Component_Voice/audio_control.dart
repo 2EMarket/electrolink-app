@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 
 class VerticalAudioControl extends StatefulWidget {
-  final VoidCallback? onTap; 
+  final VoidCallback? onTap;
 
   const VerticalAudioControl({super.key, this.onTap});
 
@@ -10,7 +10,8 @@ class VerticalAudioControl extends StatefulWidget {
   State<VerticalAudioControl> createState() => _VerticalAudioControlState();
 }
 
-class _VerticalAudioControlState extends State<VerticalAudioControl> with SingleTickerProviderStateMixin {
+class _VerticalAudioControlState extends State<VerticalAudioControl>
+    with SingleTickerProviderStateMixin {
   bool isPlaying = false;
   late AnimationController _animationController;
 
@@ -26,7 +27,9 @@ class _VerticalAudioControlState extends State<VerticalAudioControl> with Single
   void _toggle() {
     setState(() {
       isPlaying = !isPlaying;
-      isPlaying ? _animationController.forward() : _animationController.reverse();
+      isPlaying
+          ? _animationController.forward()
+          : _animationController.reverse();
     });
     widget.onTap?.call();
   }
@@ -51,14 +54,18 @@ class _VerticalAudioControlState extends State<VerticalAudioControl> with Single
             shape: BoxShape.circle,
             color: isPlaying ? AppColors.mainColor : AppColors.white,
             border: Border.all(
-              color: isPlaying ? AppColors.mainColor : AppColors.border.withOpacity(0.5),
+              color:
+                  isPlaying
+                      ? AppColors.mainColor
+                      : AppColors.border.withOpacity(0.5),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: isPlaying 
-                    ? AppColors.mainColor.withOpacity(0.3) 
-                    : Colors.black.withOpacity(0.05),
+                color:
+                    isPlaying
+                        ? AppColors.mainColor.withOpacity(0.3)
+                        : Colors.black.withOpacity(0.05),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),

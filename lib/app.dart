@@ -1,11 +1,26 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
+import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/location/data/repos/countries_service.dart';
+import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/countries_cubit.dart';
+import 'configs/routes/router.dart';
+import 'core/constants/api_constants.dart';
+import 'core/constants/cache_keys.dart';
+import 'core/helpers/cache_helper.dart';
+import 'features/auth/data/services/auth_service.dart';
+import 'features/location/presentation/cubits/location_cubit.dart';
+import 'features/profile/data/services/profile_service.dart';
+import 'features/profile/presentation/bloc/profile_screen_bloc/profile_bloc.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/data/services/category_service.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+
+import 'imports.dart';
 
 class ElectroLinkApp extends StatelessWidget {
   const ElectroLinkApp({super.key});
@@ -28,25 +43,57 @@ class ElectroLinkApp extends StatelessWidget {
       ..userInteractions = false
       ..dismissOnTap = false
       ..boxShadow = [];
+    final dioOptions = BaseOptions(
+      baseUrl: ApiEndpoints.baseUrl,
+      receiveDataWhenStatusError: true,
+      connectTimeout: const Duration(seconds: 10),
+    );
 
-    return MultiBlocProvider(
+    final myDio = Dio(dioOptions);
+
+    String? token = CacheHelper.getData(key: CacheKeys.token);
+    if (token != null) {
+      myDio.options.headers['Authorization'] = 'Bearer $token';
+    }
+    return MultiRepositoryProvider(
       providers: [
-        //BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
-        BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
-        BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
+        RepositoryProvider<Dio>.value(value: myDio),
+        RepositoryProvider(create: (_) => ProfileService(myDio)),
+        RepositoryProvider(create: (_) => CategoryService(dio: myDio)),
       ],
-      child: MaterialApp(
-        //routerConfig: AppRouter.router,
-        //locale: DevicePreview.locale(context),
-        // builder: (context, widget) {
-        //   widget = DevicePreview.appBuilder(context, widget);
-        //   return FlutterEasyLoading(child: MyListingScreen());
-        // },
-        home: MyListingScreen(),
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<CountriesCubit>(
+            create:
+                (context) =>
+                    CountriesCubit(CountriesService(myDio))..fetchCountries(),
+          ),
+          BlocProvider<LocationCubit>(create: (context) => LocationCubit()),
+          BlocProvider<SelectionCubit>(create: (context) => SelectionCubit()),
+          BlocProvider<ViewTypeCubit>(create: (context) => ViewTypeCubit()),
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(AuthService(myDio))..checkAuth(),
+          ),
+          BlocProvider<CategoryCubit>(
+            create:
+                (context) => CategoryCubit(
+                  categoryService: context.read<CategoryService>(),
+                )..fetchCategories(),
+          ),
+        ],
+        child: MaterialApp.router(
+          routerConfig: AppRouter.router,
+          locale: DevicePreview.locale(context),
+          builder: EasyLoading.init(
+            builder: (context, widget) {
+              return DevicePreview.appBuilder(context, widget!);
+            },
+          ),
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

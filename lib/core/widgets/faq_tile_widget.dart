@@ -18,7 +18,7 @@ class FAQWidget extends StatelessWidget {
         color: colors.surface,
         borderRadius: BorderRadius.circular(AppSizes.borderRadius),
         boxShadow: context.shadows.card,
-      /*  boxShadow: [
+        /*  boxShadow: [
           BoxShadow(
             color: context.colors.border,
             blurRadius: 1,

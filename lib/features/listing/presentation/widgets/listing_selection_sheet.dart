@@ -45,9 +45,10 @@ class _ListingSelectionSheetState extends State<ListingSelectionSheet> {
       return;
     }
     setState(() {
-      _filtered = widget.options
-          .where((o) => o.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+      _filtered =
+          widget.options
+              .where((o) => o.toLowerCase().contains(value.toLowerCase()))
+              .toList();
     });
   }
 
@@ -80,7 +81,8 @@ class _ListingSelectionSheetState extends State<ListingSelectionSheet> {
           Expanded(
             child: ListView.separated(
               itemCount: _filtered.length,
-              separatorBuilder: (_, __) => const SizedBox(height: AppSizes.paddingS),
+              separatorBuilder:
+                  (_, __) => const SizedBox(height: AppSizes.paddingS),
               itemBuilder: (context, index) {
                 final option = _filtered[index];
                 return CustomRadioButtonItem(
@@ -97,12 +99,13 @@ class _ListingSelectionSheetState extends State<ListingSelectionSheet> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _selected == null
-                  ? null
-                  : () {
-                      widget.onSelected(_selected!);
-                      Navigator.pop(context);
-                    },
+              onPressed:
+                  _selected == null
+                      ? null
+                      : () {
+                        widget.onSelected(_selected!);
+                        Navigator.pop(context);
+                      },
               child: Text('${widget.confirmText} ${widget.title}'),
             ),
           ),

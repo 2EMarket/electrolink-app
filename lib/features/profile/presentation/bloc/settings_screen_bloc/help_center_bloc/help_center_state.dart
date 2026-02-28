@@ -1,4 +1,3 @@
-// help_center_state.dart
 import 'package:equatable/equatable.dart';
 
 class HelpCenterState extends Equatable {
@@ -7,9 +6,7 @@ class HelpCenterState extends Equatable {
   const HelpCenterState({this.isLoading = false});
 
   HelpCenterState copyWith({bool? isLoading}) {
-    return HelpCenterState(
-      isLoading: isLoading ?? this.isLoading,
-    );
+    return HelpCenterState(isLoading: isLoading ?? this.isLoading);
   }
 
   @override

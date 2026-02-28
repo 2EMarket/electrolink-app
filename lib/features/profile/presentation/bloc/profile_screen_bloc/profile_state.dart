@@ -1,20 +1,19 @@
-
-import '../../../data/models/user_model.dart';
+part of 'profile_bloc.dart';
 
 abstract class ProfileState {}
 
-class ProfileLoading extends ProfileState {}
+class ProfileInitial extends ProfileState {}
 
+class ProfileLoading extends ProfileState {}
 class ProfileLoaded extends ProfileState {
-  final UserModel profile;
+  final AppUserModel appUser;
   final bool isMe;
 
-  ProfileLoaded({required this.profile, required this.isMe});
+  ProfileLoaded({required this.appUser, required this.isMe});
 }
 
 class ProfileError extends ProfileState {
   final String message;
 
-  ProfileError(this.message);
+  ProfileError({required this.message});
 }
-

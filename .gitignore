@@ -47,3 +47,4 @@ app.*.map.json
 # Personal Files
 /lib/amal.dart
 /lib/test_screen.dart
+/lib/features/notification

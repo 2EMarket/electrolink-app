@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../configs/theme/app_colors.dart';
@@ -6,6 +7,7 @@ import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/widgets/progress_indicator.dart';
+import '../../bloc/profile_screen_bloc/profile_bloc.dart';
 
 class PrivateProfileCompletion extends StatelessWidget {
   const PrivateProfileCompletion({
@@ -65,8 +67,11 @@ class PrivateProfileCompletion extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    context.goNamed(AppRoutes.editUserProfile);
+                  onTap: () async {
+                    await context.pushNamed(AppRoutes.editUserProfile);
+                    context.read<ProfileBloc>().add(
+                      FetchProfileEvent(isMe: true),
+                    );
                   },
                   child: Icon(
                     Icons.arrow_forward_ios,

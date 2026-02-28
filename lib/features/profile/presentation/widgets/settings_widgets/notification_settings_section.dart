@@ -18,18 +18,18 @@ class SettingsSection extends StatelessWidget {
       ),
       child: Column(
         children:
-        children
-            .expand(
-              (e) => [
-            e,
-            Padding(
-              padding: const EdgeInsets.all(AppSizes.paddingXXS),
-              child: const SettingsDivider(),
-            ),
-          ],
-        )
-            .toList()
-          ..removeLast(),
+            children
+                .expand(
+                  (e) => [
+                    e,
+                    Padding(
+                      padding: const EdgeInsets.all(AppSizes.paddingXXS),
+                      child: const SettingsDivider(),
+                    ),
+                  ],
+                )
+                .toList()
+              ..removeLast(),
       ),
     );
   }

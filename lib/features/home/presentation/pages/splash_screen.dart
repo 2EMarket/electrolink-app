@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart'; // تأكد من المسار
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
-import 'onboarding_screen.dart'; // تأكد من المسار
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,10 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-      );
+      if (mounted) {
+        context.goNamed(AppRoutes.onboarding);
+      }
     });
   }
 
@@ -33,13 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(
               Icons.shopping_bag_outlined,
               size: 100,
-              color: AppColors.white,
+              color: AppColors.mainColor,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Text(
               AppStrings.appName,
               style: AppTypography.h2_20SemiBold.copyWith(
-                color: AppColors.white,
+                color: AppColors.mainColor,
               ),
             ),
           ],

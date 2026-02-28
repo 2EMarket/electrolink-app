@@ -1,12 +1,16 @@
-
 class AppRoutes {
+  static const splash = 'splash';
+
   // Onboarding
   static const onboarding = 'onboarding';
 
   // Auth
   static const signIn = 'sign-in';
-  static const signUp = 'sign-up';
-
+  static const String register = 'register';
+  static const String login = 'login';
+  static const String forgotPassword = 'forgot-password';
+  static const String otp = 'otp';
+  static const String changePassword = 'change-password';
   // Home
   static const home = 'home';
   static const mainLayout = 'main-layout';
@@ -20,6 +24,7 @@ class AppRoutes {
   static const location = 'location';
   static const countrySelection = 'country-selection';
   static const verification = 'verification';
+  static const notification = 'notification';
 
   //profile pages
   static const publicProfile = 'public_profile';

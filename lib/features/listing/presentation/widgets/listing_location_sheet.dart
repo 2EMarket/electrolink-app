@@ -94,9 +94,11 @@ class _ListingLocationSheetState extends State<ListingLocationSheet> {
     if (_country.isEmpty || _city.isEmpty || _isSubmitting) return;
     setState(() => _isSubmitting = true);
     final street = _streetController.text.trim();
-    final addressParts = [street, _city, _country]
-        .where((p) => p.isNotEmpty)
-        .join(', ');
+    final addressParts = [
+      street,
+      _city,
+      _country,
+    ].where((p) => p.isNotEmpty).join(', ');
     try {
       final locations = await locationFromAddress(addressParts);
       if (locations.isEmpty) {
@@ -174,7 +176,9 @@ class _ListingLocationSheetState extends State<ListingLocationSheet> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed:
-                  _country.isEmpty || _city.isEmpty || _isSubmitting ? null : _submit,
+                  _country.isEmpty || _city.isEmpty || _isSubmitting
+                      ? null
+                      : _submit,
               child: const Text('Add address'),
             ),
           ),
@@ -292,9 +296,7 @@ class _ListingMapSheetState extends State<ListingMapSheet> {
   void _confirm() {
     if (lat == null || lng == null) return;
     final street = _streetLine.isNotEmpty ? _streetLine : formattedAddress;
-    widget.onSelected(
-      LocationModel(lat!, lng!, street, _country, _city),
-    );
+    widget.onSelected(LocationModel(lat!, lng!, street, _country, _city));
     Navigator.pop(context);
   }
 

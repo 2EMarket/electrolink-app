@@ -4,6 +4,7 @@ import 'listing_photo_item.dart';
 
 class AddListingDraft extends Equatable {
   final String title;
+  final String categoryId;
   final String category;
   final String condition;
   final String price;
@@ -16,6 +17,7 @@ class AddListingDraft extends Equatable {
 
   const AddListingDraft({
     this.title = '',
+    this.categoryId = '',
     this.category = '',
     this.condition = '',
     this.price = '',
@@ -29,6 +31,7 @@ class AddListingDraft extends Equatable {
 
   AddListingDraft copyWith({
     String? title,
+    String? categoryId,
     String? category,
     String? condition,
     String? price,
@@ -41,6 +44,7 @@ class AddListingDraft extends Equatable {
   }) {
     return AddListingDraft(
       title: title ?? this.title,
+      categoryId: categoryId ?? this.categoryId,
       category: category ?? this.category,
       condition: condition ?? this.condition,
       price: price ?? this.price,
@@ -55,6 +59,7 @@ class AddListingDraft extends Equatable {
 
   bool get isEmpty {
     return title.isEmpty &&
+        categoryId.isEmpty &&
         category.isEmpty &&
         condition.isEmpty &&
         price.isEmpty &&
@@ -69,6 +74,7 @@ class AddListingDraft extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'title': title,
+      'categoryId': categoryId,
       'category': category,
       'condition': condition,
       'price': price,
@@ -84,17 +90,19 @@ class AddListingDraft extends Equatable {
   factory AddListingDraft.fromMap(Map<String, dynamic> map) {
     return AddListingDraft(
       title: map['title'] as String? ?? '',
-      category: map['category'] as String? ?? '',
+      categoryId: map['categoryId']?.toString() ?? '',
+      category:
+          map['category'] as String? ?? map['categoryName'] as String? ?? '',
       condition: map['condition'] as String? ?? '',
-      price: map['price'] as String? ?? '',
+      price: map['price']?.toString() ?? '',
       negotiable: map['negotiable'] as bool? ?? false,
       photos:
           (map['photos'] as List<dynamic>? ?? [])
               .map((e) => ListingPhotoItem.fromMap(e as Map<String, dynamic>))
               .toList(),
-      attributes:
-          (map['attributes'] as Map<String, dynamic>? ?? {})
-              .map((key, value) => MapEntry(key, value.toString())),
+      attributes: (map['attributes'] as Map<String, dynamic>? ?? {}).map(
+        (key, value) => MapEntry(key, value.toString()),
+      ),
       description: map['description'] as String? ?? '',
       location:
           map['location'] != null
@@ -107,6 +115,7 @@ class AddListingDraft extends Equatable {
   @override
   List<Object?> get props => [
     title,
+    categoryId,
     category,
     condition,
     price,

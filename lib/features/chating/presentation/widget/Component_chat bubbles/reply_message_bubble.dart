@@ -7,7 +7,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
   final String repliedTo;
   final String message;
   final String time;
-  
+
   final bool isRead;
 
   ReplyMessageBubble({
@@ -16,8 +16,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
     required this.repliedTo,
     required this.message,
     required this.time,
-     required   this.isRead,
-
+    required this.isRead,
   }) : super(child: const SizedBox());
 
   @override
@@ -25,20 +24,20 @@ class ReplyMessageBubble extends ChatBubbleBase {
     return ChatBubbleBase(
       isSender: isSender,
       child: Column(
-  crossAxisAlignment:
-                isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: isSender 
-                  ? AppColors.mainColor5 
-                  : AppColors.secondaryColor5, 
+              color:
+                  isSender ? AppColors.mainColor5 : AppColors.secondaryColor5,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isSender 
-                    ? AppColors.mainColor20 
-                    : AppColors.secondaryColor20,
+                color:
+                    isSender
+                        ? AppColors.mainColor20
+                        : AppColors.secondaryColor20,
                 width: 1,
               ),
             ),
@@ -74,39 +73,39 @@ class ReplyMessageBubble extends ChatBubbleBase {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 10),
-          
+
           Text(
             message,
-            style: AppTypography.body14Regular.copyWith(
-              color: AppColors.text,
-            ),
+            style: AppTypography.body14Regular.copyWith(color: AppColors.text),
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           Row(
-               mainAxisAlignment:
+            mainAxisAlignment:
                 isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
               Text(
                 time,
                 style: AppTypography.label10Regular.copyWith(
-                  color: AppColors.hint,fontWeight: FontWeight.w400
+                  color: AppColors.hint,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-              
+
               const SizedBox(width: 4),
               if (isSender)
                 Icon(
-                      isRead ? Icons.done_all : Icons.done,
-                      size: 14,
-                      color: isRead ?
-                     AppColors.success
-                      //  const Color(0xFF2563EB) 
-                      : AppColors.hint,
-                    ),
+                  isRead ? Icons.done_all : Icons.done,
+                  size: 14,
+                  color:
+                      isRead
+                          ? AppColors.success
+                          //  const Color(0xFF2563EB)
+                          : AppColors.hint,
+                ),
             ],
           ),
         ],
@@ -114,10 +113,6 @@ class ReplyMessageBubble extends ChatBubbleBase {
     );
   }
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
@@ -158,14 +153,14 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //         children: [
 //           // Preview of the replied message
 //           _buildReplyPreview(),
-          
+
 //           const SizedBox(height: 12),
-          
+
 //           // Current message content
 //           _buildCurrentMessage(),
-          
+
 //           const SizedBox(height: 8),
-          
+
 //           // Message footer (time + read status)
 //           _buildMessageFooter(),
 //         ],
@@ -177,12 +172,12 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //     return Container(
 //       padding: const EdgeInsets.all(10),
 //       decoration: BoxDecoration(
-//         color: isSender 
+//         color: isSender
 //             ? AppColors.mainColor.withOpacity(0.08)
 //             : AppColors.secondaryColor.withOpacity(0.08),
 //         borderRadius: BorderRadius.circular(8),
 //         border: Border.all(
-//           color: isSender 
+//           color: isSender
 //               ? AppColors.mainColor.withOpacity(0.3)
 //               : AppColors.secondaryColor.withOpacity(0.3),
 //           width: 1,
@@ -216,9 +211,9 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //               ),
 //             ],
 //           ),
-          
+
 //           const SizedBox(height: 6),
-          
+
 //           // Reply content based on type
 //           _buildReplyContentByType(),
 //         ],
@@ -238,7 +233,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //           maxLines: 2,
 //           overflow: TextOverflow.ellipsis,
 //         );
-      
+
 //       case MessageType.image:
 //         return Row(
 //           children: [
@@ -281,7 +276,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //             ),
 //           ],
 //         );
-      
+
 //       case MessageType.audio:
 //         return Row(
 //           children: [
@@ -320,7 +315,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //             ),
 //           ],
 //         );
-      
+
 //       case MessageType.file:
 //         return Row(
 //           children: [
@@ -361,7 +356,7 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //             ),
 //           ],
 //         );
-      
+
 //       case MessageType.location:
 //         return Row(
 //           children: [
@@ -415,9 +410,9 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //             fontWeight: FontWeight.w400,
 //           ),
 //         ),
-        
+
 //         const SizedBox(width: 4),
-        
+
 //         if (isSender)
 //           Icon(
 //             isRead ? Icons.done_all : Icons.done,
@@ -458,16 +453,16 @@ class ReplyMessageBubble extends ChatBubbleBase {
 //   IconData _getFileIcon(String fileName) {
 //     if (fileName.toLowerCase().endsWith('.pdf')) {
 //       return Icons.picture_as_pdf;
-//     } else if (fileName.toLowerCase().endsWith('.doc') || 
+//     } else if (fileName.toLowerCase().endsWith('.doc') ||
 //                fileName.toLowerCase().endsWith('.docx')) {
 //       return Icons.description;
-//     } else if (fileName.toLowerCase().endsWith('.xls') || 
+//     } else if (fileName.toLowerCase().endsWith('.xls') ||
 //                fileName.toLowerCase().endsWith('.xlsx')) {
 //       return Icons.table_chart;
-//     } else if (fileName.toLowerCase().endsWith('.ppt') || 
+//     } else if (fileName.toLowerCase().endsWith('.ppt') ||
 //                fileName.toLowerCase().endsWith('.pptx')) {
 //       return Icons.slideshow;
-//     } else if (fileName.toLowerCase().endsWith('.zip') || 
+//     } else if (fileName.toLowerCase().endsWith('.zip') ||
 //                fileName.toLowerCase().endsWith('.rar')) {
 //       return Icons.archive;
 //     } else {

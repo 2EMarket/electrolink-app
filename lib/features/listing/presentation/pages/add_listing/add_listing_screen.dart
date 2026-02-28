@@ -92,12 +92,12 @@ class _AddListingScreenState extends State<AddListingScreen> {
       _descriptionController.text = state.draft.description;
     }
 
-    if (state.draft.category != _lastCategory) {
+    if (state.draft.categoryId != _lastCategory) {
       for (final controller in _attributeControllers.values) {
         controller.dispose();
       }
       _attributeControllers.clear();
-      _lastCategory = state.draft.category;
+      _lastCategory = state.draft.categoryId;
     }
 
     state.draft.attributes.forEach((key, value) {
@@ -171,7 +171,13 @@ class _AddListingScreenState extends State<AddListingScreen> {
     );
   }
 
-  void _openCategorySheet(AddListingDraftCubit cubit, AddListingDraftState state) {
+  void _openCategorySheet(
+    AddListingDraftCubit cubit,
+    AddListingDraftState state,
+  ) {
+    if (state.categories.isEmpty && !state.isLoadingCategories) {
+      cubit.reloadCategories();
+    }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -179,10 +185,20 @@ class _AddListingScreenState extends State<AddListingScreen> {
       builder:
           (_) => FractionallySizedBox(
             heightFactor: 0.9,
-            child: ListingCategorySheet(
-              categories: cubit.categories,
-              selectedValue: state.draft.category,
-              onSelected: cubit.updateCategory,
+            child: BlocProvider.value(
+              value: cubit,
+              child: BlocBuilder<AddListingDraftCubit, AddListingDraftState>(
+                builder: (context, sheetState) {
+                  return ListingCategorySheet(
+                    categories: sheetState.categories,
+                    selectedCategoryId: sheetState.draft.categoryId,
+                    onSelected: cubit.updateCategory,
+                    isLoading: sheetState.isLoadingCategories,
+                    errorMessage: sheetState.categoriesErrorMessage,
+                    onRetry: cubit.reloadCategories,
+                  );
+                },
+              ),
             ),
           ),
     );
@@ -206,7 +222,10 @@ class _AddListingScreenState extends State<AddListingScreen> {
     );
   }
 
-  void _openLocationSheet(AddListingDraftCubit cubit, AddListingDraftState state) {
+  void _openLocationSheet(
+    AddListingDraftCubit cubit,
+    AddListingDraftState state,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -258,8 +277,9 @@ class _AddListingScreenState extends State<AddListingScreen> {
           },
         ),
         BlocListener<AddListingDraftCubit, AddListingDraftState>(
-          listenWhen: (previous, current) =>
-              previous.draft.photos != current.draft.photos,
+          listenWhen:
+              (previous, current) =>
+                  previous.draft.photos != current.draft.photos,
           listener: (context, state) {
             context.read<AddListingMediaCubit>().setPhotos(state.draft.photos);
           },
@@ -289,7 +309,11 @@ class _AddListingScreenState extends State<AddListingScreen> {
             }
 
             if (state.status == AddListingSubmitStatus.failure) {
-              EasyLoading.showError('Failed to submit listing. Please try again.');
+              EasyLoading.showError(
+                state.errorMessage.isEmpty
+                    ? 'Failed to submit listing. Please try again.'
+                    : state.errorMessage,
+              );
               context.read<AddListingSubmitCubit>().reset();
             }
           },
@@ -308,9 +332,7 @@ class _AddListingScreenState extends State<AddListingScreen> {
           return WillPopScope(
             onWillPop: () => _handleBack(state),
             child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Add Listing'),
-              ),
+              appBar: AppBar(title: const Text('Add Listing')),
               body: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
                   AppSizes.paddingM,
@@ -330,7 +352,8 @@ class _AddListingScreenState extends State<AddListingScreen> {
                       BasicDetailsStep(
                         titleController: _titleController,
                         priceController: _priceController,
-                        onOpenCategory: () => _openCategorySheet(draftCubit, state),
+                        onOpenCategory:
+                            () => _openCategorySheet(draftCubit, state),
                         onOpenPhotoOptions: () => _openPhotoOptions(mediaCubit),
                         onOpenTips: () => showPhotoTipsSheet(context),
                       )
@@ -338,14 +361,16 @@ class _AddListingScreenState extends State<AddListingScreen> {
                       MoreDetailsStep(
                         descriptionController: _descriptionController,
                         attributeControllers: _attributeControllers,
-                        onOpenLocation: () => _openLocationSheet(draftCubit, state),
+                        onOpenLocation:
+                            () => _openLocationSheet(draftCubit, state),
                       ),
                     const SizedBox(height: AppSizes.paddingL),
                     if (state.step == AddListingStep.basic)
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: state.canProceed ? draftCubit.nextStep : null,
+                          onPressed:
+                              state.canProceed ? draftCubit.nextStep : null,
                           child: const Text('Next'),
                         ),
                       )
@@ -354,26 +379,27 @@ class _AddListingScreenState extends State<AddListingScreen> {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: state.canPublish
-                                  ? () {
-                                      context.pushNamed(
-                                        AppRoutes.addListingPreview,
-                                        extra: state.draft,
-                                      );
-                                    }
-                                  : null,
-                              child: const Text('Review'),
+                              onPressed:
+                                  state.draft.isEmpty
+                                      ? null
+                                      : () async {
+                                        await draftCubit.saveDraft();
+                                        if (!mounted) return;
+                                        EasyLoading.showSuccess('Draft saved');
+                                      },
+                              child: const Text('Save Draft'),
                             ),
                           ),
                           const SizedBox(width: AppSizes.paddingS),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: state.canPublish
-                                  ? () => submitCubit.submit(
+                              onPressed:
+                                  state.canPublish
+                                      ? () => submitCubit.submit(
                                         state.draft,
                                         canPublish: state.canPublish,
                                       )
-                                  : null,
+                                      : null,
                               child: const Text('Publish'),
                             ),
                           ),

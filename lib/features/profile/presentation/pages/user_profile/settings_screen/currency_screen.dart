@@ -31,15 +31,19 @@ class CurrencyScreen extends StatelessWidget {
     );
   }
 
-  Widget _currencyTile(BuildContext context, String value, CurrencyBloc bloc,
-      String selectedCurrency) {
+  Widget _currencyTile(
+    BuildContext context,
+    String value,
+    CurrencyBloc bloc,
+    String selectedCurrency,
+  ) {
     return LanguageCurrencySelectionTile(
       title: value,
       selected: selectedCurrency == value,
       onTap: () {
         bloc.add(SelectCurrency(value));
         Future.delayed(const Duration(milliseconds: 600), () {
-          context.pop(value); // ترجع القيمة بعد 0.6 ثانية
+          context.pop(value);
         });
       },
     );

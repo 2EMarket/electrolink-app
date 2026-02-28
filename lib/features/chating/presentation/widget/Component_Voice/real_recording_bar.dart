@@ -39,10 +39,7 @@ class _RecordingBarState extends State<RecordingBar> {
   void _startRecording() async {
     _path = 'voice_${DateTime.now().millisecondsSinceEpoch}.aac';
 
-    await _recorder.startRecorder(
-      toFile: _path,
-      codec: Codec.aacMP4,
-    );
+    await _recorder.startRecorder(toFile: _path, codec: Codec.aacMP4);
 
     setState(() => _isRecording = true);
 

@@ -4,30 +4,31 @@ import 'package:second_hand_electronics_marketplace/features/profile/presentatio
 import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_sizes.dart';
+import '../../../../auth/data/models/auth_models.dart';
 import '../../../../listing/data/listing_model.dart';
 
 class PrivateProfileWidget extends StatelessWidget {
   const PrivateProfileWidget({
     super.key,
     required this.userListings,
+    required this.user,
   });
 
+  final UserModel user;
   final List<ListingModel> userListings;
 
   @override
   Widget build(BuildContext context) {
+    final isFullyVerified =
+        user.isEmailVerified && user.isPhoneVerified && user.isIdentityVerified;
+
     return Column(
       children: [
         Container(
           decoration: BoxDecoration(
             color: context.colors.background,
-            borderRadius: BorderRadius.circular(
-              AppSizes.borderRadius10,
-            ),
-            border: Border.all(
-              color: context.colors.border,
-              width: 0.3,
-            ),
+            borderRadius: BorderRadius.circular(AppSizes.borderRadius10),
+            border: Border.all(color: context.colors.border, width: 0.3),
             boxShadow: [
               BoxShadow(
                 color: context.colors.border,
@@ -38,47 +39,38 @@ class PrivateProfileWidget extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(
-              AppSizes.paddingXS,
-            ),
+            padding: const EdgeInsets.all(AppSizes.paddingXS),
             child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Trust Indicators',
-                  style: AppTypography.body16Medium
-                      .copyWith(
+                  style: AppTypography.body16Medium.copyWith(
                     color: context.colors.titles,
                   ),
                 ),
-                const SizedBox(
-                  height: AppSizes.paddingXS,
-                ),
-                Text(
-                  'Verify your identity, mobile and email to get “Verified” badge. Tap to verify missing items',
-                  style: AppTypography.body14Regular
-                      .copyWith(
-                    color: context.colors.neutral,
+                if (!isFullyVerified) ...[
+                  const SizedBox(height: AppSizes.paddingXS),
+                  Text(
+                    'Verify your identity, mobile and email to get “Verified” badge. Tap to verify missing items',
+                    style: AppTypography.body14Regular.copyWith(
+                      color: context.colors.neutral,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: AppSizes.paddingXS,
-                ),
-                const TrustIndicatorsSection(),
+                ],
+                const SizedBox(height: AppSizes.paddingXS),
+                TrustIndicatorsSection(user: user),
               ],
             ),
           ),
         ),
         const SizedBox(height: AppSizes.paddingM),
         Row(
-          mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'My Listings',
-              style: AppTypography.body16Medium
-                  .copyWith(
+              style: AppTypography.body16Medium.copyWith(
                 color: context.colors.titles,
               ),
             ),
@@ -86,8 +78,7 @@ class PrivateProfileWidget extends StatelessWidget {
               onTap: () {},
               child: Text(
                 'See All',
-                style: AppTypography.label12Regular
-                    .copyWith(
+                style: AppTypography.label12Regular.copyWith(
                   color: context.colors.titles,
                 ),
               ),

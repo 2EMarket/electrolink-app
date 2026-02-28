@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 
 import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../core/constants/app_sizes.dart';
@@ -21,9 +23,8 @@ class ProfileAppBarActions extends StatelessWidget {
       ),
       onPressed: () {
         if (isMe) {
-
+          context.goNamed(AppRoutes.settingsScreen);
         } else {
-          // فعل الـ BottomSheet
           showProfileOptionsSheet(context, type: ProfileOptionType.report);
         }
       },

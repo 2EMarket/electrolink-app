@@ -20,10 +20,7 @@ class SubmitReport extends ReportEvent {
   final String description;
   final int reasonsLength;
 
-  const SubmitReport({
-    required this.description,
-    required this.reasonsLength,
-  });
+  const SubmitReport({required this.description, required this.reasonsLength});
 
   @override
   List<Object?> get props => [description, reasonsLength];

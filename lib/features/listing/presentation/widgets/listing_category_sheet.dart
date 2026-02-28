@@ -9,13 +9,19 @@ class ListingCategorySheet extends StatefulWidget {
   const ListingCategorySheet({
     super.key,
     required this.categories,
-    required this.selectedValue,
+    required this.selectedCategoryId,
     required this.onSelected,
+    this.isLoading = false,
+    this.errorMessage = '',
+    this.onRetry,
   });
 
   final List<ListingCategoryConfig> categories;
-  final String selectedValue;
-  final ValueChanged<String> onSelected;
+  final String selectedCategoryId;
+  final ValueChanged<ListingCategoryConfig> onSelected;
+  final bool isLoading;
+  final String errorMessage;
+  final VoidCallback? onRetry;
 
   @override
   State<ListingCategorySheet> createState() => _ListingCategorySheetState();
@@ -24,14 +30,19 @@ class ListingCategorySheet extends StatefulWidget {
 class _ListingCategorySheetState extends State<ListingCategorySheet> {
   late List<ListingCategoryConfig> _filtered;
   late TextEditingController _controller;
-  String? _selected;
+  ListingCategoryConfig? _selected;
 
   @override
   void initState() {
     super.initState();
     _filtered = widget.categories;
     _controller = TextEditingController();
-    _selected = widget.selectedValue.isEmpty ? null : widget.selectedValue;
+    for (final category in widget.categories) {
+      if (category.id == widget.selectedCategoryId) {
+        _selected = category;
+        break;
+      }
+    }
   }
 
   void _runFilter(String value) {
@@ -40,10 +51,41 @@ class _ListingCategorySheetState extends State<ListingCategorySheet> {
       return;
     }
     setState(() {
-      _filtered = widget.categories
-          .where((c) => c.name.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+      _filtered =
+          widget.categories
+              .where((c) => c.name.toLowerCase().contains(value.toLowerCase()))
+              .toList();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant ListingCategorySheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.categories != widget.categories) {
+      final query = _controller.text.trim();
+      if (query.isEmpty) {
+        _filtered = widget.categories;
+      } else {
+        _filtered =
+            widget.categories
+                .where(
+                  (c) => c.name.toLowerCase().contains(query.toLowerCase()),
+                )
+                .toList();
+      }
+    }
+
+    if (oldWidget.selectedCategoryId != widget.selectedCategoryId ||
+        oldWidget.categories != widget.categories) {
+      _selected = null;
+      for (final category in widget.categories) {
+        if (category.id == widget.selectedCategoryId) {
+          _selected = category;
+          break;
+        }
+      }
+    }
   }
 
   @override
@@ -69,43 +111,76 @@ class _ListingCategorySheetState extends State<ListingCategorySheet> {
             onClose: () => Navigator.pop(context),
           ),
           const SizedBox(height: AppSizes.paddingM),
-          SearchWidget(controller: _controller, onChanged: _runFilter),
+          SearchWidget(
+            controller: _controller,
+            onChanged: widget.isLoading ? (_) {} : _runFilter,
+          ),
           const SizedBox(height: AppSizes.paddingM),
           Expanded(
-            child: GridView.builder(
-              itemCount: _filtered.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: AppSizes.paddingS,
-                crossAxisSpacing: AppSizes.paddingS,
-                childAspectRatio: 0.9,
-              ),
-              itemBuilder: (context, index) {
-                final category = _filtered[index];
-                return CategoryItem(
-                  title: category.name,
-                  iconPath: category.icon,
-                  isSelected: _selected == category.name,
-                  onTap: () => setState(() => _selected = category.name),
-                );
-              },
-            ),
+            child:
+                widget.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _buildCategoryContent(),
           ),
           const SizedBox(height: AppSizes.paddingM),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _selected == null
-                  ? null
-                  : () {
-                      widget.onSelected(_selected!);
-                      Navigator.pop(context);
-                    },
+              onPressed:
+                  _selected == null
+                      ? null
+                      : () {
+                        widget.onSelected(_selected!);
+                        Navigator.pop(context);
+                      },
               child: const Text('Select Category'),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCategoryContent() {
+    if (widget.errorMessage.trim().isNotEmpty && _filtered.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(widget.errorMessage, textAlign: TextAlign.center),
+            if (widget.onRetry != null) ...[
+              const SizedBox(height: AppSizes.paddingS),
+              ElevatedButton(
+                onPressed: widget.onRetry,
+                child: const Text('Retry'),
+              ),
+            ],
+          ],
+        ),
+      );
+    }
+
+    if (_filtered.isEmpty) {
+      return const Center(child: Text('No categories found'));
+    }
+
+    return GridView.builder(
+      itemCount: _filtered.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: AppSizes.paddingS,
+        crossAxisSpacing: AppSizes.paddingS,
+        childAspectRatio: 0.9,
+      ),
+      itemBuilder: (context, index) {
+        final category = _filtered[index];
+        return CategoryItem(
+          title: category.name,
+          iconPath: category.icon,
+          isSelected: _selected?.id == category.id,
+          onTap: () => setState(() => _selected = category),
+        );
+      },
     );
   }
 }

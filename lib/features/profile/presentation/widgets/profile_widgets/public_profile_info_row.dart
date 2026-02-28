@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/constants_exports.dart';
 import '../../../../../imports.dart';
@@ -8,7 +7,11 @@ class PublicProfileInfoRow extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
 
-  const PublicProfileInfoRow({required this.icon, required this.text, this.textStyle});
+  const PublicProfileInfoRow({
+    required this.icon,
+    required this.text,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {

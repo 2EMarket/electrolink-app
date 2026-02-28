@@ -24,9 +24,7 @@ class FieldLabel extends StatelessWidget {
           label,
           style:
               style ??
-              AppTypography.body14Regular.copyWith(
-                color: colors.titles,
-              ),
+              AppTypography.body14Regular.copyWith(color: colors.titles),
         ),
         if (isRequired) ...[
           const SizedBox(width: 4),

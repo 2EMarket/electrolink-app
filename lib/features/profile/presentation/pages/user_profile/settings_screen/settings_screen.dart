@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../configs/theme/app_colors.dart';
 import '../../../../../../core/constants/constants_exports.dart';
+import '../../../../../auth/presentation/cubits/auth_cubit.dart';
 import '../../../widgets/settings_widgets/settings_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -10,7 +12,10 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(
+        leading: const BackButton(),
+        title: const Text('Settings'),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
           AppSizes.paddingM,
@@ -34,7 +39,9 @@ class SettingsScreen extends StatelessWidget {
               title: 'Change Password',
               icon: AppAssets.shieldDoneIcon,
               iconColor: context.colors.mainColor,
-              onTap: () {},
+              onTap: () {
+               // context.goNamed(AppRoutes.changePassword);
+              },
             ),
             const SizedBox(height: AppSizes.paddingS),
 
@@ -44,7 +51,6 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {
                 context.goNamed(AppRoutes.languageCurrency);
-
               },
             ),
             const SizedBox(height: AppSizes.paddingS),
@@ -55,7 +61,6 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.mainColor,
               onTap: () {
                 context.goNamed(AppRoutes.helpCenter);
-
               },
             ),
             const SizedBox(height: AppSizes.paddingS),
@@ -66,7 +71,9 @@ class SettingsScreen extends StatelessWidget {
               iconColor: context.colors.error,
               textColor: context.colors.error,
               showArrow: false,
-              onTap: () {},
+              onTap: () async {
+                await context.read<AuthCubit>().logout();
+                context.goNamed(AppRoutes.login);              },
             ),
           ],
         ),

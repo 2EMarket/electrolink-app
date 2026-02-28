@@ -18,9 +18,9 @@ class ProductInfoRow extends StatelessWidget {
       'https://cdn-icons-png.flaticon.com/512/679/679922.png';
 
   String get _validImage {
-    if (imageUrl == null || 
-        imageUrl!.trim().isEmpty || 
-        imageUrl == 'null' || 
+    if (imageUrl == null ||
+        imageUrl!.trim().isEmpty ||
+        imageUrl == 'null' ||
         !imageUrl!.startsWith('http')) {
       return defaultImage;
     }
@@ -33,14 +33,14 @@ class ProductInfoRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(height: 20, color: AppColors.border.withOpacity(0.5)),
-        
+
         InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.neutralWithoutTransparent.withOpacity(0.05), 
+              color: AppColors.neutralWithoutTransparent.withOpacity(0.05),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border.withOpacity(0.3)),
             ),
@@ -63,33 +63,41 @@ class ProductInfoRow extends StatelessWidget {
                 //   ),
                 // ),
                 ClipRRect(
-  borderRadius: BorderRadius.circular(8),
-  child: Image.network(
-    _validImage,
-    width: 40,
-    height: 40,
-    fit: BoxFit.cover,
-    errorBuilder: (context, error, stackTrace) {
-      return Image.network(
-        defaultImage,
-        width: 40,
-        height: 40,
-        fit: BoxFit.cover,
-      );
-    },
-    loadingBuilder: (context, child, loadingProgress) {
-      if (loadingProgress == null) return child;
-      return Container(
-        width: 40,
-        height: 40,
-        color: AppColors.neutralWithoutTransparent.withOpacity(0.1),
-        child: const Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))),
-      );
-    },
-  ),
-),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    _validImage,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                        defaultImage,
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: 40,
+                        height: 40,
+                        color: AppColors.neutralWithoutTransparent.withOpacity(
+                          0.1,
+                        ),
+                        child: const Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(width: 12),
-                
+
                 Expanded(
                   child: Text(
                     productName,
@@ -100,11 +108,11 @@ class ProductInfoRow extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, size: 18),
-                color: AppColors.icons,
-                onPressed: () => Navigator.pop(context),
-              ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios, size: 18),
+                  color: AppColors.icons,
+                  onPressed: () => Navigator.pop(context),
+                ),
               ],
             ),
           ),

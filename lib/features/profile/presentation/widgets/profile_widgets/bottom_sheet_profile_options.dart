@@ -6,31 +6,13 @@ import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/constants/app_sizes.dart';
-
-/*
-// you can use this vertical More Icon function to show the bottom sheet
-void showCustomBottomSheet(BuildContext context, Widget widget) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: context.colors.background,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(
-          AppSizes.bottomSheetRadiusTop,
-        ), // Bottom sheet top radius
-      ),
-    ),
-    builder: (_) => widget,
-  );
-}*/
 enum ProfileOptionType { report, photo }
 
 void showProfileOptionsSheet(
   BuildContext context, {
   required ProfileOptionType type,
-      VoidCallback? onTakePhoto,
-      VoidCallback? onPickGallery,
+  VoidCallback? onTakePhoto,
+  VoidCallback? onPickGallery,
 }) {
   showModalBottomSheet(
     context: context,
@@ -41,8 +23,12 @@ void showProfileOptionsSheet(
         top: Radius.circular(AppSizes.bottomSheetRadiusTop),
       ),
     ),
-    builder: (_) => _ProfileOptionsSheet(type: type, onTakePhoto: onTakePhoto,
-      onPickGallery: onPickGallery,),
+    builder:
+        (_) => _ProfileOptionsSheet(
+          type: type,
+          onTakePhoto: onTakePhoto,
+          onPickGallery: onPickGallery,
+        ),
   );
 }
 
@@ -117,16 +103,15 @@ class _ProfileOptionsSheet extends StatelessWidget {
         ),
       ];
     } else {
-      // تعديل الصورة → Take Photo + Choose from Gallery
       return [
         _buildOption(
           context,
           label: 'Take Photo',
           iconPath: AppAssets.cameraIcon,
-            onTap: ()  {
-              context.pop();
-              onTakePhoto?.call();
-            },
+          onTap: () {
+            context.pop();
+            onTakePhoto?.call();
+          },
         ),
         _buildOption(
           context,

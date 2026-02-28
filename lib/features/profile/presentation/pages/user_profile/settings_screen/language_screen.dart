@@ -21,9 +21,27 @@ class LanguageScreen extends StatelessWidget {
             title: 'App language',
             subtitle: 'Select your app language',
             children: [
-              _languageTile(context, 'Follow system language', 'system', bloc, state.selectedLanguage),
-              _languageTile(context, 'Arabic', 'ar', bloc, state.selectedLanguage),
-              _languageTile(context, 'English', 'en', bloc, state.selectedLanguage),
+              _languageTile(
+                context,
+                'Follow system language',
+                'system',
+                bloc,
+                state.selectedLanguage,
+              ),
+              _languageTile(
+                context,
+                'Arabic',
+                'ar',
+                bloc,
+                state.selectedLanguage,
+              ),
+              _languageTile(
+                context,
+                'English',
+                'en',
+                bloc,
+                state.selectedLanguage,
+              ),
             ],
           );
         },
@@ -31,15 +49,20 @@ class LanguageScreen extends StatelessWidget {
     );
   }
 
-  Widget _languageTile(BuildContext context, String title, String value,
-      LanguageBloc bloc, String selectedLanguage) {
+  Widget _languageTile(
+    BuildContext context,
+    String title,
+    String value,
+    LanguageBloc bloc,
+    String selectedLanguage,
+  ) {
     return LanguageCurrencySelectionTile(
       title: title,
       selected: selectedLanguage == value,
       onTap: () {
         bloc.add(SelectLanguage(value));
         Future.delayed(const Duration(milliseconds: 600), () {
-          context.pop(value); // ترجع القيمة بعد 0.6 ثانية
+          context.pop(value);
         });
       },
     );
