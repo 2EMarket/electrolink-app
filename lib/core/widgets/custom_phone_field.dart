@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import '../../configs/theme/theme_exports.dart';
 import '../constants/constants_exports.dart';
 import 'country_picker_prefix.dart';
 import 'custom_textfield.dart';

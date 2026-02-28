@@ -4,7 +4,6 @@ import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.da
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat list item/device_info_row.dart';
 import 'chat_subtitle_row.dart';
-
 class ChatHeader extends StatelessWidget {
   final String name;
   final String imageUrl;
@@ -27,7 +26,9 @@ class ChatHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border(bottom: BorderSide(color: AppColors.border)),
+        border: Border(
+          bottom: BorderSide(color: AppColors.border),
+        ),
         boxShadow: AppShadows.card,
       ),
       child: Column(
@@ -119,6 +120,7 @@ class ChatHeader extends StatelessWidget {
                   imageUrl: imageUrl,
                 ),
               ),
+            
             ],
           ),
         ],

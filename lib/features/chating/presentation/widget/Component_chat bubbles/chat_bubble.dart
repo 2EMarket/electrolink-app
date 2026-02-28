@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 
-class ChatBubbleBase extends StatelessWidget {
+ class ChatBubbleBase extends StatelessWidget {
   final bool isSender;
   final Widget child;
   final String? timestamp;
@@ -16,8 +16,9 @@ class ChatBubbleBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bubbleColor =
-        isSender ? AppColors.mainColor10 : AppColors.secondaryColor10;
+    final bubbleColor = isSender
+        ? AppColors.mainColor10  
+        : AppColors.secondaryColor10; 
 
     final textColor = isSender ? AppColors.text : AppColors.text;
 
@@ -41,7 +42,7 @@ class ChatBubbleBase extends StatelessWidget {
                 style: AppTypography.body14Regular.copyWith(color: textColor),
                 child: child,
               ),
-
+              
               if (timestamp != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),

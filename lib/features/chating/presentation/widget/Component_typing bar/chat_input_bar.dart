@@ -79,13 +79,13 @@
 //             _buildRecordingIndicator(),
 //             const SizedBox(height: 16),
 //           ],
-
+          
 //           // 1. الاقتراحات (Chips) - مثل فيغما
 //           if (widget.showSuggestions && !widget.isRecording) ...[
 //             _buildSuggestions(),
 //             const SizedBox(height: 16),
 //           ],
-
+          
 //           // 2. حقل الإدخال والأزرار
 //           Row(
 //             children: [
@@ -103,7 +103,7 @@
 //                 ),
 //                 const SizedBox(width: 8),
 //               ],
-
+              
 //               Expanded(
 //                 child: Container(
 //                   height: 44,
@@ -140,7 +140,7 @@
 //                                 ),
 //                               ),
 //                       ),
-
+                      
 //                       // أيقونة المرفقات والكاميرا - تختفي أثناء التسجيل
 //                       if (!widget.isRecording) ...[
 //                         AttachmentButtons(onAttach: () {  }, onCamera: () {  },)
@@ -173,9 +173,9 @@
 //                   ),
 //                 ),
 //               ),
-
+              
 //               const SizedBox(width: 8),
-
+              
 //               // 3. زر الإرسال / الميكروفون
 //               // GestureDetector(
 //               //   onTap: _handleVoiceButtonTap,
@@ -206,7 +206,7 @@
 //               //             size: 22,
 //               //           ),
 //               //         ),
-
+                      
 //               //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //               //         if (widget.isRecording)
 //               //           Positioned(
@@ -267,7 +267,7 @@
 //             size: 22,
 //           ),
 //         ),
-
+        
 //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //         if (widget.isRecording)
 //           Positioned(
@@ -444,12 +444,12 @@
 //   }
 //   // Widget _buildSuggestions() {
 //   //   final suggestions = [
-//   //     "Is it still available?",
+//   //     "Is it still available?", 
 //   //     "Can you send another picture?",
 //   //     "What's the condition?",
 //   //     "Would you take an offer?"
 //   //   ];
-
+    
 //   //   return SizedBox(
 //   //     height: 36,
 //   //     child: ListView.separated(

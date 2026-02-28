@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/cache_keys.dart';
-import '../../../profile/data/models/user_model.dart';
 import '../../data/models/auth_models.dart';
 import '../../data/services/auth_service.dart';
 import '../../../../core/helpers/cache_helper.dart';

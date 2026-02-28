@@ -339,7 +339,6 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
     final model = messageData.model;
     final isSender = model.senderName == 'you';
 
-    // هنا يمكنك إضافة أنواع أخرى من الفقاعات إذا لزم الأمر
     final bubble = ReplyMessageBubble3(
       isSender: isSender,
       time: _getCurrentTime(), // Ideally, time should be in the model

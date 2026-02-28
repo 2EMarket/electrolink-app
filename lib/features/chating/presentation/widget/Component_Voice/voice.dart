@@ -380,11 +380,7 @@ Future<void> _startRecording() async {
         children: [
           GestureDetector(
             onTap: _cancel,
-            child: const Icon(
-              Icons.delete_outline,
-              color: Colors.red,
-              size: 28,
-            ),
+            child: const Icon(Icons.delete_outline, color: Colors.red, size: 28),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -409,9 +405,7 @@ Future<void> _startRecording() async {
                   Text(
                     _formatTime(_seconds),
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
+                        fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                 ],
               ),
@@ -432,7 +426,6 @@ Future<void> _startRecording() async {
   }
 }
 
-
 class _WavePainter extends CustomPainter {
   final List<double> waves;
   final Color color;
@@ -441,11 +434,10 @@ class _WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = color
-          ..strokeWidth = 3
-          ..strokeCap = StrokeCap.round;
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
 
     final centerY = size.height / 2;
     final spacing = size.width / 40;

@@ -12,7 +12,6 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dar
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
 import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
-import 'package:second_hand_electronics_marketplace/features/location/data/models/location_model.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/cubits/location_cubit.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/features/location/presentation/widgets/address_info_widget.dart';
