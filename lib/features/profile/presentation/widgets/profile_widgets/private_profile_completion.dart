@@ -47,7 +47,7 @@ class PrivateProfileCompletion extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${verificationProgress * 100}%',
+                  '${(verificationProgress * 100).toStringAsFixed(1)}%',
                   style: AppTypography.body14Regular.copyWith(
                     color: context.colors.titles,
                   ),

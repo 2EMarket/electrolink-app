@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/public_profile_info_row.dart';
 
@@ -46,13 +47,19 @@ class ProfileHeader extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: avatarSize / 2,
-          backgroundImage: NetworkImage(
-            profile.avatar,
-            // width: avatarSize,
-            // height: avatarSize,
-            // fit: BoxFit.cover,
+          //fallback to user icon if no avatar
+          backgroundImage: NetworkImage(profile.avatar),
+          child: SvgPicture.asset(
+            AppAssets.profileOutlineIcon,
+            width: avatarSize,
+            height: avatarSize,
+            fit: BoxFit.cover,
           ),
+          // width: avatarSize,
+          // height: avatarSize,
+          // fit: BoxFit.cover,
         ),
+
         if (profile.isOnline && type == ProfileType.public)
           Positioned(
             bottom: avatarSize * 0.15,
@@ -96,12 +103,12 @@ class ProfileHeader extends StatelessWidget {
                 const SizedBox(height: AppSizes.paddingXS),
                 PublicProfileInfoRow(
                   icon: AppAssets.locationOutlinedIcon,
-                  text: profile.location?? 'Gaza',
+                  text: profile.location ?? 'Gaza',
                   textStyle: textStyle,
                 ),
                 PublicProfileInfoRow(
                   icon: AppAssets.profileOutlineIcon,
-                  text: profile.bio?? 'I love Electronics',
+                  text: profile.bio ?? 'I love Electronics',
                   textStyle: textStyle,
                 ),
                 PublicProfileInfoRow(
@@ -141,14 +148,14 @@ class ProfileHeader extends StatelessWidget {
           _centeredRow(
             PublicProfileInfoRow(
               icon: AppAssets.locationOutlinedIcon,
-              text: profile.location?? 'Gaza',
+              text: profile.location ?? 'Gaza',
               textStyle: privateTextStyle,
             ),
           ),
           _centeredRow(
             PublicProfileInfoRow(
               icon: AppAssets.profileOutlineIcon,
-              text: profile.bio?? 'I love Electronics',
+              text: profile.bio ?? 'I love Electronics',
               textStyle: privateTextStyle,
             ),
           ),

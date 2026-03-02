@@ -13,6 +13,8 @@ import '../../../auth/presentation/cubits/auth_cubit.dart';
 import '../../../auth/presentation/cubits/auth_states.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'not_logged_in.dart';
+
 class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
 
@@ -64,40 +66,20 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
             body: Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  await CacheHelper.saveData(
-                    key: CacheKeys.isFirstTime,
-                    value: true,
-                  );
+                  // logout
+                  context.read<AuthCubit>().logout();
+                  context.goNamed(AppRoutes.login);
+
                   //just in case we want to test something
                 },
-                child: Text('Save'),
+                child: Text('Logout'),
               ),
             ),
           ), // Search/Listings - Replace when built
           HomeTab(), // Favorites - Replace when built
           authUser != null
               ? ProfileScreen(authUser: authUser, isMe: true)
-              : Scaffold(
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        textAlign: TextAlign.center,
-                        'You need to be logged in to view\n your profile',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.pushNamed(AppRoutes.login);
-                        },
-                        child: const Text('Login'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              : const NotLoggedInScreen(),
         ];
 
         return Scaffold(

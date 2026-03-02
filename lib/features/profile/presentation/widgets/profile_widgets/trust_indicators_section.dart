@@ -10,6 +10,7 @@ class TrustIndicatorsSection extends StatelessWidget {
   final UserModel user;
   @override
   Widget build(BuildContext context) {
+    //not singlechildview, all 3 cards should be visible and responsive
     return SizedBox(
       height: 113,
       child: SingleChildScrollView(

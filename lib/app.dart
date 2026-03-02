@@ -50,10 +50,18 @@ class ElectroLinkApp extends StatelessWidget {
 
     final myDio = Dio(dioOptions);
 
-    String? token = CacheHelper.getData(key: CacheKeys.token);
-    if (token != null) {
-      myDio.options.headers['Authorization'] = 'Bearer $token';
-    }
+    myDio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await CacheHelper.getData(key: CacheKeys.token);
+          if (token != null && token.toString().isNotEmpty) {
+            options.headers[ApiKeys.authorization] = '${ApiKeys.bearer}$token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<Dio>.value(value: myDio),
