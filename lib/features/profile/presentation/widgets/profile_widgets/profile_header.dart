@@ -51,9 +51,8 @@ class ProfileHeader extends StatelessWidget {
           backgroundImage: NetworkImage(profile.avatar),
           child: SvgPicture.asset(
             AppAssets.profileOutlineIcon,
-            width: avatarSize,
-            height: avatarSize,
-            fit: BoxFit.cover,
+
+            fit: BoxFit.contain,
           ),
           // width: avatarSize,
           // height: avatarSize,
