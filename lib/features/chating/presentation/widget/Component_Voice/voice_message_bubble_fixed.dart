@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -20,10 +22,8 @@ class VoiceMessageBubble1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor =
-        isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
-    final themeColor =
-        isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
+    final bgColor = isSender ? const Color(0x1A2563EB) : const Color(0x1A10B981);
+    final themeColor = isSender ? const Color(0xFF2563EB) : const Color(0xFF10B981);
 
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
@@ -92,12 +92,12 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
         return;
       }
 
-      final file = await DefaultCacheManager().getSingleFile(widget.audioUrl);
+      final path = await _resolveAudioPath(widget.audioUrl);
 
       if (!mounted) return;
 
       await _waveController.preparePlayer(
-        path: file.path,
+        path: path,
         shouldExtractWaveform: true,
         noOfSamples: 35,
         volume: 1.0,
@@ -140,6 +140,28 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
       debugPrint('❌ خطأ في تحميل الملف الصوتي: $e');
       _setError('فشل تحميل الملف الصوتي');
     }
+  }
+
+  Future<String> _resolveAudioPath(String source) async {
+    final trimmed = source.trim();
+    final uri = Uri.tryParse(trimmed);
+    final isRemote = uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https');
+
+    if (isRemote) {
+      final file = await DefaultCacheManager().getSingleFile(trimmed);
+      return file.path;
+    }
+
+    if (trimmed.startsWith('file://')) {
+      return Uri.parse(trimmed).toFilePath();
+    }
+
+    if (await File(trimmed).exists()) {
+      return trimmed;
+    }
+
+    throw Exception('Audio file not found: $trimmed');
   }
 
   void _setError(String message) {
@@ -207,27 +229,30 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child:
-                    hasError
-                        ? Icon(Icons.error_outline, color: Colors.red, size: 20)
-                        : isLoading
+                child: hasError
+                    ? Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 20,
+                      )
+                    : isLoading
                         ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              widget.themeColor,
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                widget.themeColor,
+                              ),
                             ),
-                          ),
-                        )
+                          )
                         : Icon(
-                          isPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
-                          color: widget.themeColor,
-                          size: 28,
-                        ),
+                            isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            color: widget.themeColor,
+                            size: 28,
+                          ),
               ),
             ),
             const SizedBox(width: 10),
@@ -253,8 +278,7 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                       height: 30,
                       alignment: Alignment.center,
                       child: Text(
-                        'خطأ في التحميل',
-                        style: TextStyle(
+"Download error",                        style: TextStyle(
                           fontSize: 12,
                           color: widget.themeColor,
                         ),
@@ -274,7 +298,10 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
                   const SizedBox(height: 2),
                   Text(
                     _formatDuration(currentPosition),
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -289,7 +316,10 @@ class _VoiceMessageContentState extends State<_VoiceMessageContent> {
             children: [
               Text(
                 widget.time,
-                style: const TextStyle(fontSize: 10, color: Color(0xFF8E8E93)),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Color(0xFF8E8E93),
+                ),
               ),
               const SizedBox(width: 4),
               if (widget.isSender)

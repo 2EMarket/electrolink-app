@@ -16,7 +16,6 @@ import 'core/helpers/cache_helper.dart';
 import 'features/auth/data/services/auth_service.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
 import 'features/profile/data/services/profile_service.dart';
-import 'features/profile/presentation/bloc/profile_screen_bloc/profile_bloc.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/data/services/category_service.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
 

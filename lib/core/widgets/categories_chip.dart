@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 
 class CategoriesChip extends StatefulWidget {
   CategoriesChip({

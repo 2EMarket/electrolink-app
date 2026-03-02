@@ -79,13 +79,13 @@
 //             _buildRecordingIndicator(),
 //             const SizedBox(height: 16),
 //           ],
-
+          
 //           // 1. الاقتراحات (Chips) - مثل فيغما
 //           if (widget.showSuggestions && !widget.isRecording) ...[
 //             _buildSuggestions(),
 //             const SizedBox(height: 16),
 //           ],
-
+          
 //           // 2. حقل الإدخال والأزرار
 //           Row(
 //             children: [
@@ -103,7 +103,7 @@
 //                 ),
 //                 const SizedBox(width: 8),
 //               ],
-
+              
 //               Expanded(
 //                 child: Container(
 //                   height: 44,
@@ -140,7 +140,7 @@
 //                                 ),
 //                               ),
 //                       ),
-
+                      
 //                       // أيقونة المرفقات والكاميرا - تختفي أثناء التسجيل
 //                       if (!widget.isRecording) ...[
 //                         AttachmentButtons(onAttach: () {  }, onCamera: () {  },)
@@ -173,9 +173,9 @@
 //                   ),
 //                 ),
 //               ),
-
+              
 //               const SizedBox(width: 8),
-
+              
 //               // 3. زر الإرسال / الميكروفون
 //               // GestureDetector(
 //               //   onTap: _handleVoiceButtonTap,
@@ -206,7 +206,7 @@
 //               //             size: 22,
 //               //           ),
 //               //         ),
-
+                      
 //               //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //               //         if (widget.isRecording)
 //               //           Positioned(
@@ -267,7 +267,7 @@
 //             size: 22,
 //           ),
 //         ),
-
+        
 //         // مؤشر التسجيل (موجة صوت) - يظهر فقط أثناء التسجيل
 //         if (widget.isRecording)
 //           Positioned(
@@ -444,12 +444,12 @@
 //   }
 //   // Widget _buildSuggestions() {
 //   //   final suggestions = [
-//   //     "Is it still available?",
+//   //     "Is it still available?", 
 //   //     "Can you send another picture?",
 //   //     "What's the condition?",
 //   //     "Would you take an offer?"
 //   //   ];
-
+    
 //   //   return SizedBox(
 //   //     height: 36,
 //   //     child: ListView.separated(
@@ -488,225 +488,251 @@
 //   //   );
 //   // }
 // }
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Voice/chat_input_bar_modified.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_attachments icons/attachment_icon.dart';
-import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_msgChip/suggestions.dart';
 
-class ChatInputBar extends StatefulWidget {
-  final bool showSuggestions;
-  final Function(String)? onSend;
-  final VoidCallback? onAttach;
-  final VoidCallback? onCamera;
-  final VoidCallback? onEmoji;
 
-  const ChatInputBar({
-    super.key,
-    this.showSuggestions = true,
-    this.onSend,
-    this.onAttach,
-    this.onCamera,
-    this.onEmoji,
-  });
 
-  @override
-  State<ChatInputBar> createState() => _ChatInputBarState();
-}
 
-class _ChatInputBarState extends State<ChatInputBar> {
-  final TextEditingController _controller = TextEditingController();
 
-  bool _hasText = false;
-  bool _isRecording = false;
 
-  Timer? _timer;
-  int _seconds = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      setState(() {
-        _hasText = _controller.text.trim().isNotEmpty;
-      });
-    });
-  }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
 
-  void _startRecording() {
-    setState(() {
-      _isRecording = true;
-      _seconds = 0;
-    });
 
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _seconds++);
-    });
-  }
 
-  void _stopRecording() {
-    _timer?.cancel();
-    setState(() => _isRecording = false);
 
-    // هنا مستقبلاً ترسلي الصوت
-    debugPrint("Voice message sent ($_seconds sec)");
-  }
 
-  void _cancelRecording() {
-    _timer?.cancel();
-    setState(() => _isRecording = false);
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // 🎙 Recording Bubble
-          if (_isRecording) ...[
-            RecordingBubble(
-              seconds: _seconds,
-              onCancel: _cancelRecording,
-              onSend: _stopRecording,
-            ),
-            const SizedBox(height: 16),
-          ],
 
-          // 💬 Suggestions
-          if (widget.showSuggestions && !_isRecording) ...[
-            _buildSuggestions(),
-            const SizedBox(height: 16),
-          ],
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Voice/chat_input_bar_modified.dart';
+// import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_attachments icons/attachment_icon.dart';
+// import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_msgChip/suggestions.dart';
 
-          // ✍️ Input Row
-          if (!_isRecording) _buildInputRow(),
-        ],
-      ),
-    );
-  }
+// class ChatInputBar extends StatefulWidget {
+//   final bool showSuggestions;
+//   final Function(String)? onSend;
+//   final VoidCallback? onAttach;
+//   final VoidCallback? onCamera;
+//   final VoidCallback? onEmoji;
 
-  Widget _buildInputRow() {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: widget.onEmoji,
-          icon: Icon(Icons.emoji_emotions_outlined, color: Colors.grey[600]),
-        ),
+//   const ChatInputBar({
+//     super.key,
+//     this.showSuggestions = true,
+//     this.onSend,
+//     this.onAttach,
+//     this.onCamera,
+//     this.onEmoji, 
+//   });
 
-        Expanded(
-          child: Container(
-            height: 44,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    maxLines: null, // يسمح بتمدد الحقل حسب النص
-                    keyboardType: TextInputType.multiline,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black87,
-                    ),
-                    decoration: const InputDecoration(
-                      hintText: "Message...",
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: Color(0xFF9CA3AF),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
+//   @override
+//   State<ChatInputBar> createState() => _ChatInputBarState();
+// }
 
-                  // child: TextField(
-                  //   controller: _controller,
-                  //   decoration: const InputDecoration(
-                  //     hintText: "Message...",
-                  //     border: InputBorder.none,
-                  //   ),
-                  // ),
-                ),
+// class _ChatInputBarState extends State<ChatInputBar> {
+//   final TextEditingController _controller = TextEditingController();
 
-                AttachmentButtons(
-                  onAttach: widget.onAttach ?? () {},
-                  onCamera: widget.onCamera ?? () {},
-                ),
-              ],
-            ),
-          ),
-        ),
+//   bool _hasText = false;
+//   bool _isRecording = false;
 
-        const SizedBox(width: 8),
+//   Timer? _timer;
+//   int _seconds = 0;
 
-        _buildMicOrSendButton(),
-      ],
-    );
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller.addListener(() {
+//       setState(() {
+//         _hasText = _controller.text.trim().isNotEmpty;
+//       });
+//     });
+//   }
 
-  Widget _buildMicOrSendButton() {
-    return GestureDetector(
-      onTap: () {
-        if (_hasText) {
-          widget.onSend?.call(_controller.text.trim());
-          _controller.clear();
-        }
-      },
-      onLongPress: _hasText ? null : _startRecording,
-      child: Container(
-        constraints: BoxConstraints(
-          minHeight: 44,
-          maxHeight: 120, // أو حسب التصميم
-        ),
-        width: 44,
-        // height: 44,
-        decoration: BoxDecoration(
-          color: _hasText ? const Color(0xFF2563EB) : Colors.grey.shade200,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          _hasText ? Icons.send_rounded : Icons.mic_outlined,
-          color: _hasText ? Colors.white : Colors.grey[600],
-        ),
-      ),
-    );
-  }
+//   @override
+//   void dispose() {
+//     _timer?.cancel();
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
-  Widget _buildSuggestions() {
-    return SuggestionChips(
-      suggestions: const [
-        "Is it still available?",
-        "Can you send another picture?",
-        "What's the condition?",
-        "Would you take an offer?",
-      ],
-      onSelected: (text) {
-        setState(() {
-          _controller.text = text;
-          _hasText = true;
-        });
-      },
-    );
-  }
-}
+
+//   void _startRecording() {
+//     setState(() {
+//       _isRecording = true;
+//       _seconds = 0;
+//     });
+
+//     _timer?.cancel();
+//     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+//       setState(() => _seconds++);
+//     });
+//   }
+
+//   void _stopRecording() {
+//     _timer?.cancel();
+//     setState(() => _isRecording = false);
+
+//     // هنا مستقبلاً ترسلي الصوت
+//     debugPrint("Voice message sent ($_seconds sec)");
+//   }
+
+//   void _cancelRecording() {
+//     _timer?.cancel();
+//     setState(() => _isRecording = false);
+//   }
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         border: Border(
+//           top: BorderSide(color: Colors.grey.shade200),
+//         ),
+//       ),
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           // 🎙 Recording Bubble
+//           if (_isRecording) ...[
+//             RecordingBubble(
+//               seconds: _seconds,
+//               onCancel: _cancelRecording,
+//               onSend: _stopRecording,
+//             ),
+//             const SizedBox(height: 16),
+//           ],
+
+//           // 💬 Suggestions
+//           if (widget.showSuggestions && !_isRecording) ...[
+//             _buildSuggestions(),
+//             const SizedBox(height: 16),
+//           ],
+
+//           // ✍️ Input Row
+//           if (!_isRecording) _buildInputRow(),
+//         ],
+//       ),
+//     );
+//   }
+
+
+//   Widget _buildInputRow() {
+//     return Row(
+//       children: [
+//         IconButton(
+//           onPressed: widget.onEmoji,
+//           icon: Icon(
+//             Icons.emoji_emotions_outlined,
+//             color: Colors.grey[600],
+//           ),
+//         ),
+
+//         Expanded(
+//           child: Container(
+//             height: 44,
+//             padding: const EdgeInsets.symmetric(horizontal: 16),
+//             decoration: BoxDecoration(
+//               color: Colors.grey.shade100,
+//               borderRadius: BorderRadius.circular(24),
+//               border: Border.all(color: Colors.grey.shade300),
+//             ),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: 
+//                  TextField(
+//   controller: _controller,
+//   maxLines: null, // يسمح بتمدد الحقل حسب النص
+//   keyboardType: TextInputType.multiline,
+//   style: const TextStyle(
+//     fontSize: 15,
+//     fontWeight: FontWeight.w400,
+//     color: Colors.black87,
+//   ),
+//   decoration: const InputDecoration(
+//     hintText: "Message...",
+//     border: InputBorder.none,
+//     hintStyle: TextStyle(
+//       color: Color(0xFF9CA3AF),
+//       fontSize: 15,
+//       fontWeight: FontWeight.w400,
+//     ),
+//     contentPadding: EdgeInsets.zero,
+//   ),
+// )
+
+//                   // child: TextField(
+//                   //   controller: _controller,
+//                   //   decoration: const InputDecoration(
+//                   //     hintText: "Message...",
+//                   //     border: InputBorder.none,
+//                   //   ),
+//                   // ),
+//                 ),
+
+//                 AttachmentButtons(
+//                   onAttach: widget.onAttach ?? () {},
+//                   onCamera: widget.onCamera ?? () {},
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+
+//         const SizedBox(width: 8),
+
+//         _buildMicOrSendButton(),
+//       ],
+//     );
+//   }
+
+
+//   Widget _buildMicOrSendButton() {
+//     return GestureDetector(
+//       onTap: () {
+//         if (_hasText) {
+//           widget.onSend?.call(_controller.text.trim());
+//           _controller.clear();
+//         }
+//       },
+//       onLongPress: _hasText ? null : _startRecording,
+//       child: Container(
+// constraints: BoxConstraints( minHeight: 44, maxHeight: 120, // أو حسب التصميم
+// ),
+//         width: 44,
+//         // height: 44,
+//         decoration: BoxDecoration(
+//           color: _hasText
+//               ? const Color(0xFF2563EB)
+//               : Colors.grey.shade200,
+//           shape: BoxShape.circle,
+//         ),
+//         child: Icon(
+//           _hasText ? Icons.send_rounded : Icons.mic_outlined,
+//           color: _hasText ? Colors.white : Colors.grey[600],
+//         ),
+//       ),
+//     );
+//   }
+
+
+//   Widget _buildSuggestions() {
+//     return SuggestionChips(
+//       suggestions: const [
+//         "Is it still available?",
+//         "Can you send another picture?",
+//         "What's the condition?",
+//         "Would you take an offer?",
+//       ],
+//       onSelected: (text) {
+//         setState(() {
+//           _controller.text = text;
+//           _hasText = true;
+//         });
+//       },
+//     );
+//   }
+// }

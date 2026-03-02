@@ -10,7 +10,7 @@ class ChatListItem extends StatelessWidget {
   final String time;
   final int unread;
   final String productName;
-  final String imageUrl;
+  final String imageUrl; 
   final bool isSelected;
   final bool isPinned;
   final VoidCallback? onTap;
@@ -61,20 +61,16 @@ class ChatListItem extends StatelessWidget {
                           CircleAvatar(
                             radius: 24,
                             backgroundColor: AppColors.placeholders,
-                            backgroundImage:
-                                imageUrl.isNotEmpty
-                                    ? NetworkImage(imageUrl) as ImageProvider
-                                    : const AssetImage(
-                                      'assets/images/default_avatar.png',
-                                    ),
-                            child:
-                                imageUrl.isEmpty
-                                    ? const Icon(
-                                      Icons.person,
-                                      color: AppColors.icons,
-                                      size: 24,
-                                    )
-                                    : null,
+                            backgroundImage: imageUrl.isNotEmpty 
+                                ? NetworkImage(imageUrl) as ImageProvider
+                                : const AssetImage('assets/images/default_avatar.png'),
+                            child: imageUrl.isEmpty 
+                                ? const Icon(
+                                    Icons.person,
+                                    color: AppColors.icons,
+                                    size: 24,
+                                  )
+                                : null,
                           ),
                           Positioned(
                             right: 0,
@@ -94,9 +90,9 @@ class ChatListItem extends StatelessWidget {
                           ),
                         ],
                       ),
-
+                      
                       const SizedBox(width: 12),
-
+                      
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +110,7 @@ class ChatListItem extends StatelessWidget {
                                     maxLines: 1,
                                   ),
                                 ),
-
+                                
                                 if (unread > 0)
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -127,18 +123,17 @@ class ChatListItem extends StatelessWidget {
                                     ),
                                     child: Text(
                                       unread.toString(),
-                                      style: AppTypography.label10Regular
-                                          .copyWith(
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      style: AppTypography.label10Regular.copyWith(
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                               ],
                             ),
-
+                            
                             const SizedBox(height: 4),
-
+                            
                             Text(
                               lastMsg,
                               style: AppTypography.body14Regular.copyWith(
@@ -147,9 +142,10 @@ class ChatListItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
-
+                            
                             const SizedBox(height: 4),
-
+                            
+                            
                             Text(
                               time,
                               style: AppTypography.label12Regular.copyWith(
@@ -161,9 +157,9 @@ class ChatListItem extends StatelessWidget {
                       ),
                     ],
                   ),
-
+                  
                   const SizedBox(height: 8),
-
+                  
                   if (productName.isNotEmpty)
                     ProductInfoRow(
                       productName: productName,
@@ -172,7 +168,7 @@ class ChatListItem extends StatelessWidget {
                 ],
               ),
             ),
-
+            
             if (isPinned)
               Positioned(
                 top: 8,
