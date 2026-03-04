@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/horizontal_card.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 
 class ListingsListView extends StatelessWidget {
-  final List<ListingModel> listings;
+  final List<ProductModel> listings;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
 

@@ -5,7 +5,7 @@ import '../../../../../configs/theme/app_colors.dart';
 import '../../../../../configs/theme/app_typography.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../auth/data/models/auth_models.dart';
-import '../../../../listing/data/listing_model.dart';
+import '../../../../products/data/models/product_model.dart';
 
 class PrivateProfileWidget extends StatelessWidget {
   const PrivateProfileWidget({
@@ -15,7 +15,7 @@ class PrivateProfileWidget extends StatelessWidget {
   });
 
   final UserModel user;
-  final List<ListingModel> userListings;
+  final List<ProductModel> userListings;
 
   @override
   Widget build(BuildContext context) {

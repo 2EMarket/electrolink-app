@@ -81,15 +81,15 @@ class ProfileScreen extends StatelessWidget {
                                 ? AppSizes.paddingM
                                 : AppSizes.paddingXXS,
                       ),
-                      state.isMe
-                          ? PrivateProfileWidget(
-                            userListings: userListings,
-                            user: authUser,
-                          )
-                          : PublicProfileWidget(
-                            userListings: userListings,
-                            user: authUser,
-                          ),
+                      // state.isMe
+                      //     ? PrivateProfileWidget(
+                      //       userListings: userListings,
+                      //       user: authUser,
+                      //     )
+                      //     : PublicProfileWidget(
+                      //       userListings: userListings,
+                      //       user: authUser,
+                      //     ),
                     ],
                   ),
                 ),
