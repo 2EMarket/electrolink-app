@@ -164,7 +164,7 @@ class HomeTab extends StatelessWidget {
           const SizedBox(height: AppSizes.paddingM),
           _buildSectionHeader(
             context,
-            title: AppStrings.nearby,
+            title: AppStrings.recommended,
             onSeeAll: () {},
           ),
           const SizedBox(height: AppSizes.paddingS),

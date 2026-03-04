@@ -6,6 +6,8 @@ import 'package:second_hand_electronics_marketplace/core/widgets/custom_bottom_n
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/screens/all_chats_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/pages/home_tab.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/pages/my_listings/my_listings_screen.dart';
+import 'package:second_hand_electronics_marketplace/features/products/presentation/pages/products_screen.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/pages/user_profile/user_profile_screens/profile_screen.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/helpers/cache_helper.dart';
@@ -63,21 +65,22 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 
         final screens = [
           HomeTab(), // Home
-          Scaffold(
-            body: Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  // logout
-                  context.read<AuthCubit>().logout();
-                  context.goNamed(AppRoutes.login);
+          ProductsScreen(),
+          // Scaffold(
+          //   body: Center(
+          //     child: ElevatedButton(
+          //       onPressed: () async {
+          //         // logout
+          //         context.read<AuthCubit>().logout();
+          //         context.goNamed(AppRoutes.login);
 
-                  //just in case we want to test something
-                },
-                child: Text('Logout'),
-              ),
-            ),
-          ), // Search/Listings - Replace when built
-          ChatsScreen(), // Favorites - Replace when built
+          //         //just in case we want to test something
+          //       },
+          //       child: Text('Logout'),
+          //     ),
+          //   ),
+          // ), // Search/Listings - Replace when built
+          MyListingScreen(), // Favorites - Replace when built
           authUser != null
               ? ProfileScreen(authUser: authUser, isMe: true)
               : const NotLoggedInScreen(),
