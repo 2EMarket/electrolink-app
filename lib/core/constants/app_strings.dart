@@ -62,6 +62,7 @@ class AppStrings {
   static const String recent = 'Recent';
   static const String nearby = 'Nearby';
   static const String sort = 'Sort';
+  static const String recommended = 'Recommended';
 
   //verification
   static const String selectYourIdType = 'Select your ID type';
