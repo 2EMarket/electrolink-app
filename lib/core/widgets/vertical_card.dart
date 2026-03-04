@@ -5,10 +5,12 @@ import 'package:second_hand_electronics_marketplace/core/widgets/card_content_wi
 import 'package:second_hand_electronics_marketplace/core/widgets/card_image_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
+
+// استيراد الـ ProductModel الجديد
+import '../../features/products/data/models/product_model.dart';
 
 class VerticalCard extends StatelessWidget {
-  final ListingModel listing;
+  final ProductModel listing; // تم التعديل هنا
   final VoidCallback? onTap;
   final double? width;
 
@@ -44,14 +46,21 @@ class VerticalCard extends StatelessWidget {
                 children: [
                   AspectRatio(
                     aspectRatio: 1.0,
-                    child: CardImageWidget(imageUrl: listing.imageUrl),
+                    // فحص مصفوفة الصور زي ما عملنا بالـ Horizontal
+                    child: CardImageWidget(
+                      imageUrl:
+                          listing.images.isNotEmpty ? listing.images.first : '',
+                    ),
                   ),
                   Positioned(
                     bottom: AppSizes.paddingXS,
                     left: AppSizes.paddingXS,
-                    child: BadgeWidget(text: listing.category),
+                    child: BadgeWidget(
+                      text: listing.condition,
+                    ), // تعديل للـ condition
                   ),
-                  if (listing.isSold)
+                  // فحص حالة البيع
+                  if (listing.status == 'sold')
                     Positioned(
                       top: AppSizes.paddingXS,
                       left: AppSizes.paddingXS,
@@ -64,9 +73,8 @@ class VerticalCard extends StatelessWidget {
                   Positioned(
                     top: AppSizes.paddingXS,
                     right: AppSizes.paddingXS,
-
                     child: FavoriteButton(
-                      isFavorite: listing.isFavorite,
+                      isFavorite: false, // TODO: implement favorite
                       size: favButtonSize,
                     ),
                   ),

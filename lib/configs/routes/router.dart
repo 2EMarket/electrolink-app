@@ -43,7 +43,6 @@ class AppRouter {
   static final bool isFirstTime =
       CacheHelper.getData(key: CacheKeys.isFirstTime) ?? true;
   static final GoRouter _router = GoRouter(
-
     initialLocation:
         isFirstTime ? '/${AppRoutes.splash}' : '/${AppRoutes.mainLayout}',
 
@@ -105,17 +104,17 @@ class AppRouter {
         name: AppRoutes.mainLayout,
         builder: (context, state) => MainLayoutScreen(),
         routes: [
-          GoRoute(
-            path: AppRoutes.listings,
-            name: AppRoutes.listings,
-            builder: (context, state) {
-              final args = state.extra as Map<String, dynamic>;
-              return ListingsScreen(
-                title: args['title'] as String,
-                listings: args['listings'] as List<ListingModel>,
-              );
-            },
-          ),
+          // GoRoute(
+          //   path: AppRoutes.listings,
+          //   name: AppRoutes.listings,
+          //   builder: (context, state) {
+          //     final args = state.extra as Map<String, dynamic>;
+          //     return ListingsScreen(
+          //       title: args['title'] as String,
+          //       listings: args['listings'] as List<ListingModel>,
+          //     );
+          //   },
+          // ),
           GoRoute(
             path: AppRoutes.favorite,
             name: AppRoutes.favorite,

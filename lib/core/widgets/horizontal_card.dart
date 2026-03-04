@@ -7,8 +7,10 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
+import '../../features/products/data/models/product_model.dart';
+
 class HorizontalCard extends StatelessWidget {
-  final ListingModel listing;
+  final ProductModel listing;
   final VoidCallback? onTap;
 
   const HorizontalCard({super.key, required this.listing, this.onTap});
@@ -37,9 +39,14 @@ class HorizontalCard extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Positioned.fill(
-                      child: CardImageWidget(imageUrl: listing.imageUrl),
+                      child: CardImageWidget(
+                        imageUrl:
+                            listing.images.isNotEmpty
+                                ? listing.images.first
+                                : '',
+                      ),
                     ),
-                    if (listing.isSold)
+                    if (listing.status == 'sold')
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -60,7 +67,7 @@ class HorizontalCard extends StatelessWidget {
                       top: AppSizes.paddingXS,
                       left: AppSizes.paddingXS,
                       child: FavoriteButton(
-                        isFavorite: listing.isFavorite,
+                        isFavorite: false, // TODO: implement favorite
                         size: favButtonSize,
                       ),
                     ),
@@ -77,7 +84,7 @@ class HorizontalCard extends StatelessWidget {
                     children: [
                       CardContentWidget(listing: listing),
                       const SizedBox(height: AppSizes.paddingXS),
-                      BadgeWidget(text: listing.category),
+                      BadgeWidget(text: listing.condition),
                     ],
                   ),
                 ),

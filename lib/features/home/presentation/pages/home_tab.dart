@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
@@ -8,10 +10,13 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_strings.d
 import 'package:second_hand_electronics_marketplace/core/widgets/category_item.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/vertical_card.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/home_header.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_states.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
+
+// تأكدي من صحة هذه المسارات حسب مشروعك
+import '../../../products/presentation/cubit/products_cubit.dart';
+import '../../../products/presentation/cubit/products_state.dart';
 
 final List<Map<String, dynamic>> dummyCategories = [
   {'name': 'Phones', 'icon': AppAssets.smartPhoneCatIcon},
@@ -29,7 +34,7 @@ final List<Map<String, dynamic>> dummyCategories = [
 ];
 
 class HomeTab extends StatelessWidget {
-  HomeTab({super.key});
+  const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,8 @@ class HomeTab extends StatelessWidget {
         children: [
           HomeHeader(),
           const SizedBox(height: AppSizes.paddingL),
+
+          // ---------------- قسم الأقسام (Categories) ----------------
           _buildSectionHeader(
             context,
             title: AppStrings.categories,
@@ -74,7 +81,6 @@ class HomeTab extends StatelessWidget {
               if (state is CategorySuccess) {
                 final categoriesData = state.response.data;
                 if (categoriesData.isEmpty) {
-                  // TEMPORARY: Show dummy categories until backend adds real data
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(
@@ -115,7 +121,6 @@ class HomeTab extends StatelessWidget {
                             ),
                             child: CategoryItem(
                               title: category.name,
-                              // Using category icon URL or empty string to fallback avoiding null crashes.
                               iconPath: category.icon?.url ?? '',
                               isSelected: false,
                               onTap: () {},
@@ -126,66 +131,127 @@ class HomeTab extends StatelessWidget {
                 );
               }
 
-              return const SizedBox(); // Initial State or Unhandled
+              return const SizedBox();
             },
           ),
-          const SizedBox(height: AppSizes.paddingL),
-          _buildSectionHeader(
-            context,
-            title: AppStrings.recent,
-            onSeeAll: () {
-              context.pushNamed(
-                AppRoutes.listings, //
-                extra: {'title': 'Recent Listings', 'listings': dummyListings},
-              );
-            },
-          ),
-          const SizedBox(height: AppSizes.paddingS),
-          SizedBox(
-            height: listHeight,
-            child: ListView.separated(
-              clipBehavior: Clip.none,
 
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.paddingM,
-              ),
-              itemCount: dummyListings.length,
-              separatorBuilder:
-                  (ctx, index) => const SizedBox(width: AppSizes.paddingM),
-              itemBuilder: (ctx, index) {
-                return VerticalCard(
-                  width: cardWidth,
-                  listing: dummyListings[index],
+          const SizedBox(height: AppSizes.paddingL),
+
+          // ---------------- قسم المنتجات (Products) ----------------
+          BlocBuilder<ProductsCubit, ProductsState>(
+            builder: (context, state) {
+              if (state is ProductsLoading) {
+                return const Padding(
+                  padding: EdgeInsets.all(30.0),
+                  child: Center(child: CircularProgressIndicator()),
                 );
-              },
-            ),
-          ),
-          const SizedBox(height: AppSizes.paddingM),
-          _buildSectionHeader(
-            context,
-            title: AppStrings.recommended,
-            onSeeAll: () {},
-          ),
-          const SizedBox(height: AppSizes.paddingS),
-          SizedBox(
-            height: listHeight,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.paddingM,
-              ),
-              itemCount: dummyListings.length,
-              separatorBuilder:
-                  (ctx, index) => const SizedBox(width: AppSizes.paddingM),
-              itemBuilder: (ctx, index) {
-                return VerticalCard(
-                  width: cardWidth,
-                  listing: dummyListings[index],
+              } else if (state is ProductsError) {
+                return Center(
+                  child: Text(
+                    'خطأ في جلب المنتجات: ${state.message}',
+                    style: TextStyle(color: context.colors.error),
+                  ),
                 );
-              },
-            ),
+              } else if (state is ProductsLoaded) {
+                final products = state.products;
+
+                if (products.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text('لا توجد منتجات حالياً'),
+                    ),
+                  );
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 1. المضافة حديثاً (Recent)
+                    _buildSectionHeader(
+                      context,
+                      title: AppStrings.recent,
+                      onSeeAll: () {
+                        context.pushNamed(
+                          AppRoutes.listings,
+                          extra: {
+                            'title': 'Recent Listings',
+                            'listings': products,
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSizes.paddingS),
+                    SizedBox(
+                      height: listHeight,
+                      child: ListView.separated(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSizes.paddingM,
+                        ),
+                        itemCount: products.length,
+                        separatorBuilder:
+                            (ctx, index) =>
+                                const SizedBox(width: AppSizes.paddingM),
+                        itemBuilder: (ctx, index) {
+                          return VerticalCard(
+                            width: cardWidth,
+                            listing: products[index], // استخدام الداتا الحقيقية
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: AppSizes.paddingM),
+
+                    // 2. الموصى بها (Recommended)
+                    _buildSectionHeader(
+                      context,
+                      title: AppStrings.recommended,
+                      onSeeAll: () {
+                        context.pushNamed(
+                          AppRoutes.listings,
+                          extra: {
+                            'title': 'Recommended Listings',
+                            'listings': products,
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSizes.paddingS),
+                    SizedBox(
+                      height: listHeight,
+                      child: ListView.separated(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSizes.paddingM,
+                        ),
+                        itemCount: products.length,
+                        separatorBuilder:
+                            (ctx, index) =>
+                                const SizedBox(width: AppSizes.paddingM),
+                        itemBuilder: (ctx, index) {
+                          // عكسنا اللستة كشكل جمالي مؤقت ليظهر اختلاف بين القسمين
+                          final recommendedProducts =
+                              products.reversed.toList();
+                          return VerticalCard(
+                            width: cardWidth,
+                            listing:
+                                recommendedProducts[index], // استخدام الداتا الحقيقية
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return const SizedBox(); // Initial State
+            },
           ),
+
           const SizedBox(height: 100),
         ],
       ),

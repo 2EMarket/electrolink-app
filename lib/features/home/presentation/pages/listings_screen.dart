@@ -5,11 +5,11 @@ import 'package:second_hand_electronics_marketplace/core/constants/constants_exp
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/listings_grid_view.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/listings_list_view.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/search_with_filter.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 
 class ListingsScreen extends StatefulWidget {
   final String title;
-  final List<ListingModel> listings;
+  final List<ProductModel> listings;
 
   const ListingsScreen({
     super.key,

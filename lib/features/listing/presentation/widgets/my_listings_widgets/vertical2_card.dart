@@ -72,7 +72,7 @@ class Vertical2Card extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CardContentWidget(listing: listing),
+                    // CardContentWidget(listing: listing),
                     Gap(10),
                     BadgeWidget(
                       text: switch (listing.status) {

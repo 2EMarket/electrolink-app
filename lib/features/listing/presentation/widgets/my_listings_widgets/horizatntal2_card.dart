@@ -58,7 +58,7 @@ class Horizontal2Card extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(child: CardContentWidget(listing: listing)),
+                          // Expanded(child: CardContentWidget(listing: listing)),
                           MoreVertButton(selectState: selectState),
                         ],
                       ),
