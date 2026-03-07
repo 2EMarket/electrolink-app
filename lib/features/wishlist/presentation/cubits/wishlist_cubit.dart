@@ -13,7 +13,7 @@ class WishlistCubit extends Cubit<WishlistState> {
     emit(WishlistLoading());
     try {
       final items = await repository.getWishlist();
-      wishlistProductIds = items.map((e) => e.productId).toSet();
+      wishlistProductIds = items.map((e) => e.id).toSet();
       emit(WishlistSuccess(items));
     } catch (e) {
       emit(WishlistFailure(e.toString()));
@@ -41,9 +41,7 @@ class WishlistCubit extends Cubit<WishlistState> {
         final currentItems = (state as WishlistSuccess).wishlistItems;
         if (isCurrentlyFavorite) {
           final updatedItems =
-              currentItems
-                  .where((item) => item.productId != productId)
-                  .toList();
+              currentItems.where((item) => item.id != productId).toList();
           emit(WishlistSuccess(updatedItems));
         } else {
           // If we added, we might not have the full product model here easily

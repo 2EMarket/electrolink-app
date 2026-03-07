@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:second_hand_electronics_marketplace/features/wishlist/data/models/wishlist_model.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 
 abstract class WishlistState extends Equatable {
   const WishlistState();
@@ -13,7 +13,7 @@ class WishlistInitial extends WishlistState {}
 class WishlistLoading extends WishlistState {}
 
 class WishlistSuccess extends WishlistState {
-  final List<WishlistItemModel> wishlistItems;
+  final List<ProductModel> wishlistItems;
 
   const WishlistSuccess(this.wishlistItems);
 

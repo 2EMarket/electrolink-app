@@ -6,11 +6,12 @@ class AppRoutes {
 
   // Auth
   static const signIn = 'sign-in';
-  static const String register = 'register';
-  static const String login = 'login';
-  static const String forgotPassword = 'forgot-password';
-  static const String otp = 'otp';
-  static const String changePassword = 'change-password';
+  static const register = 'register';
+  static const login = 'login';
+  static const forgotPassword = 'forgot-password';
+  static const otp = 'otp';
+  static const changePassword = 'change-password';
+
   // Home
   static const home = 'home';
   static const mainLayout = 'main-layout';
@@ -19,6 +20,11 @@ class AppRoutes {
   static const addListing = 'add-listing';
   static const addListingPreview = 'add-listing-preview';
   static const noInternet = 'no-internet';
+  static const productDetails = 'product-details';
+
+  // Chat
+  static const chat = 'chat';
+  static const chating = 'chating';
 
   // Other pages
   static const location = 'location';

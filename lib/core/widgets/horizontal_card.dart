@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_content_widget.dart';
@@ -32,7 +33,9 @@ class HorizontalCard extends StatelessWidget {
     const double imageWidth = 120.0;
     const double favButtonSize = imageWidth / 4;
     return GestureDetector(
-      onTap: onTap,
+      onTap:
+          onTap ??
+          () => context.pushNamed(AppRoutes.productDetails, extra: listing),
       child: Container(
         height: 140,
         decoration: BoxDecoration(

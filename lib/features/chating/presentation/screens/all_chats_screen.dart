@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
-import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
+import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat list item/chat_list_item.dart';
 
 class ChatsScreen extends StatelessWidget {
@@ -9,64 +10,34 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(      
-      backgroundColor: AppColors.greyFillButton,
-
+    return Scaffold(
+      backgroundColor: context.colors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        surfaceTintColor: Colors.transparent, 
-  scrolledUnderElevation: 0,
+        backgroundColor: context.colors.background,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
-          'Chats',
-          style: AppTypography.h2_20Medium.copyWith(
-            color: AppColors.titles,
+          AppStrings.chats,
+          style: AppTypography.h2_20SemiBold.copyWith(
+            color: context.colors.titles,
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.more_vert),
-            color: AppColors.icons,
+            color: context.colors.icons,
             onPressed: () {},
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: AppColors.border,
-            height: 1,
-          ),
-        ),
       ),
-
       body: Column(
         children: [
-          // 🔍 Search
+          // 🔍 Simple Search (Without Filter)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search ...",
-                hintStyle: AppTypography.body16Regular.copyWith(
-                  color: AppColors.neutral,
-                ),
-                prefixIcon:
-                    Icon(Icons.search, color: AppColors.icons),
-                filled: true,
-                fillColor: AppColors.greyFillButton,
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                  horizontal: 16,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+            padding: const EdgeInsets.all(AppSizes.paddingM),
+            child: SearchWidget(
+              controller: TextEditingController(),
+              onChanged: (value) {},
             ),
           ),
 
@@ -74,16 +45,13 @@ class ChatsScreen extends StatelessWidget {
           const _ChatFilters(),
 
           // Divider
-          Container(
-            color: AppColors.border,
-            height: 1,
-          ),
+          Container(color: context.colors.border, height: 1),
 
           // Chats list
           Expanded(
             child: ListView(
               padding: const EdgeInsets.only(top: 8),
-              children: const [
+              children: [
                 ChatListItem(
                   name: 'Yara Yaseen',
                   lastMsg: 'Where can we meet?',
@@ -93,6 +61,7 @@ class ChatsScreen extends StatelessWidget {
                   imageUrl: 'https://i.pravatar.cc/150?img=1',
                   isSelected: true,
                   isPinned: true,
+                  onTap: () => context.pushNamed(AppRoutes.chating),
                 ),
                 ChatListItem(
                   name: 'Liam Wang',
@@ -102,6 +71,7 @@ class ChatsScreen extends StatelessWidget {
                   productName: 'Canon EOS M50',
                   imageUrl: 'https://i.pravatar.cc/150?img=2',
                   isPinned: false,
+                  onTap: () => context.pushNamed(AppRoutes.chating),
                 ),
                 ChatListItem(
                   name: 'John Doe',
@@ -109,10 +79,10 @@ class ChatsScreen extends StatelessWidget {
                   time: '10:30 AM',
                   unread: 2,
                   productName: 'iPhone 12',
-                  imageUrl:
-                      'https://randomuser.me/api/portraits/men/1.jpg',
+                  imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
                   isSelected: false,
                   isPinned: false,
+                  onTap: () => context.pushNamed(AppRoutes.chating),
                 ),
                 ChatListItem(
                   name: 'Omar Ali',
@@ -122,25 +92,27 @@ class ChatsScreen extends StatelessWidget {
                   productName: 'Redmi Note 12',
                   imageUrl: 'https://i.pravatar.cc/150?img=3',
                   isPinned: false,
+                  onTap: () => context.pushNamed(AppRoutes.chating),
                 ),
                 ChatListItem(
                   name: 'Mohammed Said',
-                  lastMsg:
-                      'I want to know if is it still available?',
+                  lastMsg: 'I want to know if is it still available?',
                   time: '1w',
                   unread: 0,
                   productName: 'iPhone 13 Pro Max',
                   imageUrl: 'https://i.pravatar.cc/150?img=4',
                   isPinned: false,
+                  onTap: () => context.pushNamed(AppRoutes.chating),
                 ),
               ],
             ),
           ),
         ],
-        )  ),
+      ),
     );
   }
 }
+
 class _ChatFilters extends StatefulWidget {
   const _ChatFilters();
 
@@ -156,7 +128,7 @@ class _ChatFiltersState extends State<_ChatFilters> {
     'Unread',
     'Buying',
     'Selling',
-    'Archived'
+    'Archived',
   ];
 
   @override
@@ -182,17 +154,19 @@ class _ChatFiltersState extends State<_ChatFilters> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: _selectedIndex == index
-                        ? AppColors.mainColor
-                        : Colors.transparent,
+                    color:
+                        _selectedIndex == index
+                            ? AppColors.mainColor
+                            : Colors.transparent,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
                     _filters[index],
                     style: AppTypography.body14Regular.copyWith(
-                      color: _selectedIndex == index
-                          ? AppColors.white
-                          : AppColors.neutral,
+                      color:
+                          _selectedIndex == index
+                              ? AppColors.white
+                              : AppColors.neutral,
                     ),
                   ),
                 ),

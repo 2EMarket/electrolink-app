@@ -4,7 +4,16 @@ import 'package:second_hand_electronics_marketplace/core/widgets/filter_button.d
 import 'package:second_hand_electronics_marketplace/core/widgets/search_widget.dart';
 
 class SearchWithFilterWidget extends StatelessWidget {
-  const SearchWithFilterWidget({super.key});
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onFilterTap;
+
+  const SearchWithFilterWidget({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.onFilterTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +23,16 @@ class SearchWithFilterWidget extends StatelessWidget {
         children: [
           Expanded(
             child: SearchWidget(
-              controller: TextEditingController(),
-              onChanged: (result) {},
+              controller: controller ?? TextEditingController(),
+              onChanged: onChanged ?? (val) {},
             ),
           ),
 
           const SizedBox(width: AppSizes.paddingXS),
-          AspectRatio(aspectRatio: 1.0, child: FilterButton()),
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: FilterButton(onTap: onFilterTap),
+          ),
         ],
       ),
     );
