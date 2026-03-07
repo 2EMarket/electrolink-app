@@ -32,14 +32,13 @@ class ProductModel {
         json['product'] is Map<String, dynamic> ? json['product'] : null;
 
     // 2. دالة بحث عميقة عن السعر في أي أوبجكت
-    num? findPriceDeep(dynamic data) {
+    num? findPriceDeep(dynamic data, {bool isInsidePriceKey = false}) {
       if (data == null) return null;
       if (data is num && data > 0) return data;
       if (data is String) {
         String clean = data.replaceAll(RegExp(r'[^\d.]'), '');
         if (clean.contains('.') &&
             clean.indexOf('.') != clean.lastIndexOf('.')) {
-          // التعامل مع حالات مثل 1.500.00
           clean = clean.replaceFirst('.', '');
         }
         num? p = num.tryParse(clean);
@@ -47,11 +46,26 @@ class ProductModel {
       }
       if (data is List && data.isNotEmpty) {
         for (var item in data) {
-          num? p = findPriceDeep(item);
+          num? p = findPriceDeep(item, isInsidePriceKey: isInsidePriceKey);
           if (p != null) return p;
         }
       }
       if (data is Map) {
+        // إذا كنا داخل مفتاح سعر (أو ما شابه)، نبحث عن أي رقم أو كائن Decimal {d: [val]}
+        if (isInsidePriceKey) {
+          if (data['d'] != null)
+            return findPriceDeep(data['d'], isInsidePriceKey: true);
+          if (data['value'] != null)
+            return findPriceDeep(data['value'], isInsidePriceKey: true);
+          if (data['amount'] != null)
+            return findPriceDeep(data['amount'], isInsidePriceKey: true);
+          // بحث أعمى في كل القيم بما أننا داخل مفتاح سعر
+          for (var val in data.values) {
+            num? p = findPriceDeep(val, isInsidePriceKey: true);
+            if (p != null) return p;
+          }
+        }
+
         // مفاتيح ذات أولوية
         const priorityKeys = [
           'price',
@@ -62,14 +76,15 @@ class ProductModel {
           'productPrice',
         ];
         for (var k in priorityKeys) {
-          num? p = findPriceDeep(data[k]);
+          num? p = findPriceDeep(data[k], isInsidePriceKey: true);
           if (p != null) return p;
         }
+
         // بحث في كل المفاتيح التي تحتوي كلمة price أو amount
         for (var entry in data.entries) {
           String key = entry.key.toString().toLowerCase();
           if (key.contains('price') || key.contains('amount')) {
-            num? p = findPriceDeep(entry.value);
+            num? p = findPriceDeep(entry.value, isInsidePriceKey: true);
             if (p != null) return p;
           }
         }
@@ -85,7 +100,6 @@ class ProductModel {
       nestedProduct ?? json,
     );
     if (nestedProduct != null) {
-      // دمج حقول الأب في الابن إذا كانت ناقصة
       json.forEach((key, value) {
         if (key != 'product' && value != null) {
           if (source[key] == null ||
