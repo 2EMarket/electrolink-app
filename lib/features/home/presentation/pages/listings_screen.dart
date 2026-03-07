@@ -8,6 +8,9 @@ import 'package:second_hand_electronics_marketplace/core/widgets/vertical_card.d
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/listings_grid_view.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/listings_list_view.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/search_with_filter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_state.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 
@@ -83,10 +86,32 @@ class _ListingsScreenState extends State<ListingsScreen> {
             const SizedBox(height: AppSizes.paddingM),
 
             Expanded(
-              child:
-                  isGridView
-                      ? ListingsGridView(listings: widget.listings)
-                      : ListingsListView(listings: widget.listings),
+              child: BlocBuilder<ProductsCubit, ProductsState>(
+                builder: (context, state) {
+                  if (state is ProductsLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (state is ProductsError) {
+                    return Center(child: Text(state.message));
+                  }
+
+                  final products =
+                      state is ProductsLoaded
+                          ? state.products
+                          : widget.listings;
+
+                  if (products.isEmpty) {
+                    return const Center(
+                      child: Text('No products found for this category'),
+                    );
+                  }
+
+                  return isGridView
+                      ? ListingsGridView(listings: products)
+                      : ListingsListView(listings: products);
+                },
+              ),
             ),
           ],
         ),

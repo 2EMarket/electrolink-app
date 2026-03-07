@@ -17,9 +17,14 @@ import 'features/auth/data/services/auth_service.dart';
 import 'features/location/presentation/cubits/location_cubit.dart';
 import 'features/products/data/repo/products_repo.dart';
 import 'features/products/presentation/cubit/products_cubit.dart';
+import 'features/products/presentation/cubit/recent_products_cubit.dart';
+import 'features/products/presentation/cubit/recommended_products_cubit.dart';
 import 'features/profile/data/services/profile_service.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/data/services/category_service.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/wishlist/data/repo/wishlist_repository.dart';
+import 'package:second_hand_electronics_marketplace/features/wishlist/data/services/wishlist_service.dart';
+import 'package:second_hand_electronics_marketplace/features/wishlist/presentation/cubits/wishlist_cubit.dart';
 
 import 'imports.dart';
 
@@ -69,6 +74,10 @@ class ElectroLinkApp extends StatelessWidget {
         RepositoryProvider<Dio>.value(value: myDio),
         RepositoryProvider(create: (_) => ProfileService(myDio)),
         RepositoryProvider(create: (_) => CategoryService(dio: myDio)),
+        RepositoryProvider(
+          create:
+              (_) => WishlistRepository(service: WishlistService(dio: myDio)),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -89,11 +98,29 @@ class ElectroLinkApp extends StatelessWidget {
                   categoryService: context.read<CategoryService>(),
                 )..fetchCategories(),
           ),
-          BlocProvider(
+          BlocProvider<ProductsCubit>(
             create:
                 (context) =>
                     ProductsCubit(ProductsRepository(dio: myDio))
                       ..fetchProducts(),
+          ),
+          BlocProvider<RecentProductsCubit>(
+            create:
+                (context) =>
+                    RecentProductsCubit(ProductsRepository(dio: myDio))
+                      ..fetchProducts(),
+          ),
+          BlocProvider<RecommendedProductsCubit>(
+            create:
+                (context) =>
+                    RecommendedProductsCubit(ProductsRepository(dio: myDio))
+                      ..fetchProducts(),
+          ),
+          BlocProvider<WishlistCubit>(
+            create:
+                (context) => WishlistCubit(
+                  repository: context.read<WishlistRepository>(),
+                )..fetchWishlist(),
           ),
         ],
         child: MaterialApp.router(

@@ -7,6 +7,9 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 
 // استيراد الـ ProductModel الجديد
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_state.dart';
 import '../../features/products/data/models/product_model.dart';
 
 class VerticalCard extends StatelessWidget {
@@ -73,9 +76,20 @@ class VerticalCard extends StatelessWidget {
                   Positioned(
                     top: AppSizes.paddingXS,
                     right: AppSizes.paddingXS,
-                    child: FavoriteButton(
-                      isFavorite: false, // TODO: implement favorite
-                      size: favButtonSize,
+                    child: BlocBuilder<WishlistCubit, WishlistState>(
+                      builder: (context, state) {
+                        final isFav = context.read<WishlistCubit>().isFavorite(
+                          listing.id,
+                        );
+                        return FavoriteButton(
+                          isFavorite: isFav,
+                          size: favButtonSize,
+                          onTap:
+                              () => context
+                                  .read<WishlistCubit>()
+                                  .toggleWishlist(listing.id),
+                        );
+                      },
                     ),
                   ),
                 ],

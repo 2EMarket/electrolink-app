@@ -7,6 +7,9 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_state.dart';
 import '../../features/products/data/models/product_model.dart';
 
 class HorizontalCard extends StatelessWidget {
@@ -66,9 +69,20 @@ class HorizontalCard extends StatelessWidget {
                     Positioned(
                       top: AppSizes.paddingXS,
                       left: AppSizes.paddingXS,
-                      child: FavoriteButton(
-                        isFavorite: false, // TODO: implement favorite
-                        size: favButtonSize,
+                      child: BlocBuilder<WishlistCubit, WishlistState>(
+                        builder: (context, state) {
+                          final isFav = context
+                              .read<WishlistCubit>()
+                              .isFavorite(listing.id);
+                          return FavoriteButton(
+                            isFavorite: isFav,
+                            size: favButtonSize,
+                            onTap:
+                                () => context
+                                    .read<WishlistCubit>()
+                                    .toggleWishlist(listing.id),
+                          );
+                        },
                       ),
                     ),
                   ],

@@ -21,13 +21,26 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
+    // دالة مساعدة لضمان الحصول على رقم حتى لو وصلت البيانات كـ Map أو String
+    num parseNum(dynamic value) {
+      if (value is num) return value;
+      if (value is String) return num.tryParse(value) ?? 0;
+      if (value is Map && value.containsKey('price'))
+        return parseNum(value['price']);
+      if (value is Map && value.containsKey('value'))
+        return parseNum(value['value']);
+      if (value is Map && value.containsKey('amount'))
+        return parseNum(value['amount']);
+      return 0;
+    }
+
     return ProductModel(
-      id: json['id']?.toString() ?? '', // أمان إضافي لو الـ id رجع كرقم
+      id: json['id']?.toString() ?? '',
       title: json['title'] ?? '',
       condition: json['condition'] ?? '',
-      price: json['price'] ?? 0,
+      price: parseNum(json['price']),
       status: json['status'] ?? '',
-      viewCount: json['viewCount'] ?? 0,
+      viewCount: parseNum(json['viewCount']).toInt(),
       isNegotiable: json['isNegotiable'] ?? false,
 
       // التعديل السحري لحل مشكلة الـ Map:

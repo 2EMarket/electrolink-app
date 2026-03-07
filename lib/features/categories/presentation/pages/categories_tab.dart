@@ -7,8 +7,10 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_routes.da
 import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_strings.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/category_item.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_states.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_cubit.dart';
-import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_state.dart';
 
 class CategoriesTab extends StatelessWidget {
   const CategoriesTab({super.key});
@@ -16,24 +18,18 @@ class CategoriesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> categories = [
-      {'name': 'Phones', 'icon': AppAssets.smartPhoneCatIcon},
+      {'name': 'Smartphones', 'icon': AppAssets.smartPhoneCatIcon},
       {'name': 'Tablets', 'icon': AppAssets.tabletCatIcon},
       {'name': 'Laptops', 'icon': AppAssets.laptopCatIcon},
-      {
-        'name': 'PC Parts',
-        'icon': AppAssets.aiChipCatIcon,
-      }, // AI Chip as PC Part
-      {'name': 'Gaming', 'icon': AppAssets.gameCatIcon},
-      {'name': 'Audio', 'icon': AppAssets.headphoneCatIcon},
-      {'name': 'Smartwatches', 'icon': AppAssets.smartWatchCatIcon},
+      {'name': 'AI Chips', 'icon': AppAssets.aiChipCatIcon},
+      {'name': 'Gaming Consoles', 'icon': AppAssets.gameCatIcon},
+      {'name': 'Audio Devices', 'icon': AppAssets.headphoneCatIcon},
+      {'name': 'Watches', 'icon': AppAssets.smartWatchCatIcon},
       {'name': 'Cameras', 'icon': AppAssets.cameraCatIcon},
-      {
-        'name': 'Smart Home',
-        'icon': AppAssets.routerCatIcon,
-      }, // Router as Smart Home icon
-      {'name': 'TV & Monitors', 'icon': AppAssets.tvCatIcon},
-      {'name': 'Accessories', 'icon': AppAssets.plugCatIcon},
-      {'name': 'Networking', 'icon': AppAssets.wifiCatIcon},
+      {'name': 'Routers', 'icon': AppAssets.routerCatIcon},
+      {'name': 'TVs', 'icon': AppAssets.tvCatIcon},
+      {'name': 'Plugs', 'icon': AppAssets.plugCatIcon},
+      {'name': 'Wifi', 'icon': AppAssets.wifiCatIcon},
     ];
 
     return Scaffold(
@@ -65,13 +61,33 @@ class CategoriesTab extends StatelessWidget {
             iconPath: category['icon'],
             isSelected: false,
             onTap: () {
-              final productsState = context.read<ProductsCubit>().state;
-              final products =
-                  productsState is ProductsLoaded ? productsState.products : [];
+              // البحث عن الـ ID الحقيقي من السيرفر بناءً على الاسم
+              final categoryState = context.read<CategoryCubit>().state;
+              String? realId;
+
+              if (categoryState is CategorySuccess) {
+                try {
+                  final searchName = category['name'].toString().toLowerCase();
+                  realId =
+                      categoryState.response.data.firstWhere((c) {
+                        final serverName = c.name.toLowerCase();
+                        return serverName == searchName ||
+                            serverName.contains(searchName) ||
+                            searchName.contains(serverName);
+                      }).id;
+                } catch (_) {}
+              }
+
+              // جلب المنتجات المفلترة
+              context.read<ProductsCubit>().fetchProducts(categoryId: realId);
 
               context.pushNamed(
                 AppRoutes.listings,
-                extra: {'title': category['name'], 'listings': products},
+                extra: {
+                  'title': category['name'],
+                  'listings':
+                      <ProductModel>[], // سنعتمد على الـ BlocBuilder في الصفحة
+                },
               );
             },
           );

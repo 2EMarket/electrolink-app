@@ -29,6 +29,13 @@ class ApiEndpoints {
   // Product Endpoints
   // ==========================================
   static const String createPendingProduct = '/products/pending'; // POST
+
+  // ==========================================
+  // Wishlist Endpoints
+  // ==========================================
+  static const String wishlist = '/wishlist'; // GET / POST
+  static String removeFromWishlist(String productId) =>
+      '/wishlist/$productId'; // DELETE
 }
 
 class ApiKeys {
@@ -81,6 +88,7 @@ class ApiKeys {
   static const String attributes = 'attributes';
   static const String attributeId = 'attributeId';
   static const String value = 'value';
+  static const String productId = 'productId';
 
   // Specific API Values (Enums/Types)
   static const String emailVerification = 'email_verification';

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:dio/dio.dart';
 
 import '../models/product_model.dart';
@@ -10,14 +11,25 @@ class ProductsRepository {
   Future<List<ProductModel>> getAllProducts({
     int page = 1,
     int limit = 10,
-    String? categoryId, // لو حبينا نفلتر حسب القسم
+    String? categoryId,
+    String? sortBy,
+    String? sortOrder,
   }) async {
+    log(
+      'Fetching products with categoryId: $categoryId, sortBy: $sortBy, sortOrder: $sortOrder',
+    );
     try {
       // تمرير الـ Parameters اللي شفناها في الـ Swagger
       final response = await dio.get(
         '/products',
-        options: Options(extra: {'noToken': true}), // 👈 ضيفي هذا السطر للتجربة
-        queryParameters: {'page': page, 'limit': limit},
+        options: Options(extra: {'noToken': true}),
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+          if (categoryId != null) 'categoryIds': [categoryId],
+          if (sortBy != null) 'sortBy': sortBy,
+          if (sortOrder != null) 'sortOrder': sortOrder,
+        },
       );
 
       // الفحص والتأكد من نجاح الطلب
