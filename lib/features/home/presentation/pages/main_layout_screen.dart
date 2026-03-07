@@ -25,6 +25,17 @@ class MainLayoutScreen extends StatefulWidget {
 
 class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final authState = context.read<AuthCubit>().state;
+    if (authState is AuthSuccess) {
+      context.read<WishlistCubit>().fetchWishlist();
+      context.read<MyListingsCubit>().fetchMyListings();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(

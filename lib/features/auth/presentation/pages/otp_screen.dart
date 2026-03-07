@@ -9,6 +9,8 @@ import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/notification_toast.dart';
 import '../cubits/auth_cubit.dart';
 import '../cubits/auth_states.dart';
+import '../../../wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../../listing/presentation/bloc/my_listings_cubit.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -113,6 +115,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 extra: token,
               );
             } else {
+              context.read<WishlistCubit>().clearWishlist();
+              context.read<MyListingsCubit>().clearMyListings();
+              context.read<WishlistCubit>().fetchWishlist();
+              context.read<MyListingsCubit>().fetchMyListings();
               context.goNamed(AppRoutes.mainLayout);
             }
           } else if (state is AuthCodeSent) {
