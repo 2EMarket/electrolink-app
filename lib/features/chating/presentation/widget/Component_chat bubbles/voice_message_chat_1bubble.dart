@@ -284,7 +284,7 @@
 // //           if (!widget.isSender)
 // //             const CircleAvatar(
 // //               radius: 16,
-// //               backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+// //               backgroundImage: NetworkImage('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150'),
 // //             ),
           
 // //           Container(

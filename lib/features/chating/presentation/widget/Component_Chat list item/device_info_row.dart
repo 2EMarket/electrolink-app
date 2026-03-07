@@ -15,7 +15,7 @@ class ProductInfoRow extends StatelessWidget {
   });
 
   static const String defaultImage =
-      'https://cdn-icons-png.flaticon.com/512/679/679922.png';
+      'https://images.unsplash.com/photo-1546868831-d1be1c46ad0a?q=80&w=150';
 
   String get _validImage {
     if (imageUrl == null ||
@@ -70,11 +70,17 @@ class ProductInfoRow extends StatelessWidget {
                     height: 40,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return Image.network(
-                        defaultImage,
+                      return Container(
                         width: 40,
                         height: 40,
-                        fit: BoxFit.cover,
+                        color: AppColors.neutralWithoutTransparent.withOpacity(
+                          0.1,
+                        ),
+                        child: Icon(
+                          Icons.error_outline,
+                          size: 20,
+                          color: AppColors.icons,
+                        ),
                       );
                     },
                     loadingBuilder: (context, child, loadingProgress) {

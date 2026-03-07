@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
@@ -45,10 +46,26 @@ class ChatHeader extends StatelessWidget {
               // 👤 Avatar
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(imageUrl),
-                    backgroundColor: AppColors.neutralWithoutTransparent,
+                  CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    imageBuilder:
+                        (context, imageProvider) => CircleAvatar(
+                          radius: 20,
+                          backgroundImage: imageProvider,
+                        ),
+                    placeholder:
+                        (context, url) => const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColors.neutral10,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                    errorWidget:
+                        (context, url, error) => const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage(
+                            'assets/images/profile pic.png',
+                          ),
+                        ),
                   ),
                   // if (isOnline)
                   //   Positioned(
