@@ -11,9 +11,6 @@ import 'package:second_hand_electronics_marketplace/core/widgets/category_item.d
 import 'package:second_hand_electronics_marketplace/core/widgets/vertical_card.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/home_header.dart';
 
-import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
-import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_states.dart';
-
 // تأكدي من صحة هذه المسارات حسب مشروعك
 import '../../../products/presentation/cubit/products_cubit.dart';
 import '../../../products/presentation/cubit/products_state.dart';
@@ -57,6 +54,44 @@ class HomeTab extends StatelessWidget {
             onSeeAll: () {},
           ),
           const SizedBox(height: AppSizes.paddingS),
+
+          // عرض الأقسام الافتراضية (Default Assets) بمسافات موحدة
+          SizedBox(
+            height: 100,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingM,
+              ),
+              itemCount: dummyCategories.length,
+              separatorBuilder:
+                  (context, index) => const SizedBox(width: AppSizes.paddingS),
+              itemBuilder: (context, index) {
+                final category = dummyCategories[index];
+                return CategoryItem(
+                  title: category['name'],
+                  iconPath: category['icon'],
+                  isSelected: false,
+                  onTap: () {
+                    final productsState = context.read<ProductsCubit>().state;
+                    final products =
+                        productsState is ProductsLoaded
+                            ? productsState.products
+                            : [];
+
+                    context.pushNamed(
+                      AppRoutes.listings,
+                      extra: {'title': category['name'], 'listings': products},
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+
+          /* 
+          // تم تعطيل جلب الأقسام من السيرفر مؤقتاً بناءً على طلب المستخدم
+          // وتفضيل استخدام الأقسام الافتراضية الملحقة بالتطبيق.
           BlocBuilder<CategoryCubit, CategoryState>(
             builder: (context, state) {
               if (state is CategoryLoading) {
@@ -81,27 +116,10 @@ class HomeTab extends StatelessWidget {
               if (state is CategorySuccess) {
                 final categoriesData = state.response.data;
                 if (categoriesData.isEmpty) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.paddingM,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:
-                          dummyCategories.map((category) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                right: AppSizes.paddingS,
-                              ),
-                              child: CategoryItem(
-                                title: category['name'],
-                                iconPath: category['icon'],
-                                isSelected: false,
-                                onTap: () {},
-                              ),
-                            );
-                          }).toList(),
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSizes.paddingM),
+                      child: Text('No categories available.'),
                     ),
                   );
                 }
@@ -134,7 +152,7 @@ class HomeTab extends StatelessWidget {
               return const SizedBox();
             },
           ),
-
+          */
           const SizedBox(height: AppSizes.paddingL),
 
           // ---------------- قسم المنتجات (Products) ----------------

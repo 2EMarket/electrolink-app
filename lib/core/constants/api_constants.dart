@@ -22,13 +22,13 @@ class ApiEndpoints {
   // categories Endpoints
   // ==========================================
   static const String categories = '/categories'; // GET
+  static const String adminCategories = '/admin/categories'; // POST
   static String categoryById(String id) => '/categories/$id'; // GET
 
   // ==========================================
   // Product Endpoints
   // ==========================================
   static const String createPendingProduct = '/products/pending'; // POST
-
 }
 
 class ApiKeys {

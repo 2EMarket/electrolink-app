@@ -19,58 +19,124 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // استخدام اللون الأزرق للهوية البصرية كما في التصميم
     final backgroundColor =
-        isSelected ? context.colors.mainColor : context.colors.neutral5;
+        isSelected ? context.colors.mainColor : context.colors.mainColor5;
     final iconColor =
-        isSelected ? context.colors.surface : context.colors.icons;
+        isSelected ? context.colors.surface : context.colors.mainColor;
+
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        width: 60,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedContainer(
-              padding: EdgeInsets.all(AppSizes.paddingM),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                shape: BoxShape.circle,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            padding: const EdgeInsets.all(AppSizes.paddingM),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              shape: BoxShape.circle,
+            ),
+            child: _buildIcon(context, iconColor),
+          ),
+          const SizedBox(height: AppSizes.paddingXS),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style:
+                isSelected
+                    ? AppTypography.body14Medium.copyWith(
+                      color: context.colors.text,
+                    )
+                    : AppTypography.label12Regular.copyWith(
+                      color: context.colors.text,
+                    ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIcon(BuildContext context, Color iconColor) {
+    if (iconPath.isEmpty) {
+      return Icon(Icons.category_outlined, color: iconColor, size: 24);
+    }
+
+    if (iconPath.startsWith('http')) {
+      final bool isSvg = iconPath.toLowerCase().contains('.svg');
+      if (isSvg) {
+        return SvgPicture.network(
+          iconPath,
+          width: 24,
+          height: 24,
+          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+          placeholderBuilder: (context) => const _LoadingWidget(),
+          errorBuilder:
+              (context, error, stackTrace) => Image.network(
+                iconPath,
+                width: 24,
+                height: 24,
+                color: iconColor,
+                errorBuilder:
+                    (_, __, ___) => Icon(
+                      Icons.category_outlined,
+                      color: iconColor,
+                      size: 24,
+                    ),
               ),
-              child:
-                  iconPath.startsWith('http')
-                      ? SvgPicture.network(
-                        iconPath,
-                        colorFilter: ColorFilter.mode(
-                          iconColor,
-                          BlendMode.srcIn,
-                        ),
-                      )
-                      : SvgPicture.asset(
-                        iconPath,
-                        colorFilter: ColorFilter.mode(
-                          iconColor,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-            ),
-            const SizedBox(height: AppSizes.paddingXS),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style:
-                  isSelected
-                      ? AppTypography.body14Medium.copyWith(
-                        color: context.colors.text,
-                      )
-                      : AppTypography.label12Regular.copyWith(
-                        color: context.colors.text,
-                      ),
-            ),
-          ],
-        ),
+        );
+      } else {
+        return Image.network(
+          iconPath,
+          width: 24,
+          height: 24,
+          color: iconColor,
+          errorBuilder:
+              (_, __, ___) =>
+                  Icon(Icons.category_outlined, color: iconColor, size: 24),
+          loadingBuilder:
+              (context, child, loadingProgress) =>
+                  loadingProgress == null ? child : const _LoadingWidget(),
+        );
+      }
+    }
+
+    if (iconPath.toLowerCase().endsWith('.svg')) {
+      return SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+        errorBuilder:
+            (_, __, ___) =>
+                Icon(Icons.category_outlined, color: iconColor, size: 24),
+      );
+    } else {
+      return Image.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        color: iconColor,
+        errorBuilder:
+            (_, __, ___) =>
+                Icon(Icons.category_outlined, color: iconColor, size: 24),
+      );
+    }
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  const _LoadingWidget();
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 16,
+        height: 16,
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
     );
   }
