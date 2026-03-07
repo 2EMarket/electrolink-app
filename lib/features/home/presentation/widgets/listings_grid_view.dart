@@ -27,7 +27,7 @@ class ListingsGridView extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: AppSizes.paddingS,
         crossAxisSpacing: AppSizes.paddingS,
-        childAspectRatio: 0.60,
+        childAspectRatio: 0.63,
       ),
       itemBuilder: (context, index) {
         return VerticalCard(listing: listings[index]);

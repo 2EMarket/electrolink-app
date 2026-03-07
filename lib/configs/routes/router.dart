@@ -26,6 +26,7 @@ import '../../features/auth/presentation/pages/register_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/home/presentation/pages/splash_screen.dart';
+import '../../features/products/data/models/product_model.dart';
 import '../../features/listing/data/listing_model.dart';
 import '../../features/profile/data/services/profile_service.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
@@ -104,17 +105,17 @@ class AppRouter {
         name: AppRoutes.mainLayout,
         builder: (context, state) => MainLayoutScreen(),
         routes: [
-          // GoRoute(
-          //   path: AppRoutes.listings,
-          //   name: AppRoutes.listings,
-          //   builder: (context, state) {
-          //     final args = state.extra as Map<String, dynamic>;
-          //     return ListingsScreen(
-          //       title: args['title'] as String,
-          //       listings: args['listings'] as List<ListingModel>,
-          //     );
-          //   },
-          // ),
+          GoRoute(
+            path: '/${AppRoutes.listings}',
+            name: AppRoutes.listings,
+            builder: (context, state) {
+              final args = state.extra as Map<String, dynamic>;
+              return ListingsScreen(
+                title: args['title'] as String,
+                listings: args['listings'] as List<ProductModel>,
+              );
+            },
+          ),
           GoRoute(
             path: AppRoutes.favorite,
             name: AppRoutes.favorite,
