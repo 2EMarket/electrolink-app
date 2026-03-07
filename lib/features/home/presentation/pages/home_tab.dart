@@ -61,7 +61,7 @@ class HomeTab extends StatelessWidget {
 
           // عرض الأقسام الافتراضية (Default Assets) بمسافات موحدة
           SizedBox(
-            height: 100,
+            height: 110,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(

@@ -151,6 +151,28 @@ class AuthCubit extends Cubit<AuthState> {
       final model = AuthResponseModel.fromJson(response.data);
 
       // Merge current User inside if the API verification drops it
+      UserModel? updatedUser = model.user;
+      if (updatedUser == null && currentUser != null) {
+        updatedUser = UserModel(
+          id: currentUser!.id,
+          fullName: currentUser!.fullName,
+          email: currentUser!.email,
+          phoneNumber: currentUser!.phoneNumber,
+          role: currentUser!.role,
+          isEmailVerified:
+              email != null && email.isNotEmpty
+                  ? true
+                  : currentUser!.isEmailVerified,
+          isPhoneVerified:
+              phone != null && phone.isNotEmpty
+                  ? true
+                  : currentUser!.isPhoneVerified,
+          isIdentityVerified: currentUser!.isIdentityVerified,
+          lastLogin: currentUser!.lastLogin,
+          createdAt: currentUser!.createdAt,
+        );
+      }
+
       final completeModel = AuthResponseModel(
         success: model.success,
         message: model.message,
@@ -158,7 +180,7 @@ class AuthCubit extends Cubit<AuthState> {
             model.token.isNotEmpty
                 ? model.token
                 : (await CacheHelper.getData(key: CacheKeys.token) ?? ''),
-        user: model.user ?? currentUser, // Inject current user
+        user: updatedUser, // Inject updated current user
       );
 
       await _saveToCache(completeModel);

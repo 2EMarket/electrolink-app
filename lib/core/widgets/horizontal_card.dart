@@ -5,18 +5,27 @@ import 'package:second_hand_electronics_marketplace/core/widgets/card_content_wi
 import 'package:second_hand_electronics_marketplace/core/widgets/card_image_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/wishlist/presentation/cubits/wishlist_cubit.dart';
 import '../../features/wishlist/presentation/cubits/wishlist_state.dart';
 import '../../features/products/data/models/product_model.dart';
 
+import 'package:gap/gap.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/more_vert_button.dart';
+
 class HorizontalCard extends StatelessWidget {
   final ProductModel listing;
   final VoidCallback? onTap;
+  final bool isOwnerMode;
+  final int ownerMenuState;
 
-  const HorizontalCard({super.key, required this.listing, this.onTap});
+  const HorizontalCard({
+    super.key,
+    required this.listing,
+    this.onTap,
+    this.isOwnerMode = false,
+    this.ownerMenuState = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,46 +58,30 @@ class HorizontalCard extends StatelessWidget {
                                 : '',
                       ),
                     ),
-                    if (listing.status == 'sold')
+                    if (!isOwnerMode)
                       Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          color: context.colors.secondaryColor.withOpacity(0.7),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Sold",
-                            style: AppTypography.label12Regular.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
+                        top: AppSizes.paddingXS,
+                        left: AppSizes.paddingXS,
+                        child: BlocBuilder<WishlistCubit, WishlistState>(
+                          builder: (context, state) {
+                            final isFav = context
+                                .read<WishlistCubit>()
+                                .isFavorite(listing.id);
+                            return FavoriteButton(
+                              key: ValueKey('fav_${listing.id}'),
+                              isFavorite: isFav,
+                              size: favButtonSize,
+                              onTap:
+                                  () => context
+                                      .read<WishlistCubit>()
+                                      .toggleWishlist(listing.id),
+                            );
+                          },
                         ),
                       ),
-                    Positioned(
-                      top: AppSizes.paddingXS,
-                      left: AppSizes.paddingXS,
-                      child: BlocBuilder<WishlistCubit, WishlistState>(
-                        builder: (context, state) {
-                          final isFav = context
-                              .read<WishlistCubit>()
-                              .isFavorite(listing.id);
-                          return FavoriteButton(
-                            isFavorite: isFav,
-                            size: favButtonSize,
-                            onTap:
-                                () => context
-                                    .read<WishlistCubit>()
-                                    .toggleWishlist(listing.id),
-                          );
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ),
-
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(AppSizes.paddingS),
@@ -96,9 +89,57 @@ class HorizontalCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CardContentWidget(listing: listing),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: CardContentWidget(listing: listing)),
+                          if (isOwnerMode)
+                            MoreVertButton(selectState: ownerMenuState),
+                        ],
+                      ),
                       const SizedBox(height: AppSizes.paddingXS),
-                      BadgeWidget(text: listing.condition),
+                      Row(
+                        children: [
+                          BadgeWidget(text: listing.condition),
+                          if (isOwnerMode) ...[
+                            const Gap(8),
+                            BadgeWidget(
+                              text:
+                                  listing.status.isEmpty
+                                      ? 'Pending'
+                                      : listing.status[0].toUpperCase() +
+                                          listing.status.substring(1),
+                              bgColor: switch (listing.status.toLowerCase()) {
+                                'active' => const Color.fromARGB(
+                                  255,
+                                  213,
+                                  248,
+                                  226,
+                                ),
+                                'pending' => const Color.fromARGB(
+                                  255,
+                                  253,
+                                  244,
+                                  209,
+                                ),
+                                'rejected' => const Color.fromARGB(
+                                  255,
+                                  238,
+                                  219,
+                                  219,
+                                ),
+                                _ => context.colors.neutralWithoutTransparent,
+                              },
+                              textColor: switch (listing.status.toLowerCase()) {
+                                'active' => const Color(0XFF22C55E),
+                                'pending' => const Color(0XFFFACC15),
+                                'rejected' => const Color(0XFFEF4444),
+                                _ => context.colors.neutral,
+                              },
+                            ),
+                          ],
+                        ],
+                      ),
                     ],
                   ),
                 ),

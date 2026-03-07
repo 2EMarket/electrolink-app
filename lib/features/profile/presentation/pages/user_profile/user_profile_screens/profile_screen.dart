@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../../../../core/constants/constants_exports.dart';
 import '../../../../../auth/data/models/auth_models.dart';
-import '../../../../../listing/data/listing_model.dart';
+import '../../../../../products/data/models/product_model.dart';
 import '../../../../data/services/profile_service.dart';
 import '../../../../profile_exports.dart';
+import '../../../../../listing/presentation/bloc/my_listings_cubit.dart';
+import '../../../../../listing/presentation/bloc/my_listings_state.dart';
 import '../../../widgets/profile_widgets_exports.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -41,12 +43,6 @@ class ProfileScreen extends StatelessWidget {
 
               final verificationProgress =
                   state.appUser.user.verificationPercentage / 100;
-              final userListings =
-                  dummyListings
-                      .where(
-                        (l) => l.ownerId == state.appUser.user.id.toString(),
-                      )
-                      .toList();
               return Scaffold(
                 appBar: AppBar(
                   title: Text(profileData.name),
@@ -81,15 +77,23 @@ class ProfileScreen extends StatelessWidget {
                                 ? AppSizes.paddingM
                                 : AppSizes.paddingXXS,
                       ),
-                      // state.isMe
-                      //     ? PrivateProfileWidget(
-                      //       userListings: userListings,
-                      //       user: authUser,
-                      //     )
-                      //     : PublicProfileWidget(
-                      //       userListings: userListings,
-                      //       user: authUser,
-                      //     ),
+                      state.isMe
+                          ? BlocBuilder<MyListingsCubit, MyListingsState>(
+                            builder: (context, listingsState) {
+                              final listings =
+                                  listingsState is MyListingsSuccess
+                                      ? listingsState.listings
+                                      : <ProductModel>[];
+                              return PrivateProfileWidget(
+                                userListings: listings,
+                                user: authUser,
+                              );
+                            },
+                          )
+                          : PublicProfileWidget(
+                            userListings: const [],
+                            user: authUser,
+                          ),
                     ],
                   ),
                 ),

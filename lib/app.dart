@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_theme.dart';
 import 'package:second_hand_electronics_marketplace/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/my_listings_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/view_type.dart';
 import 'package:second_hand_electronics_marketplace/features/location/data/repos/countries_service.dart';
@@ -121,6 +122,12 @@ class ElectroLinkApp extends StatelessWidget {
                 (context) => WishlistCubit(
                   repository: context.read<WishlistRepository>(),
                 )..fetchWishlist(),
+          ),
+          BlocProvider<MyListingsCubit>(
+            create:
+                (context) => MyListingsCubit(
+                  repository: ProductsRepository(dio: context.read<Dio>()),
+                )..fetchMyListings(),
           ),
         ],
         child: MaterialApp.router(

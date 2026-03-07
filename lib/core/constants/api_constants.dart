@@ -29,6 +29,7 @@ class ApiEndpoints {
   // Product Endpoints
   // ==========================================
   static const String createPendingProduct = '/products/pending'; // POST
+  static const String getMyProducts = '/products/my'; // GET
 
   // ==========================================
   // Wishlist Endpoints

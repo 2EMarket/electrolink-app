@@ -11,7 +11,6 @@ import 'package:second_hand_electronics_marketplace/features/home/presentation/w
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_cubit.dart';
 import 'package:second_hand_electronics_marketplace/features/products/presentation/cubit/products_state.dart';
-import 'package:second_hand_electronics_marketplace/features/listing/data/listing_model.dart';
 import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 
 class ListingsScreen extends StatefulWidget {

@@ -12,7 +12,8 @@ import '../../../../core/widgets/notification_toast.dart';
 import '../../../auth/presentation/cubits/auth_cubit.dart';
 import '../../../auth/presentation/cubits/auth_states.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import '../../../wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../../listing/presentation/bloc/my_listings_cubit.dart';
 import 'not_logged_in.dart';
 
 class MainLayoutScreen extends StatefulWidget {
@@ -37,6 +38,8 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
         }
 
         if (state is AuthSuccess) {
+          context.read<WishlistCubit>().fetchWishlist();
+          context.read<MyListingsCubit>().fetchMyListings();
           NotificationToast.show(
             context,
             AppStrings.welcomeBack,
@@ -44,6 +47,9 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
             ToastType.success,
           );
           context.goNamed(AppRoutes.mainLayout);
+        } else if (state is AuthLogOut) {
+          context.read<WishlistCubit>().clearWishlist();
+          context.read<MyListingsCubit>().clearMyListings();
         } else if (state is AuthFailure) {
           NotificationToast.show(
             context,
@@ -65,7 +71,13 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           const CategoriesTab(), // Categories (Index 1)
           const ChatsScreen(), // Chat (Index 2)
           authUser != null
-              ? ProfileScreen(authUser: authUser, isMe: true)
+              ? ProfileScreen(
+                key: ValueKey(
+                  '${authUser.isPhoneVerified}_${authUser.isEmailVerified}_${authUser.isIdentityVerified}',
+                ),
+                authUser: authUser,
+                isMe: true,
+              )
               : const NotLoggedInScreen(), // Profile (Index 3)
         ];
 

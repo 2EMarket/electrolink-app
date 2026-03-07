@@ -63,4 +63,9 @@ class WishlistCubit extends Cubit<WishlistState> {
   bool isFavorite(String productId) {
     return wishlistProductIds.contains(productId);
   }
+
+  void clearWishlist() {
+    wishlistProductIds.clear();
+    emit(WishlistInitial());
+  }
 }

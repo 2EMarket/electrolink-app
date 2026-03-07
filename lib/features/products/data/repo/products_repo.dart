@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
 
 import '../models/product_model.dart';
 
@@ -49,6 +50,43 @@ class ProductsRepository {
         );
       }
       throw Exception(e.toString());
+    }
+  }
+
+  Future<List<ProductModel>> getMyProducts({
+    int page = 1,
+    int limit = 10,
+    List<String>? status,
+    String? sortBy,
+    String? sortOrder,
+  }) async {
+    log('Fetching my products with status: $status');
+    try {
+      final response = await dio.get(
+        ApiEndpoints.getMyProducts,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+          if (status != null && status.isNotEmpty) 'status': status,
+          if (sortBy != null) 'sortBy': sortBy,
+          if (sortOrder != null) 'sortOrder': sortOrder,
+        },
+      );
+
+      if (response.data['success'] == true) {
+        // The structure for my products seems to be response -> data -> data (list)
+        List<dynamic> productsList = response.data['data']['data'];
+        return productsList.map((json) => ProductModel.fromJson(json)).toList();
+      } else {
+        throw Exception(
+          response.data['message'] ?? 'Failed to fetch my products',
+        );
+      }
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception(e.response?.data['message'] ?? 'Network error');
+      }
+      rethrow;
     }
   }
 }
