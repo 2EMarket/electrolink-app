@@ -21,9 +21,9 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // استخدام اللون الأزرق للهوية البصرية كما في التصميم
     final backgroundColor =
-        isSelected ? context.colors.mainColor : context.colors.mainColor5;
+        isSelected ? context.colors.mainColor : context.colors.neutral5;
     final iconColor =
-        isSelected ? context.colors.surface : context.colors.mainColor;
+        isSelected ? context.colors.surface : context.colors.icons;
 
     return GestureDetector(
       onTap: onTap,

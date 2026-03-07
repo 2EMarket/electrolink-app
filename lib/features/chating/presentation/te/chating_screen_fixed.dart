@@ -11,7 +11,6 @@ import 'package:second_hand_electronics_marketplace/features/chating/presentatio
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/reply_message_bubble0.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/te/reply_message_model.dart';
 
-
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat header/chat_header.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Voice/voice_message_bubble_fixed.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_chat bubbles/text_message_bubble.dart';
@@ -23,10 +22,7 @@ class _MessageData {
   final ReplyMessageModel model;
   double? uploadProgress; // للصور والملفات
 
-  _MessageData({
-    required this.model,
-    this.uploadProgress,
-  });
+  _MessageData({required this.model, this.uploadProgress});
 }
 
 class ChatingScreen1 extends StatefulWidget {
@@ -135,11 +131,14 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
                   title: const Text('Copy'),
                   onTap: () {
                     Navigator.pop(context);
-                    Clipboard.setData(ClipboardData(text: messageData.model.text!));
+                    Clipboard.setData(
+                      ClipboardData(text: messageData.model.text!),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          content: Text('Copied to clipboard'),
-                          duration: Duration(seconds: 2)),
+                        content: Text('Copied to clipboard'),
+                        duration: Duration(seconds: 2),
+                      ),
                     );
                   },
                 ),
@@ -155,8 +154,10 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
               if (messageData.model.senderName == 'you')
                 ListTile(
                   leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text('Delete for me',
-                      style: TextStyle(color: Colors.red)),
+                  title: const Text(
+                    'Delete for me',
+                    style: TextStyle(color: Colors.red),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _deleteMessage(messageData);
@@ -276,14 +277,16 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
       if (!mounted) return;
       setState(() {
         _isOtherUserTyping = false;
-        _messages.add(_MessageData(
-          model: ReplyMessageModel(
-            id: 'remote_${DateTime.now().millisecondsSinceEpoch}',
-            senderName: 'Ahmad',
-            type: ReplyMessageType.text,
-            text: 'Okay, I will check it.',
+        _messages.add(
+          _MessageData(
+            model: ReplyMessageModel(
+              id: 'remote_${DateTime.now().millisecondsSinceEpoch}',
+              senderName: 'Ahmad',
+              type: ReplyMessageType.text,
+              text: 'Okay, I will check it.',
+            ),
           ),
-        ));
+        );
       });
     });
   }
@@ -308,9 +311,10 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
 
       try {
         // قم بتحميل وتشغيل الصوت من المسار المحلي أو الرابط
-        final source = messageData.model.audioLocalPath != null
-            ? AudioSource.file(messageData.model.audioLocalPath!)
-            : AudioSource.uri(Uri.parse(messageData.model.audioUrl!));
+        final source =
+            messageData.model.audioLocalPath != null
+                ? AudioSource.file(messageData.model.audioLocalPath!)
+                : AudioSource.uri(Uri.parse(messageData.model.audioUrl!));
         await _audioPlayer.setAudioSource(source);
         _audioPlayer.play();
       } catch (e) {
@@ -346,7 +350,6 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
       isDelivered: messageData.uploadProgress == 1.0,
       contentType: model.type.toBubbleContentType(),
       replyTo: isSender ? _activeReply : null, // Simplified logic
-
       // Pass data from model
       message: model.text,
       imageUrl: model.imageUrl,
@@ -359,16 +362,18 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
       // Audio specific props
       isAudioPlaying: _playingAudioId == model.id && _isPlayerPlaying,
       audioProgress: _playingAudioId == model.id ? _currentAudioProgress : 0.0,
-      onAudioPlayPause: model.type == ReplyMessageType.audio
-          ? () => _onPlayPauseAudio(messageData)
-          : null,
+      onAudioPlayPause:
+          model.type == ReplyMessageType.audio
+              ? () => _onPlayPauseAudio(messageData)
+              : null,
       // Pass state from MessageData
       uploadProgress: messageData.uploadProgress,
     );
 
     return Dismissible(
       key: ValueKey(model.id),
-      direction: isSender ? DismissDirection.endToStart : DismissDirection.startToEnd,
+      direction:
+          isSender ? DismissDirection.endToStart : DismissDirection.startToEnd,
       background: _buildSwipeActionBackground(isSender),
       confirmDismiss: (direction) async {
         _startReply(model);
@@ -384,269 +389,292 @@ class _ChatingScreen1State extends State<ChatingScreen1> {
 
   @override
   Widget build(BuildContext context) {
-return MaterialApp( useInheritedMediaQuery: true, debugShowCheckedModeBanner: false, locale: DevicePreview.locale(context), builder: DevicePreview.appBuilder, home: Scaffold(      resizeToAvoidBottomInset: true,
-      backgroundColor: AppColors.greyFillButton,
-      body:
-       SafeArea(
-        child: Column(
-          children: [
-            // ── هيدر المحادثة ──────────────────────────────
-            const ChatHeader(
-              name: 'Ahmad Sami',
-              imageUrl: "https://via.placeholder.com/150",
-              isOnline: true,
-              deviceName: "Redmi Note 12",
-            ),
+    return MaterialApp(
+      useInheritedMediaQuery: true,
+      debugShowCheckedModeBanner: false,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      home: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: AppColors.greyFillButton,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // ── هيدر المحادثة ──────────────────────────────
+              const ChatHeader(
+                name: 'Ahmad Sami',
+                imageUrl:
+                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150",
+                isOnline: true,
+                deviceName: "Redmi Note 12",
+              ),
 
-            // ── قائمة الرسائل ──────────────────────────────
-            Expanded(
-              child: Container(
-                color: AppColors.white,
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 20,
-                  ),
-                  children: [
-                    _buildDateDivider("Today"),
-                    const SizedBox(height: 20),
+              // ── قائمة الرسائل ──────────────────────────────
+              Expanded(
+                child: Container(
+                  color: AppColors.white,
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 20,
+                    ),
+                    children: [
+                      _buildDateDivider("Today"),
+                      const SizedBox(height: 20),
 
-                    // ── رسالة صوتية ──────────────────────
-                    Dismissible(
-                      key: const ValueKey('msg_voice_001'),
-                      direction: DismissDirection.endToStart,
-                      background: _buildSwipeActionBackground(true),
-                      confirmDismiss: (direction) async {
-                        _startReply(const ReplyMessageModel(
+                      // ── رسالة صوتية ──────────────────────
+                      Dismissible(
+                        key: const ValueKey('msg_voice_001'),
+                        direction: DismissDirection.endToStart,
+                        background: _buildSwipeActionBackground(true),
+                        confirmDismiss: (direction) async {
+                          _startReply(
+                            const ReplyMessageModel(
+                              id: 'msg_voice_001',
+                              senderName: 'you',
+                              type: ReplyMessageType.audio,
+                              audioDuration: Duration(seconds: 10),
+                            ),
+                          );
+                          HapticFeedback.lightImpact();
+                          return false;
+                        },
+                        child: GestureDetector(
+                          onLongPress:
+                              () => _startReply(
+                                const ReplyMessageModel(
+                                  id: 'msg_voice_001',
+                                  senderName: 'you',
+                                  type: ReplyMessageType.audio,
+                                  audioDuration: Duration(seconds: 10),
+                                ),
+                              ),
+                          child: VoiceMessageBubble1(
+                            isSender: true,
+                            audioUrl:
+                                'https://github.com/rafaelreis-hotmart/Audio-Sample/raw/master/sample.mp3',
+                            duration: '0:10',
+                            time: '09:20',
+                            isRead: true,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // ── رسالة نصية ───────────────────────
+                      Dismissible(
+                        key: const ValueKey('msg_001'),
+                        direction: DismissDirection.endToStart,
+                        background: _buildSwipeActionBackground(true),
+                        confirmDismiss: (direction) async {
+                          _startReply(
+                            const ReplyMessageModel(
+                              id: 'msg_001',
+                              senderName: 'you',
+                              type: ReplyMessageType.text,
+                              text:
+                                  'Hi, how are you? Is the device still available?',
+                            ),
+                          );
+                          HapticFeedback.lightImpact();
+                          return false;
+                        },
+                        child: GestureDetector(
+                          onLongPress:
+                              () => _startReply(
+                                const ReplyMessageModel(
+                                  id: 'msg_001',
+                                  senderName: 'you',
+                                  type: ReplyMessageType.text,
+                                  text:
+                                      'Hi, how are you? Is the device still available?',
+                                ),
+                              ),
+                          child: TextMessageBubble(
+                            isSender: true,
+                            message:
+                                'Hi, how are you? Is the device still available?',
+                            time: '9:24 AM',
+                            isRead: true,
+                            id: 1,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // ── رسالة صورة ───────────────────────
+                      Dismissible(
+                        key: const ValueKey('msg_002'),
+                        direction: DismissDirection.startToEnd,
+                        background: _buildSwipeActionBackground(false),
+                        confirmDismiss: (direction) async {
+                          _startReply(
+                            const ReplyMessageModel(
+                              id: 'msg_002',
+                              senderName: 'Ahmad',
+                              type: ReplyMessageType.image,
+                              imageUrl:
+                                  'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+                            ),
+                          );
+                          HapticFeedback.lightImpact();
+                          return false;
+                        },
+                        child: GestureDetector(
+                          onLongPress:
+                              () => _startReply(
+                                const ReplyMessageModel(
+                                  id: 'msg_002',
+                                  senderName: 'Ahmad',
+                                  type: ReplyMessageType.image,
+                                  imageUrl:
+                                      'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+                                ),
+                              ),
+                          child: ReplyMessageBubble3(
+                            isSender: false,
+                            contentType: ReplyBubbleContentType.image,
+                            imageUrl:
+                                'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+                            imageCaption: 'This is the device in question.',
+                            time: '9:24 AM',
+                            isRead: true,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // ── رد على صورة بنص ──────────────────
+                      ReplyMessageBubble3(
+                        isSender: false,
+                        time: '10:45 PM',
+                        isRead: false,
+                        isDelivered: true,
+                        contentType: ReplyBubbleContentType.text,
+                        message:
+                            "Could you send clearer photos from the other side?",
+                        replyTo: const ReplyMessageModel(
+                          id: 'msg_002',
+                          senderName: 'you',
+                          type: ReplyMessageType.image,
+                          imageUrl:
+                              'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+                          imageCaption: 'laptop photos',
+                        ),
+                      ),
+                      ReplyMessageBubble4(
+                        isSender: true,
+                        time: '09:20',
+                        isRead: true,
+                        contentType: ReplyBubbleContentType4.audio,
+                        audioUrl:
+                            'https://github.com/rafaelreis-hotmart/Audio-Sample/raw/master/sample.mp3',
+                        audioDurationLabel: '0:10',
+                        replyTo: const ReplyMessageModel(
                           id: 'msg_voice_001',
                           senderName: 'you',
                           type: ReplyMessageType.audio,
                           audioDuration: Duration(seconds: 10),
-                        ));
-                        HapticFeedback.lightImpact();
-                        return false;
-                      },
-                      child: GestureDetector(
-                        onLongPress: () => _startReply(
-                          const ReplyMessageModel(
-                            id: 'msg_voice_001',
-                            senderName: 'you',
-                            type: ReplyMessageType.audio,
-                            audioDuration: Duration(seconds: 10),
-                          ),
-                        ),
-                        child: VoiceMessageBubble1(
-                          isSender: true,
-                          audioUrl:
-                              'https://www.soundjay.com/buttons/beep-01a.mp3',
-                          duration: '0:10',
-                          time: '09:20',
-                          isRead: true,
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    // ── رسالة نصية ───────────────────────
-                    Dismissible(
-                      key: const ValueKey('msg_001'),
-                      direction: DismissDirection.endToStart,
-                      background: _buildSwipeActionBackground(true),
-                      confirmDismiss: (direction) async {
-                        _startReply(const ReplyMessageModel(
-                          id: 'msg_001',
-                          senderName: 'you',
-                          type: ReplyMessageType.text,
-                          text: 'Hi, how are you? Is the device still available?',
-                        ));
-                        HapticFeedback.lightImpact();
-                        return false;
-                      },
-                      child: GestureDetector(
-                        onLongPress: () => _startReply(
-                          const ReplyMessageModel(
-                            id: 'msg_001',
-                            senderName: 'you',
-                            type: ReplyMessageType.text,
-                            text: 'Hi, how are you? Is the device still available?',
-                          ),
-                        ),
-                        child: TextMessageBubble(
-                          isSender: true,
-                          message: 'Hi, how are you? Is the device still available?',
-                          time: '9:24 AM',
-                          isRead: true,
-                          id: 1,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // ── رسالة صورة ───────────────────────
-                    Dismissible(
-                      key: const ValueKey('msg_002'),
-                      direction: DismissDirection.startToEnd,
-                      background: _buildSwipeActionBackground(false),
-                      confirmDismiss: (direction) async {
-                        _startReply(const ReplyMessageModel(
-                          id: 'msg_002',
-                          senderName: 'Ahmad',
-                          type: ReplyMessageType.image,
-                          imageUrl: 'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
-                        ));
-                        HapticFeedback.lightImpact();
-                        return false;
-                      },
-                      child: GestureDetector(
-                        onLongPress: () => _startReply(
-                          const ReplyMessageModel(
-                            id: 'msg_002',
-                            senderName: 'Ahmad',
-                            type: ReplyMessageType.image,
-                            imageUrl: 'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
-                          ),
-                        ),
-                        child: ReplyMessageBubble3(
-                        isSender: false,
+                      // ── رد على صوت بصورة ─────────────────
+                      ReplyMessageBubble3(
+                        time: '11:00 PM',
+                        isRead: true,
                         contentType: ReplyBubbleContentType.image,
                         imageUrl:
-                            'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
-                        imageCaption: 'This is the device in question.',
-                        time: '9:24 AM',
+                            'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
+                        imageCaption: "Payment receipt",
+                        replyTo: const ReplyMessageModel(
+                          id: 'msg_003',
+                          senderName: 'Ahmad',
+                          type: ReplyMessageType.audio,
+                          audioDuration: Duration(seconds: 42),
+                        ),
+                        isSender: false,
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // ── رد بصوت على نص ───────────────────
+                      ReplyMessageBubble3(
+                        isSender: true,
+                        time: '09:20',
                         isRead: true,
+                        contentType: ReplyBubbleContentType.audio,
+                        audioDuration: const Duration(seconds: 10),
+                        audioProgress: 0.0,
+                        isAudioPlaying: false,
+                        onAudioPlayPause: () {},
+                        replyTo: const ReplyMessageModel(
+                          id: 'msg_voice_001',
+                          senderName: 'you',
+                          type: ReplyMessageType.audio,
+                          audioDuration: Duration(seconds: 10),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    // ── رد على صورة بنص ──────────────────
-                    ReplyMessageBubble3(
-                      isSender: false,
-                      time: '10:45 PM',
-                      isRead: false,
-                      isDelivered: true,
-                      contentType: ReplyBubbleContentType.text,
-                      message: "Could you send clearer photos from the other side?",
-                      replyTo: const ReplyMessageModel(
-                        id: 'msg_002',
-                        senderName: 'you',
-                        type: ReplyMessageType.image,
-                        imageUrl:
-                            'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
-                        imageCaption: 'laptop photos',
-                      ),
-                    ),
-                    ReplyMessageBubble4(
-  isSender: true,
-  time: '09:20',
-  isRead: true,
-  contentType: ReplyBubbleContentType4.audio,
-  audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
-  audioDurationLabel: '0:10',
-  replyTo: const ReplyMessageModel(
-    id: 'msg_voice_001',
-    senderName: 'you',
-    type: ReplyMessageType.audio,
-    audioDuration: Duration(seconds: 10),
-  ),
-),
-
-                    const SizedBox(height: 12),
-
-                    // ── رد على صوت بصورة ─────────────────
-                    ReplyMessageBubble3(
-                      time: '11:00 PM',
-                      isRead: true,
-                      contentType: ReplyBubbleContentType.image,
-                      imageUrl:
-                          'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b',
-                      imageCaption: "Payment receipt",
-                      replyTo: const ReplyMessageModel(
-                        id: 'msg_003',
-                        senderName: 'Ahmad',
-                        type: ReplyMessageType.audio,
-                        audioDuration: Duration(seconds: 42),
-                      ), isSender: false,
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // ── رد بصوت على نص ───────────────────
-                    ReplyMessageBubble3(
-                      isSender: true,
-                      time: '09:20',
-                      isRead: true,
-                      contentType: ReplyBubbleContentType.audio,
-                      audioDuration: const Duration(seconds: 10),
-                      audioProgress: 0.0,
-                      isAudioPlaying: false,
-                      onAudioPlayPause: () {}          
-                        ,            replyTo: const ReplyMessageModel(
-                        id: 'msg_voice_001',
-                        senderName: 'you',
-                        type: ReplyMessageType.audio,
-                        audioDuration: Duration(seconds: 10),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // ── مؤشر الكتابة ─────────────────────
-                    ..._messages.map((data) => _buildMessageWidget(data)),
-                    if (_isOtherUserTyping)
-                       TypingIndicatorBubble(isSender: false),
-                  ],
+                      // ── مؤشر الكتابة ─────────────────────
+                      ..._messages.map((data) => _buildMessageWidget(data)),
+                      if (_isOtherUserTyping)
+                        TypingIndicatorBubble(isSender: false),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // ── شريط الرد (يظهر فقط عند اختيار رسالة للرد) ──
-            ChatInputBarFinal5(
-              replyingTo: _activeReply,
-              onCancelReply: _cancelReply,
-              onSend: _onSend,
-              onImageSelected: _onImageSelected,
-              onCameraCapture: _onCameraCapture,
-              onFileSelected: _onFileSelected,
-              onVoiceMessage: (filePath, durationSeconds) {
-                final messageData = _MessageData(
-                  model: ReplyMessageModel(
-                    id: 'local_aud_${DateTime.now().millisecondsSinceEpoch}',
-                    senderName: 'you',
-                    type: ReplyMessageType.audio,
-                    audioDuration: Duration(seconds: durationSeconds),
-                    audioLocalPath: filePath,
-                  ),
-                );
+              // ── شريط الرد (يظهر فقط عند اختيار رسالة للرد) ──
+              ChatInputBarFinal5(
+                replyingTo: _activeReply,
+                onCancelReply: _cancelReply,
+                onSend: _onSend,
+                onImageSelected: _onImageSelected,
+                onCameraCapture: _onCameraCapture,
+                onFileSelected: _onFileSelected,
+                onVoiceMessage: (filePath, durationSeconds) {
+                  final messageData = _MessageData(
+                    model: ReplyMessageModel(
+                      id: 'local_aud_${DateTime.now().millisecondsSinceEpoch}',
+                      senderName: 'you',
+                      type: ReplyMessageType.audio,
+                      audioDuration: Duration(seconds: durationSeconds),
+                      audioLocalPath: filePath,
+                    ),
+                  );
 
-                setState(() {
-                  _messages.add(messageData);
-                });
-                _cancelReply();
-                _simulateReceivingMessage();
-              },
-),
-            // ── شريط الإدخال ───────────────────────────────
-            // ChatInputBarFinal4(
-            //   onCancelReply: _cancelReply,
-            //   // مرر _activeReply لـ ChatInputBarFinal إذا كان يقبله
-            //   // activeReply: _activeReply,
-            // ),
-          ],
+                  setState(() {
+                    _messages.add(messageData);
+                  });
+                  _cancelReply();
+                  _simulateReceivingMessage();
+                },
+              ),
+              // ── شريط الإدخال ───────────────────────────────
+              // ChatInputBarFinal4(
+              //   onCancelReply: _cancelReply,
+              //   // مرر _activeReply لـ ChatInputBarFinal إذا كان يقبله
+              //   // activeReply: _activeReply,
+              // ),
+            ],
+          ),
         ),
       ),
- ) );
+    );
   }
 
   Widget _buildDateDivider(String date) {
     return Center(
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color: AppColors.neutral10,
           borderRadius: BorderRadius.circular(12),
@@ -660,7 +688,6 @@ return MaterialApp( useInheritedMediaQuery: true, debugShowCheckedModeBanner: fa
       ),
     );
   }
-
 }
 
 extension on ReplyMessageType {

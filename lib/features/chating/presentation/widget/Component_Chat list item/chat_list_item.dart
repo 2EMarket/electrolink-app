@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
@@ -10,7 +11,7 @@ class ChatListItem extends StatelessWidget {
   final String time;
   final int unread;
   final String productName;
-  final String imageUrl; 
+  final String imageUrl;
   final bool isSelected;
   final bool isPinned;
   final VoidCallback? onTap;
@@ -58,19 +59,29 @@ class ChatListItem extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundColor: AppColors.placeholders,
-                            backgroundImage: imageUrl.isNotEmpty 
-                                ? NetworkImage(imageUrl) as ImageProvider
-                                : const AssetImage('assets/images/default_avatar.png'),
-                            child: imageUrl.isEmpty 
-                                ? const Icon(
-                                    Icons.person,
-                                    color: AppColors.icons,
-                                    size: 24,
-                                  )
-                                : null,
+                          CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            imageBuilder:
+                                (context, imageProvider) => CircleAvatar(
+                                  radius: 24,
+                                  backgroundImage: imageProvider,
+                                ),
+                            placeholder:
+                                (context, url) => const CircleAvatar(
+                                  radius: 24,
+                                  backgroundColor: AppColors.placeholders,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => const CircleAvatar(
+                                  radius: 24,
+                                  backgroundImage: AssetImage(
+                                    'assets/images/profile pic.png',
+                                  ),
+                                  backgroundColor: AppColors.placeholders,
+                                ),
                           ),
                           Positioned(
                             right: 0,
@@ -90,9 +101,9 @@ class ChatListItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                      
+
                       const SizedBox(width: 12),
-                      
+
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +121,7 @@ class ChatListItem extends StatelessWidget {
                                     maxLines: 1,
                                   ),
                                 ),
-                                
+
                                 if (unread > 0)
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -123,17 +134,18 @@ class ChatListItem extends StatelessWidget {
                                     ),
                                     child: Text(
                                       unread.toString(),
-                                      style: AppTypography.label10Regular.copyWith(
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: AppTypography.label10Regular
+                                          .copyWith(
+                                            color: AppColors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                   ),
                               ],
                             ),
-                            
+
                             const SizedBox(height: 4),
-                            
+
                             Text(
                               lastMsg,
                               style: AppTypography.body14Regular.copyWith(
@@ -142,10 +154,9 @@ class ChatListItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
-                            
+
                             const SizedBox(height: 4),
-                            
-                            
+
                             Text(
                               time,
                               style: AppTypography.label12Regular.copyWith(
@@ -157,9 +168,9 @@ class ChatListItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   if (productName.isNotEmpty)
                     ProductInfoRow(
                       productName: productName,
@@ -168,7 +179,7 @@ class ChatListItem extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             if (isPinned)
               Positioned(
                 top: 8,

@@ -179,7 +179,7 @@ class _MyListingScreenState extends State<MyListingScreen> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 12,
                                 crossAxisSpacing: 12,
-                                childAspectRatio: 0.65,
+                                childAspectRatio: 0.60,
                               ),
                           itemBuilder:
                               (context, index) => VerticalCard(

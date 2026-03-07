@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_shadows.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
 import 'package:second_hand_electronics_marketplace/features/chating/presentation/widget/Component_Chat list item/device_info_row.dart';
 import 'chat_subtitle_row.dart';
+
 class ChatHeader extends StatelessWidget {
   final String name;
   final String imageUrl;
@@ -26,9 +29,7 @@ class ChatHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border(
-          bottom: BorderSide(color: AppColors.border),
-        ),
+        border: Border(bottom: BorderSide(color: AppColors.border)),
         boxShadow: AppShadows.card,
       ),
       child: Column(
@@ -39,16 +40,32 @@ class ChatHeader extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.arrow_back_ios, size: 20),
                 color: AppColors.icons,
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
               ),
 
               // 👤 Avatar
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(imageUrl),
-                    backgroundColor: AppColors.neutralWithoutTransparent,
+                  CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    imageBuilder:
+                        (context, imageProvider) => CircleAvatar(
+                          radius: 20,
+                          backgroundImage: imageProvider,
+                        ),
+                    placeholder:
+                        (context, url) => const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColors.neutral10,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                    errorWidget:
+                        (context, url, error) => const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage(
+                            'assets/images/profile pic.png',
+                          ),
+                        ),
                   ),
                   // if (isOnline)
                   //   Positioned(
@@ -120,7 +137,6 @@ class ChatHeader extends StatelessWidget {
                   imageUrl: imageUrl,
                 ),
               ),
-            
             ],
           ),
         ],

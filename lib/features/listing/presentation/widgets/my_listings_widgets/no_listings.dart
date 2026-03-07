@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import '../../../../../configs/theme/app_typography.dart';
+import '../../../../../configs/theme/app_colors.dart';
+import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 class NoListings extends StatelessWidget {
   final String text;
@@ -13,21 +16,34 @@ class NoListings extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset('assets/svgs/Frame.svg'),
-          Gap(10),
-          Text('No Listings Yet', style: TextStyle(color: Colors.black)),
-          Gap(10),
-          Text(
-            'You ${text} listings to display it yet.',
-            style: TextStyle(color: Colors.black54),
+          Image.asset(
+            AppAssets.noListing,
+            width: 94,
+            height: 120,
+            fit: BoxFit.cover,
           ),
-          Gap(10),
+          const Gap(AppSizes.paddingM),
+          Text(
+            'No Listings Yet',
+            style: AppTypography.body16Medium.copyWith(
+              color: context.colors.titles,
+            ),
+          ),
+          const Gap(AppSizes.paddingXS),
+          Text(
+            'You $text listings to display it yet.',
+            textAlign: TextAlign.center,
+            style: AppTypography.label12Regular.copyWith(
+              color: context.colors.titles,
+            ),
+          ),
+          const Gap(AppSizes.paddingL),
           ElevatedButton(
             onPressed: () {
               // Navigate to add listing page
             },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 120.0),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingXXL),
               child: Text('Add Listing'),
             ),
           ),

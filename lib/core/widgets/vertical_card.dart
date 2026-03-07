@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/theme_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/card_content_widget.dart';
@@ -35,7 +36,9 @@ class VerticalCard extends StatelessWidget {
     final double favButtonSize = (width != null) ? (width! / 6) : 30.0;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap:
+          onTap ??
+          () => context.pushNamed(AppRoutes.productDetails, extra: listing),
       child: Container(
         clipBehavior: Clip.none,
         width: width,
@@ -76,8 +79,10 @@ class VerticalCard extends StatelessWidget {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(18),
                               ),
-                              child: MoreVertButton(
-                                selectState: ownerMenuState,
+                              child: Center(
+                                child: MoreVertButton(
+                                  selectState: ownerMenuState,
+                                ),
                               ),
                             )
                             : BlocBuilder<WishlistCubit, WishlistState>(
@@ -102,14 +107,14 @@ class VerticalCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.paddingS,
-                  vertical: AppSizes.paddingS,
+                  vertical: AppSizes.paddingXXS,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CardContentWidget(listing: listing),
                     if (isOwnerMode) ...[
-                      const Gap(10),
+                      const Gap(6),
                       BadgeWidget(
                         text:
                             listing.status.isEmpty

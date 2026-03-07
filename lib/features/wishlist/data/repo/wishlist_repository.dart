@@ -1,4 +1,4 @@
-import '../models/wishlist_model.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 import '../services/wishlist_service.dart';
 
 class WishlistRepository {
@@ -6,9 +6,11 @@ class WishlistRepository {
 
   WishlistRepository({required this.service});
 
-  Future<List<WishlistItemModel>> getWishlist() async {
+  Future<List<ProductModel>> getWishlist() async {
     final response = await service.getWishlist();
-    return response.data;
+    // Assuming structure is { success: true, data: [...] }
+    final List<dynamic> list = response['data'] ?? [];
+    return list.map((e) => ProductModel.fromJson(e)).toList();
   }
 
   Future<bool> addToWishlist(String productId) async {

@@ -26,6 +26,7 @@ import '../../features/auth/presentation/pages/register_screen.dart';
 import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/home/presentation/pages/splash_screen.dart';
+import '../../features/chating/presentation/screens/chating_screen.dart';
 import '../../features/products/data/models/product_model.dart';
 import '../../features/profile/data/services/profile_service.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
@@ -36,6 +37,7 @@ import '../../features/profile/presentation/pages/user_profile/user_profile_scre
 import '../../features/profile/presentation/widgets/profile_widgets/profile_error_screen.dart';
 import '../../features/profile/profile_exports.dart';
 import '../../features/verification/presentation/pages/verification_screen.dart';
+import '../../features/products/presentation/pages/product_details_screen.dart';
 import '../../core/constants/cache_keys.dart';
 import '../../core/helpers/cache_helper.dart';
 
@@ -288,6 +290,19 @@ class AppRouter {
       //   name: AppRoutes.notification,
       //   builder: (context, state) => NotificationsListScreen(),
       // ),
+      GoRoute(
+        path: '/${AppRoutes.chating}',
+        name: AppRoutes.chating,
+        builder: (context, state) => const ChatingScreen(),
+      ),
+      GoRoute(
+        path: '/${AppRoutes.productDetails}',
+        name: AppRoutes.productDetails,
+        builder: (context, state) {
+          final product = state.extra as ProductModel;
+          return ProductDetailsScreen(product: product);
+        },
+      ),
     ],
 
     // Error page

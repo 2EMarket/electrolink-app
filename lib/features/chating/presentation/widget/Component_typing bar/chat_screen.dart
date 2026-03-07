@@ -21,7 +21,8 @@ class _ChatScreenState extends State<ChatScreen> {
     {
       'type': 'image',
       'isSender': false,
-      'imageUrl': 'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
       'time': '9:24 AM',
     },
     {
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
       'duration': '0:10',
       'time': '09:20',
       'isRead': true,
-    }
+    },
   ];
 
   void _onReply(ReplyMessage message) {
@@ -62,73 +63,80 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-   return MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
-        child: const ChatHeader(
-          name: 'Ahmad Sami',
-          imageUrl: "https://via.placeholder.com/150",
-          isOnline: true,
-          deviceName: "Redmi Note 12",
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(70),
+          child: const ChatHeader(
+            name: 'Ahmad Sami',
+            imageUrl:
+                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150",
+            isOnline: true,
+            deviceName: "Redmi Note 12",
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildDateDivider("Today"),
-                const TextMessageBubble(
-                  isSender: false,
-                  message: "Hi, how are you? Is the device still available?",
-                  time: "9:24 AM",
-                  isRead: true,
-                ),
-                const ImageMessageBubble(
-                  isSender: false,
-                  imageUrl: 'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
-                  time: '9:24 AM',
-                ),
-                const VoiceMessageBubble1(
-                  isSender: true,
-                  audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
-                  duration: '0:10',
-                  time: '09:20',
-                  isRead: true,
-                ),
-                // مثال على رسالة مرسلة من المستخدم مع إمكانية السحب للرد
-                GestureDetector(
-                  onHorizontalDragEnd: (_) {
-                    _onReply(ReplyMessage(
-                      id: '1',
-                      senderName: 'Ahmad Sami',
-                      content: "Hi, how are you? Is the device still available?",
-                    ));
-                  },
-                  child: const TextMessageBubble(
-                    isSender: true,
-                    message: "I'm good, thanks! Yes it is.",
-                    time: "9:25 AM",
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  _buildDateDivider("Today"),
+                  const TextMessageBubble(
+                    isSender: false,
+                    message: "Hi, how are you? Is the device still available?",
+                    time: "9:24 AM",
                     isRead: true,
                   ),
-                ),
-                const TypingIndicatorBubble(isSender: false),
-              ],
+                  const ImageMessageBubble(
+                    isSender: false,
+                    imageUrl:
+                        'https://images.unsplash.com/photo-1521939094609-93aba1af40d7',
+                    time: '9:24 AM',
+                  ),
+                  const VoiceMessageBubble1(
+                    isSender: true,
+                    audioUrl: 'https://www.soundjay.com/buttons/beep-01a.mp3',
+                    duration: '0:10',
+                    time: '09:20',
+                    isRead: true,
+                  ),
+                  // مثال على رسالة مرسلة من المستخدم مع إمكانية السحب للرد
+                  GestureDetector(
+                    onHorizontalDragEnd: (_) {
+                      _onReply(
+                        ReplyMessage(
+                          id: '1',
+                          senderName: 'Ahmad Sami',
+                          content:
+                              "Hi, how are you? Is the device still available?",
+                        ),
+                      );
+                    },
+                    child: const TextMessageBubble(
+                      isSender: true,
+                      message: "I'm good, thanks! Yes it is.",
+                      time: "9:25 AM",
+                      isRead: true,
+                    ),
+                  ),
+                  const TypingIndicatorBubble(isSender: false),
+                ],
+              ),
             ),
-          ),
-          
-          ChatInputBarFinal(
-            onSend: _handleSend,
-            replyingTo: replyingTo,
-            onCancelReply: _cancelReply,
-            hintText: "Type a message...",
-          ),
-        ],
+
+            ChatInputBarFinal(
+              onSend: _handleSend,
+              replyingTo: replyingTo,
+              onCancelReply: _cancelReply,
+              hintText: "Type a message...",
+            ),
+          ],
+        ),
       ),
-    ) );
+    );
   }
 
   Widget _buildDateDivider(String date) {
@@ -182,15 +190,32 @@ class ChatHeader extends StatelessWidget {
       ),
       title: Row(
         children: [
-          CircleAvatar(backgroundImage: NetworkImage(imageUrl)),
+          CircleAvatar(
+            backgroundImage: NetworkImage(imageUrl),
+            onBackgroundImageError: (exception, stackTrace) {
+              // This is a simple fix for the redefined class in the test file
+            },
+            backgroundColor: Colors.grey[200],
+            child: const Icon(Icons.person, color: Colors.grey),
+          ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(name, style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(
+                name,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Text(
                 isOnline ? "Online • $deviceName" : "Offline",
-                style: TextStyle(color: isOnline ? Colors.green : Colors.grey, fontSize: 12),
+                style: TextStyle(
+                  color: isOnline ? Colors.green : Colors.grey,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -224,23 +249,38 @@ class TextMessageBubble extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSender ? Colors.blue : Colors.grey[200],
           borderRadius: BorderRadius.circular(20).copyWith(
-            bottomRight: isSender ? const Radius.circular(0) : const Radius.circular(20),
-            bottomLeft: isSender ? const Radius.circular(20) : const Radius.circular(0),
+            bottomRight:
+                isSender ? const Radius.circular(0) : const Radius.circular(20),
+            bottomLeft:
+                isSender ? const Radius.circular(20) : const Radius.circular(0),
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(message, style: TextStyle(color: isSender ? Colors.white : Colors.black)),
+            Text(
+              message,
+              style: TextStyle(color: isSender ? Colors.white : Colors.black),
+            ),
             const SizedBox(height: 4),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(time, style: TextStyle(color: isSender ? Colors.white70 : Colors.grey, fontSize: 10)),
+                Text(
+                  time,
+                  style: TextStyle(
+                    color: isSender ? Colors.white70 : Colors.grey,
+                    fontSize: 10,
+                  ),
+                ),
                 if (isSender) ...[
                   const SizedBox(width: 4),
-                  Icon(Icons.done_all, size: 14, color: isRead ? Colors.white : Colors.white70),
-                ]
+                  Icon(
+                    Icons.done_all,
+                    size: 14,
+                    color: isRead ? Colors.white : Colors.white70,
+                  ),
+                ],
               ],
             ),
           ],
@@ -269,9 +309,7 @@ class ImageMessageBubble extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
         width: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Stack(
@@ -280,7 +318,14 @@ class ImageMessageBubble extends StatelessWidget {
               Positioned(
                 bottom: 8,
                 right: 8,
-                child: Text(time, style: const TextStyle(color: Colors.white, fontSize: 10, backgroundColor: Colors.black26)),
+                child: Text(
+                  time,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    backgroundColor: Colors.black26,
+                  ),
+                ),
               ),
             ],
           ),
@@ -320,7 +365,10 @@ class VoiceMessageBubble1 extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.play_arrow, color: isSender ? Colors.blue : Colors.grey[700]),
+            Icon(
+              Icons.play_arrow,
+              color: isSender ? Colors.blue : Colors.grey[700],
+            ),
             const SizedBox(width: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,8 +396,14 @@ class TypingIndicatorBubble extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(15)),
-        child: const Text("Typing...", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12)),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: const Text(
+          "Typing...",
+          style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
+        ),
       ),
     );
   }

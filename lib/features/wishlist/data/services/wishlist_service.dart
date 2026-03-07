@@ -2,14 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
 import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
-import '../models/wishlist_model.dart';
 
 class WishlistService {
   final Dio dio;
 
   WishlistService({required this.dio});
 
-  Future<WishlistResponseModel> getWishlist() async {
+  Future<Map<String, dynamic>> getWishlist() async {
     try {
       final token = CacheHelper.getData(key: CacheKeys.token);
       print("📡 Fetching Wishlist from: ${ApiEndpoints.wishlist}");
@@ -25,7 +24,7 @@ class WishlistService {
         ),
       );
       print("✅ Wishlist Response: ${response.statusCode}");
-      return WishlistResponseModel.fromJson(response.data);
+      return response.data;
     } catch (e) {
       if (e is DioException) {
         print("🚨 Wishlist Error: ${e.response?.statusCode}");

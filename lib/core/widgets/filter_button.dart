@@ -6,21 +6,24 @@ import 'package:second_hand_electronics_marketplace/core/constants/app_sizes.dar
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/filter_model.dart';
 
 class FilterButton extends StatelessWidget {
-  const FilterButton({super.key});
+  final VoidCallback? onTap;
+  const FilterButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          useRootNavigator: true,
-          isScrollControlled: true,
-          builder: (_) => FilterModel(),
-        );
-      },
+      onTap:
+          onTap ??
+          () {
+            showModalBottomSheet(
+              context: context,
+              useRootNavigator: true,
+              isScrollControlled: true,
+              builder: (_) => FilterModel(),
+            );
+          },
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: context.colors.surface,
           border: Border.all(color: context.colors.border),

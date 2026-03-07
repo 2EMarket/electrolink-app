@@ -31,6 +31,7 @@ class AppStrings {
   static const String home = 'Home';
   static const String categories = 'Categories';
   static const String chat = 'Chat';
+  static const String chats = 'Chats';
   static const String profile = 'Profile';
 
   //app bar titles

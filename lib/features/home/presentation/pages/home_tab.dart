@@ -42,7 +42,7 @@ class HomeTab extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double cardWidthPercent = 0.55;
     final double cardWidth = screenWidth * cardWidthPercent;
-    final double listHeight = cardWidth + 112;
+    final double listHeight = cardWidth + 92;
 
     return SingleChildScrollView(
       child: Column(
