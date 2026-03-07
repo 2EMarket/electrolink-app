@@ -223,7 +223,7 @@ class MoreVertButton extends StatelessWidget {
           },
         );
       },
-      icon: Icon(Icons.more_vert, size: 20),
+      icon: const Center(child: Icon(Icons.more_vert, size: 20)),
     );
   }
 }

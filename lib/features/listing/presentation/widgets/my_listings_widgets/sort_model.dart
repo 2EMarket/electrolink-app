@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_colors.dart';
 import 'package:second_hand_electronics_marketplace/configs/theme/app_typography.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/constants_exports.dart';
 import 'package:second_hand_electronics_marketplace/core/widgets/simple_selection_list.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/presentation/bloc/selection_cubit.dart';
 
@@ -97,7 +98,7 @@ class SortModel extends StatelessWidget {
         );
       },
 
-      icon: SvgPicture.asset('assets/svgs/Swap.svg', color: Colors.black),
+      icon: SvgPicture.asset(AppAssets.swapIcon),
     );
   }
 }

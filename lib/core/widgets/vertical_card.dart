@@ -76,8 +76,10 @@ class VerticalCard extends StatelessWidget {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(18),
                               ),
-                              child: MoreVertButton(
-                                selectState: ownerMenuState,
+                              child: Center(
+                                child: MoreVertButton(
+                                  selectState: ownerMenuState,
+                                ),
                               ),
                             )
                             : BlocBuilder<WishlistCubit, WishlistState>(
@@ -102,14 +104,14 @@ class VerticalCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.paddingS,
-                  vertical: AppSizes.paddingS,
+                  vertical: AppSizes.paddingXXS,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CardContentWidget(listing: listing),
                     if (isOwnerMode) ...[
-                      const Gap(10),
+                      const Gap(6),
                       BadgeWidget(
                         text:
                             listing.status.isEmpty
