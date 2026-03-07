@@ -11,17 +11,21 @@ import 'package:second_hand_electronics_marketplace/core/widgets/category_item.d
 import 'package:second_hand_electronics_marketplace/core/widgets/vertical_card.dart';
 import 'package:second_hand_electronics_marketplace/features/home/presentation/widgets/home_header.dart';
 
-// تأكدي من صحة هذه المسارات حسب مشروعك
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_cubit.dart';
+import 'package:second_hand_electronics_marketplace/features/categories/presentation/cubits/category_states.dart';
+import 'package:second_hand_electronics_marketplace/features/products/data/models/product_model.dart';
 import '../../../products/presentation/cubit/products_cubit.dart';
 import '../../../products/presentation/cubit/products_state.dart';
+import '../../../products/presentation/cubit/recent_products_cubit.dart';
+import '../../../products/presentation/cubit/recommended_products_cubit.dart';
 
 final List<Map<String, dynamic>> dummyCategories = [
-  {'name': 'Phones', 'icon': AppAssets.smartPhoneCatIcon},
+  {'name': 'Smartphones', 'icon': AppAssets.smartPhoneCatIcon},
   {'name': 'Laptops', 'icon': AppAssets.laptopCatIcon},
   {'name': 'Tablets', 'icon': AppAssets.tabletCatIcon},
   {'name': 'Watches', 'icon': AppAssets.smartWatchCatIcon},
-  {'name': 'Headphones', 'icon': AppAssets.headphoneCatIcon},
-  {'name': 'Gaming', 'icon': AppAssets.gameCatIcon},
+  {'name': 'Audio Devices', 'icon': AppAssets.headphoneCatIcon},
+  {'name': 'Gaming Consoles', 'icon': AppAssets.gameCatIcon},
   {'name': 'Cameras', 'icon': AppAssets.cameraCatIcon},
   {'name': 'TVs', 'icon': AppAssets.tvCatIcon},
   {'name': 'Routers', 'icon': AppAssets.routerCatIcon},
@@ -57,7 +61,7 @@ class HomeTab extends StatelessWidget {
 
           // عرض الأقسام الافتراضية (Default Assets) بمسافات موحدة
           SizedBox(
-            height: 100,
+            height: 110,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(
@@ -73,15 +77,35 @@ class HomeTab extends StatelessWidget {
                   iconPath: category['icon'],
                   isSelected: false,
                   onTap: () {
-                    final productsState = context.read<ProductsCubit>().state;
-                    final products =
-                        productsState is ProductsLoaded
-                            ? productsState.products
-                            : [];
+                    // البحث عن الـ ID الحقيقي من السيرفر بناءً على الاسم
+                    final categoryState = context.read<CategoryCubit>().state;
+                    String? realId;
+
+                    if (categoryState is CategorySuccess) {
+                      try {
+                        final searchName =
+                            category['name'].toString().toLowerCase();
+                        realId =
+                            categoryState.response.data.firstWhere((c) {
+                              final serverName = c.name.toLowerCase();
+                              return serverName == searchName ||
+                                  serverName.contains(searchName) ||
+                                  searchName.contains(serverName);
+                            }).id;
+                      } catch (_) {}
+                    }
+
+                    // جلب المنتجات المفلترة
+                    context.read<ProductsCubit>().fetchProducts(
+                      categoryId: realId,
+                    );
 
                     context.pushNamed(
                       AppRoutes.listings,
-                      extra: {'title': category['name'], 'listings': products},
+                      extra: {
+                        'title': category['name'],
+                        'listings': <ProductModel>[],
+                      },
                     );
                   },
                 );
@@ -156,36 +180,20 @@ class HomeTab extends StatelessWidget {
           const SizedBox(height: AppSizes.paddingL),
 
           // ---------------- قسم المنتجات (Products) ----------------
-          BlocBuilder<ProductsCubit, ProductsState>(
+          // ---------------- Recent Products Section ----------------
+          BlocBuilder<RecentProductsCubit, ProductsState>(
             builder: (context, state) {
               if (state is ProductsLoading) {
                 return const Padding(
                   padding: EdgeInsets.all(30.0),
                   child: Center(child: CircularProgressIndicator()),
                 );
-              } else if (state is ProductsError) {
-                return Center(
-                  child: Text(
-                    'خطأ في جلب المنتجات: ${state.message}',
-                    style: TextStyle(color: context.colors.error),
-                  ),
-                );
-              } else if (state is ProductsLoaded) {
+              }
+              if (state is ProductsLoaded && state.products.isNotEmpty) {
                 final products = state.products;
-
-                if (products.isEmpty) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text('لا توجد منتجات حالياً'),
-                    ),
-                  );
-                }
-
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 1. المضافة حديثاً (Recent)
                     _buildSectionHeader(
                       context,
                       title: AppStrings.recent,
@@ -215,15 +223,34 @@ class HomeTab extends StatelessWidget {
                         itemBuilder: (ctx, index) {
                           return VerticalCard(
                             width: cardWidth,
-                            listing: products[index], // استخدام الداتا الحقيقية
+                            listing: products[index],
                           );
                         },
                       ),
                     ),
+                  ],
+                );
+              }
+              return const SizedBox();
+            },
+          ),
 
-                    const SizedBox(height: AppSizes.paddingM),
+          const SizedBox(height: AppSizes.paddingM),
 
-                    // 2. الموصى بها (Recommended)
+          // ---------------- Recommended Products Section ----------------
+          BlocBuilder<RecommendedProductsCubit, ProductsState>(
+            builder: (context, state) {
+              if (state is ProductsLoading) {
+                return const Padding(
+                  padding: EdgeInsets.all(30.0),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (state is ProductsLoaded && state.products.isNotEmpty) {
+                final products = state.products;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     _buildSectionHeader(
                       context,
                       title: AppStrings.recommended,
@@ -251,13 +278,9 @@ class HomeTab extends StatelessWidget {
                             (ctx, index) =>
                                 const SizedBox(width: AppSizes.paddingM),
                         itemBuilder: (ctx, index) {
-                          // عكسنا اللستة كشكل جمالي مؤقت ليظهر اختلاف بين القسمين
-                          final recommendedProducts =
-                              products.reversed.toList();
                           return VerticalCard(
                             width: cardWidth,
-                            listing:
-                                recommendedProducts[index], // استخدام الداتا الحقيقية
+                            listing: products[index],
                           );
                         },
                       ),
@@ -265,8 +288,7 @@ class HomeTab extends StatelessWidget {
                   ],
                 );
               }
-
-              return const SizedBox(); // Initial State
+              return const SizedBox();
             },
           ),
 

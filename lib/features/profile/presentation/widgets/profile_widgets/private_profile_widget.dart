@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_hand_electronics_marketplace/core/constants/app_routes.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/profile_listing_section.dart';
 import 'package:second_hand_electronics_marketplace/features/profile/presentation/widgets/profile_widgets/trust_indicators_section.dart';
 import '../../../../../configs/theme/app_colors.dart';
@@ -75,7 +77,9 @@ class PrivateProfileWidget extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(AppRoutes.mylistings);
+              },
               child: Text(
                 'See All',
                 style: AppTypography.label12Regular.copyWith(

@@ -15,6 +15,8 @@ import '../cubits/auth_states.dart';
 import '../widgets/auth_prompt_text.dart';
 import '../widgets/social_auth_section.dart';
 import '../widgets/remember_me_widget.dart';
+import '../../../wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../../listing/presentation/bloc/my_listings_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -96,6 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
             (previous, current) => ModalRoute.of(context)?.isCurrent == true,
         listener: (context, state) {
           if (state is AuthSuccess) {
+            context.read<WishlistCubit>().clearWishlist();
+            context.read<MyListingsCubit>().clearMyListings();
+            context.read<WishlistCubit>().fetchWishlist();
+            context.read<MyListingsCubit>().fetchMyListings();
             NotificationToast.show(
               context,
               AppStrings.welcomeBack,

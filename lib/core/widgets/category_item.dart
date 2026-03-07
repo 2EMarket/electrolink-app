@@ -27,35 +27,38 @@ class CategoryItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AnimatedContainer(
-            padding: const EdgeInsets.all(AppSizes.paddingM),
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              shape: BoxShape.circle,
+      child: SizedBox(
+        width: 60,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedContainer(
+              padding: const EdgeInsets.all(AppSizes.paddingM),
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: _buildIcon(context, iconColor),
             ),
-            child: _buildIcon(context, iconColor),
-          ),
-          const SizedBox(height: AppSizes.paddingXS),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style:
-                isSelected
-                    ? AppTypography.body14Medium.copyWith(
-                      color: context.colors.text,
-                    )
-                    : AppTypography.label12Regular.copyWith(
-                      color: context.colors.text,
-                    ),
-          ),
-        ],
+            const SizedBox(height: AppSizes.paddingXS),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  isSelected
+                      ? AppTypography.body14Medium.copyWith(
+                        color: context.colors.text,
+                      )
+                      : AppTypography.label12Regular.copyWith(
+                        color: context.colors.text,
+                      ),
+            ),
+          ],
+        ),
       ),
     );
   }

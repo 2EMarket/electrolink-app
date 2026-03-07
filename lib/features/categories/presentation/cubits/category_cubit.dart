@@ -8,9 +8,9 @@ class CategoryCubit extends Cubit<CategoryState> {
   CategoryCubit({required this.categoryService}) : super(CategoryInitial());
 
   Future<void> fetchCategories({
-    bool? isActive = true, // By default mostly fetch active ones
+    bool? isActive,
     int? page,
-    int? limit,
+    int? limit = 100,
   }) async {
     emit(CategoryLoading());
 

@@ -7,18 +7,27 @@ import 'package:second_hand_electronics_marketplace/core/widgets/badge_widget.da
 import 'package:second_hand_electronics_marketplace/core/widgets/favorite_button.dart';
 
 // استيراد الـ ProductModel الجديد
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_cubit.dart';
+import '../../features/wishlist/presentation/cubits/wishlist_state.dart';
+import 'package:gap/gap.dart';
 import '../../features/products/data/models/product_model.dart';
+import 'package:second_hand_electronics_marketplace/features/listing/presentation/widgets/my_listings_widgets/more_vert_button.dart';
 
 class VerticalCard extends StatelessWidget {
-  final ProductModel listing; // تم التعديل هنا
+  final ProductModel listing;
   final VoidCallback? onTap;
   final double? width;
+  final bool isOwnerMode;
+  final int ownerMenuState;
 
   const VerticalCard({
     super.key,
     required this.listing,
     this.onTap,
     this.width,
+    this.isOwnerMode = false,
+    this.ownerMenuState = 0,
   });
 
   @override
@@ -29,7 +38,6 @@ class VerticalCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         clipBehavior: Clip.none,
-        // margin: const EdgeInsets.only(bottom: AppSizes.paddingS),
         width: width,
         decoration: BoxDecoration(
           color: context.colors.surface,
@@ -46,7 +54,6 @@ class VerticalCard extends StatelessWidget {
                 children: [
                   AspectRatio(
                     aspectRatio: 1.0,
-                    // فحص مصفوفة الصور زي ما عملنا بالـ Horizontal
                     child: CardImageWidget(
                       imageUrl:
                           listing.images.isNotEmpty ? listing.images.first : '',
@@ -55,28 +62,40 @@ class VerticalCard extends StatelessWidget {
                   Positioned(
                     bottom: AppSizes.paddingXS,
                     left: AppSizes.paddingXS,
-                    child: BadgeWidget(
-                      text: listing.condition,
-                    ), // تعديل للـ condition
+                    child: BadgeWidget(text: listing.condition),
                   ),
-                  // فحص حالة البيع
-                  if (listing.status == 'sold')
-                    Positioned(
-                      top: AppSizes.paddingXS,
-                      left: AppSizes.paddingXS,
-                      child: BadgeWidget(
-                        text: 'Sold',
-                        bgColor: context.colors.secondaryColor,
-                        textColor: context.colors.surface,
-                      ),
-                    ),
                   Positioned(
                     top: AppSizes.paddingXS,
                     right: AppSizes.paddingXS,
-                    child: FavoriteButton(
-                      isFavorite: false, // TODO: implement favorite
-                      size: favButtonSize,
-                    ),
+                    child:
+                        isOwnerMode
+                            ? Container(
+                              height: 33,
+                              width: 33,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              child: MoreVertButton(
+                                selectState: ownerMenuState,
+                              ),
+                            )
+                            : BlocBuilder<WishlistCubit, WishlistState>(
+                              builder: (context, state) {
+                                final isFav = context
+                                    .read<WishlistCubit>()
+                                    .isFavorite(listing.id);
+                                return FavoriteButton(
+                                  key: ValueKey('fav_${listing.id}'),
+                                  isFavorite: isFav,
+                                  size: favButtonSize,
+                                  onTap:
+                                      () => context
+                                          .read<WishlistCubit>()
+                                          .toggleWishlist(listing.id),
+                                );
+                              },
+                            ),
                   ),
                 ],
               ),
@@ -85,7 +104,39 @@ class VerticalCard extends StatelessWidget {
                   horizontal: AppSizes.paddingS,
                   vertical: AppSizes.paddingS,
                 ),
-                child: CardContentWidget(listing: listing),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CardContentWidget(listing: listing),
+                    if (isOwnerMode) ...[
+                      const Gap(10),
+                      BadgeWidget(
+                        text:
+                            listing.status.isEmpty
+                                ? 'Pending'
+                                : listing.status[0].toUpperCase() +
+                                    listing.status.substring(1),
+                        bgColor: switch (listing.status.toLowerCase()) {
+                          'active' => const Color.fromARGB(255, 213, 248, 226),
+                          'pending' => const Color.fromARGB(255, 253, 244, 209),
+                          'rejected' => const Color.fromARGB(
+                            255,
+                            238,
+                            219,
+                            219,
+                          ),
+                          _ => context.colors.neutralWithoutTransparent,
+                        },
+                        textColor: switch (listing.status.toLowerCase()) {
+                          'active' => const Color(0XFF22C55E),
+                          'pending' => const Color(0XFFFACC15),
+                          'rejected' => const Color(0XFFEF4444),
+                          _ => context.colors.neutral,
+                        },
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ],
           ),

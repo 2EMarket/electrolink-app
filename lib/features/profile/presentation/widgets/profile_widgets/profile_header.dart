@@ -47,16 +47,15 @@ class ProfileHeader extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: avatarSize / 2,
-          //fallback to user icon if no avatar
-          backgroundImage: NetworkImage(profile.avatar),
-          child: SvgPicture.asset(
-            AppAssets.profileOutlineIcon,
-
-            fit: BoxFit.contain,
-          ),
-          // width: avatarSize,
-          // height: avatarSize,
-          // fit: BoxFit.cover,
+          backgroundImage:
+              profile.avatar.isNotEmpty ? NetworkImage(profile.avatar) : null,
+          child:
+              profile.avatar.isEmpty
+                  ? SvgPicture.asset(
+                    AppAssets.profileOutlineIcon,
+                    fit: BoxFit.contain,
+                  )
+                  : null,
         ),
 
         if (profile.isOnline && type == ProfileType.public)

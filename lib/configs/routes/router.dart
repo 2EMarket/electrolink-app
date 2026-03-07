@@ -27,7 +27,6 @@ import '../../features/home/presentation/pages/favorite_screen.dart';
 import '../../features/home/presentation/pages/listings_screen.dart';
 import '../../features/home/presentation/pages/splash_screen.dart';
 import '../../features/products/data/models/product_model.dart';
-import '../../features/listing/data/listing_model.dart';
 import '../../features/profile/data/services/profile_service.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/currency_screen.dart';
 import '../../features/profile/presentation/pages/user_profile/settings_screen/language_currency_screen.dart';
@@ -130,8 +129,12 @@ class AppRouter {
           final authState = context.read<AuthCubit>().state;
 
           if (authState is AuthSuccess) {
+            final user = authState.response.user!;
             return ProfileScreen(
-              authUser: authState.response.user!,
+              key: ValueKey(
+                '${user.isPhoneVerified}_${user.isEmailVerified}_${user.isIdentityVerified}',
+              ),
+              authUser: user,
               isMe: true,
             );
           }

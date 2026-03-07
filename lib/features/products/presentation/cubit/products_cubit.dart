@@ -11,12 +11,19 @@ class ProductsCubit extends Cubit<ProductsState> {
   // تخزين المنتجات عشان لو حبينا نعمل Pagination مستقبلاً
   List<ProductModel> allProducts = [];
 
-  Future<void> fetchProducts({int page = 1, String? categoryId}) async {
+  Future<void> fetchProducts({
+    int page = 1,
+    String? categoryId,
+    String? sortBy,
+    String? sortOrder,
+  }) async {
     emit(ProductsLoading()); // إظهار الشيمر أو دائرة التحميل في الـ UI
     try {
       final products = await repository.getAllProducts(
         page: page,
         categoryId: categoryId,
+        sortBy: sortBy,
+        sortOrder: sortOrder,
       );
 
       allProducts = products;
