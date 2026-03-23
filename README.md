@@ -2,7 +2,8 @@
 
 Electrolink is a professional, trust-based marketplace designed for buying and selling second-hand electronics. It bridges the gap between buyers and sellers through a secure, location-based platform that emphasizes user verification and manual quality control.
 
-This project serves as the **Graduation Project for the Mobile Development Path Training with GSG**.
+<img width="3200" height="1312" alt="Gemini_Generated_Image_w59qd1w59qd1w59q" src="https://github.com/user-attachments/assets/623284f2-2190-434a-82be-b60a891a87ae" />
+
 
 ## 👥 Team Members
 - **Wafaa** - [@WafaaSisalem](https://github.com/WafaaSisalem) [Team Leader]
