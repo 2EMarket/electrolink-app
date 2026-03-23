@@ -2,7 +2,7 @@
 
 Electrolink is a professional, trust-based marketplace designed for buying and selling second-hand electronics. It bridges the gap between buyers and sellers through a secure, location-based platform that emphasizes user verification and manual quality control.
 
-<img width="3200" height="1312" alt="Gemini_Generated_Image_w59qd1w59qd1w59q" src="https://github.com/user-attachments/assets/623284f2-2190-434a-82be-b60a891a87ae" />
+<img width="3200" height="1312" alt="Gemini_Generated_Image_w59qd1w59qd1w59q" src="https://github.com/user-attachments/assets/57fa1807-ff06-4416-bd2c-6e5dc87ebcff" />
 
 
 ## 👥 Team Members
