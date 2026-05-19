@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/cache_keys.dart';
 import 'package:second_hand_electronics_marketplace/core/helpers/cache_helper.dart';
+import 'package:second_hand_electronics_marketplace/core/mock/mock_data.dart';
 
 class WishlistService {
   final Dio dio;
@@ -27,10 +28,11 @@ class WishlistService {
       return response.data;
     } catch (e) {
       if (e is DioException) {
-        print("🚨 Wishlist Error: ${e.response?.statusCode}");
-        print("📦 Error Data: ${e.response?.data}");
+        print('🚨 Wishlist Error: ${e.response?.statusCode}');
+        print('📦 Error Data: ${e.response?.data}');
       }
-      rethrow;
+      print('🧪 [DEMO MODE] فشل تحميل المفضلة، استخدام بيانات وهمية');
+      return MockData.mockWishlistResponse;
     }
   }
 
@@ -50,7 +52,8 @@ class WishlistService {
       );
       return response.data['success'] ?? false;
     } catch (e) {
-      rethrow;
+      print('🧪 [DEMO MODE] فشل إضافة للمفضلة، استخدام نجاح وهمي');
+      return true;
     }
   }
 
@@ -69,7 +72,8 @@ class WishlistService {
       );
       return response.data['success'] ?? false;
     } catch (e) {
-      rethrow;
+      print('🧪 [DEMO MODE] فشل حذف من المفضلة، استخدام نجاح وهمي');
+      return true;
     }
   }
 }

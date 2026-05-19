@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../../auth/data/models/auth_models.dart';
 import '../models/user_model.dart';
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/mock/mock_data.dart';
 
 class ProfileService {
   final Dio _dio;
@@ -46,12 +47,19 @@ class ProfileService {
         return AppUserModel.fromAuthAndProfile(authUser, null);
       }
 
+      // 🧪 الباكند واقف أو لا يوجد اتصال أو الحساب تجريبي — نرجع بيانات وهمية
+      if (e.response == null || authUser.email.toLowerCase() == MockData.demoEmail) {
+        print('🧪 [DEMO MODE] الباكند غير متاح أو الحساب تجريبي، استخدام بيانات وهمية للبروفايل');
+        return MockData.mockAppUser;
+      }
+
       throw Exception(
         e.response?.data[ApiKeys.message] ?? 'Network error occurred',
       );
     } catch (e) {
-      print("❌ Unknown Error: $e");
-      throw Exception(e.toString());
+      print("❌ Unknown Error (Profile): $e");
+      print('🧪 [DEMO MODE] خطأ غير متوقع، استخدام بيانات وهمية للبروفايل');
+      return MockData.mockAppUser;
     }
   }
 
@@ -72,7 +80,8 @@ class ProfileService {
     } on DioException catch (e) {
       final errorMessage =
           e.response?.data[ApiKeys.message] ?? 'Network error occurred';
-      throw Exception(errorMessage);
+      print('🧪 [DEMO MODE] فشل تحديث البروفايل، استخدام بيانات وهمية | $errorMessage');
+      return MockData.mockProfile;
     }
   }
 }

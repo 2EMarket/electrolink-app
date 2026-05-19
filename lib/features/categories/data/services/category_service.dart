@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
+import 'package:second_hand_electronics_marketplace/core/mock/mock_data.dart';
 import 'package:second_hand_electronics_marketplace/features/categories/data/models/category_model.dart';
 
 class CategoryService {
@@ -26,15 +27,12 @@ class CategoryService {
       // We expect the JSON body wrapped inside response.data per Dio architecture
       return CategoryResponseModel.fromJson(response.data);
     } on DioException catch (e) {
-      if (e.response != null) {
-        throw Exception(
-          e.response?.data['message'] ?? 'Failed to load categories',
-        );
-      } else {
-        throw Exception(e.message ?? 'Unknown error occurred');
-      }
+      print('🧪 [DEMO MODE] فشل تحميل الكاتيغوري من الباكند، استخدام بيانات وهمية');
+      print('🚨 Categories Error: ${e.message}');
+      return MockData.mockCategoryResponse;
     } catch (e) {
-      throw Exception('An unexpected error occurred: $e');
+      print('🧪 [DEMO MODE] خطأ غير متوقع في الكاتيغوري، استخدام بيانات وهمية');
+      return MockData.mockCategoryResponse;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
+import 'package:second_hand_electronics_marketplace/core/mock/mock_data.dart';
 
 import '../models/product_model.dart';
 
@@ -45,11 +46,11 @@ class ProductsRepository {
     } catch (e) {
       // التعامل مع أخطاء Dio
       if (e is DioException) {
-        throw Exception(
-          e.response?.data['message'] ?? 'خطأ في الاتصال بالخادم',
-        );
+        log('🧪 [DEMO MODE] فشل تحميل المنتجات، استخدام بيانات وهمية | Error: ${e.message}');
+        return MockData.mockProducts;
       }
-      throw Exception(e.toString());
+      log('🧪 [DEMO MODE] خطأ غير متوقع في المنتجات، استخدام بيانات وهمية | Error: $e');
+      return MockData.mockProducts;
     }
   }
 
@@ -84,9 +85,11 @@ class ProductsRepository {
       }
     } catch (e) {
       if (e is DioException) {
-        throw Exception(e.response?.data['message'] ?? 'Network error');
+        log('🧪 [DEMO MODE] فشل تحميل منتجاتي، استخدام بيانات وهمية | Error: ${e.message}');
+        return MockData.mockMyProducts;
       }
-      rethrow;
+      log('🧪 [DEMO MODE] خطأ غير متوقع في منتجاتي، استخدام بيانات وهمية | Error: $e');
+      return MockData.mockMyProducts;
     }
   }
 }

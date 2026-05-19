@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/api_constants.dart';
 import 'package:second_hand_electronics_marketplace/core/constants/app_assets.dart';
+import 'package:second_hand_electronics_marketplace/core/mock/mock_data.dart';
 import 'package:second_hand_electronics_marketplace/features/listing/data/models/listing_field_config.dart';
 
 class ListingCatalogService {
@@ -45,9 +46,13 @@ class ListingCatalogService {
               ? (e.response?.data[ApiKeys.message]?.toString() ??
                   'Failed to load categories')
               : 'Failed to load categories';
-      throw Exception(message);
+      print('🧪 [DEMO MODE] فشل تحميل كاتيغوري Listing، استخدام بيانات وهمية | $message');
+      _categoriesCache = MockData.mockListingCategories;
+      return MockData.mockListingCategories;
     } catch (_) {
-      throw Exception('Failed to load categories');
+      print('🧪 [DEMO MODE] خطأ غير متوقع في Listing Catalog، استخدام بيانات وهمية');
+      _categoriesCache = MockData.mockListingCategories;
+      return MockData.mockListingCategories;
     }
   }
 

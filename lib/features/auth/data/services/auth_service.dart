@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../models/auth_models.dart';
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/mock/mock_data.dart';
 
 class AuthService {
   final Dio _dio;
@@ -69,6 +70,13 @@ class AuthService {
   }
 
   Future<AuthResponseModel> login(String email, String password) async {
+    // 🧪 Demo Account — يعمل حتى لو الباكند واقف
+    if (email.trim().toLowerCase() == MockData.demoEmail &&
+        password == MockData.demoPassword) {
+      print('🧪 [DEMO MODE] تسجيل دخول بالحساب التجريبي');
+      return MockData.mockAuthResponse;
+    }
+
     try {
       final response = await _dio.post(
         ApiEndpoints.login,
